@@ -4,9 +4,12 @@
 
 Welcome to **Python Zero to One**.
 
-This course is designed to take you from knowing nothing about code (Zero) to writing and shipping your first real Python application (One).
+This course is designed to take you from knowing nothing about code (Zero) to writing and shipping your first real Python application (One).  
+(Name referenced from Zero to Hero)
 
 We'll learn how to use AI to generate rapid prototypes, then refine those outputs into production-ready code by building solid conceptual understanding.
+
+The total estimated time required to complete this course is approximately **40 hours**.
 
 ## Philosophy
 
@@ -18,30 +21,26 @@ However, because AI works with limited context, it can struggle to account for t
 
 **To use AI effectively, you cannot rely on it blindly.**
 
-The core focus of this course is to equip you with the **understanding of programming concepts, control flow, and basic Python syntax**.
+The core focus of this course is to equip you with the **understanding of programming concepts, control flow, and basic syntax**.
 
-This fundamental knowledge is the minimum requirement for you to review, modify, and fix the AI-generated code when it occasionally hallucinates or makes logical errors.
+This fundamental knowledge is the minimum requirement for you to review, modify, and fix the AI-generated content when it occasionally hallucinates or makes logical errors.
 
 ## Curriculum Structure
 
-The total estimated time required to complete this course is approximately **40 hours**.
-
-The repository is organized into modules.
-
-Each module in this course is designed as a self-contained learning journey, moving from conceptual understanding to practical mastery. 
+The repository is organized into modules. Each module in this course is designed as a self-contained learning journey, moving from conceptual understanding to practical mastery. 
 
 To ensure a consistent and effective learning experience, Each module contains the following:
 
-1. **The "Why?"**:  
+1. **The "Why?"**  
    Before diving into the code, we answer the most important question: Why are we learning this?  
    You will explore how these specific concepts are applied in the real-world context.
-2. **Goals**:  
+2. **Goals**  
    The Goals serve as your objectives for learning this module.   
    Written in plain, accessible language, these goals define what you should understand and be able to articulate by the end of the module.
-3. **Core Concepts**:  
+3. **Core Concepts**  
    This is the heart of the module. Core Concepts provide a deep-dive explanation of programming syntax and technical concepts.  
    It includes detailed explanations and code demonstrations for each topic.
-4. **Checkpoints**:  
+4. **Checkpoints**  
    Checkpoints are designed to verify your learning through practical scripting.  
    Successfully completing these checkpoints serves as proof of your technical competency and readiness for the next module.  
    > **There is no single "correct" answer for the checkpoints.**  
