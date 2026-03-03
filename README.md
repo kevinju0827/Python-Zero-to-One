@@ -9,7 +9,7 @@ This course is designed to take you from knowing nothing about code (Zero) to wr
 
 We'll learn how to use AI to generate rapid prototypes, then refine those outputs into production-ready code by building solid conceptual understanding.
 
-The total estimated time required to complete this course is approximately **40 hours**.
+The total estimated time required to complete this course is approximately **30 hours**.
 
 ## Philosophy
 
@@ -68,6 +68,11 @@ To ensure a consistent and effective learning experience, Each module contains t
     Integrated AI assistant that provides code generation, explanation, and unit test writing seamlessly within PyCharm.
   - **[Junie](https://www.jetbrains.com/junie/)**  
     The next-generation AI agent for JetBrains, focusing on advanced predictive coding assistance.
+
+#### AI
+
+- **[Gemini](https://gemini.google.com/)**  
+    Google’s AI assistant for brainstorming, explaining concepts, and generating code or content from prompts.
 
 #### External Data
 
