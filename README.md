@@ -4,31 +4,92 @@
 
 Welcome to **Python Zero to One**.
 
-This course is designed to take you from knowing nothing about code (Zero) to writing and shipping your first real Python application (One).  
-(Name referenced from Zero to Hero)
+This course is designed to take you from knowing nothing about code (Zero) to building your first Python application (One).  
+(The name is inspired by the phrase "Zero to Hero.")  
+We'll learn how to use AI to generate rapid prototypes, then refine those outputs into more concise and reliable code by learning basic syntax and concepts.  
+The total estimated time required to complete this course is approximately 30 hours.
 
-We'll learn how to use AI to generate rapid prototypes, then refine those outputs into production-ready code by building solid conceptual understanding.
+## Getting Started
 
-The total estimated time required to complete this course is approximately **30 hours**.
+Before you begin this course, please set up the following environment.  
+> The following tools are not mandatory; you can use any alternative.
+
+* Step 1: Prepare at least one AI Assistant
+
+  AI assistants can generate examples, explain unfamiliar syntax, and help you debug errors while learning.  
+  Gemini was launched by Google and is offered free of charge.  
+  We will use Gemini as our AI assistant throughout the course.  
+  Open [Gemini](https://gemini.google.com/) in your browser.  
+  If you encounter any problems, you can first ask Gemini to help you confirm what went wrong and how to fix it.
+
+* Step 2: Install Python
+
+  Python is the core programming language used throughout this course.  
+  It is the environment that runs your scripts and allows you to build applications.  
+  Download and install [Python](https://www.python.org/downloads/).
+
+  During installation, make sure Python is added to your system PATH if the installer provides that option.  
+  After installation, open your terminal and run the following command to confirm it works:
+
+  ```bash
+  python --version
+  ```
+
+* Step 3: Install a code editor / IDE
+
+  Code editors and IDEs make it easier to write, run, and debug Python code.  
+  Even if you can use a plain text editor, a dedicated development tool will significantly improve your learning efficiency.  
+  JetBrains is a leading provider of IDEs and tools.  
+  Download and install [JetBrains PyCharm](https://www.jetbrains.com/pycharm/).
+
+* Step 4: Clone this repository
+
+  Git is a version control system that allows you to easily update the course materials.  
+  Download and install [Git](https://git-scm.com/).  
+  Open your PyCharm and click the `Clone Repository` button.  
+  Copy the URL of this repository: `https://github.com/kevinju0827/Python-Zero-to-One.git` and paste the URL into the field.  
+  Click the `Clone` button to download the repository to your local machine.  
+  Next time you want to update the course materials, you can simply click the `Update Project` button to pull the latest changes.
+
+  > **MacOS Users**  
+  > On macOS, we recommend installing [Homebrew](https://brew.sh/) first, then using it to install Git.  
+  > Homebrew is a package manager for macOS that makes it much easier to install and manage developer tools.  
+  > Open the `Terminal` app and run the following commands:
+  > ```bash
+  > /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  > ```
+  > Then, run the following command to install Git:
+  > ```bash
+  > brew install git
+  > ```
+
+* Step 5: Open the `README.md` file
+
+  `README.md` is the first file you should see when you open the repository.  
+  Open the `Python-Zero-to-One` repository in your PyCharm and click the `README.md` file to open it.  
+  Switch to the `Preview` tab at the top right to view the content.
+
+  > `.md` stands for Markdown, which is a lightweight markup language that allows you to write formatted text using a simple syntax.  
+  > It is not necessary to understand Markdown to follow along with this course.  
+  > You can refer to the [Markdown Guide](https://www.markdownguide.org/basic-syntax/) for a quick introduction.
+
+  In every module, we will also provide a `README.md` file as a learning guide.
 
 ## Philosophy
 
 **AI is best suited for handling common requirements, boilerplate code, or building rapid prototypes.**
 
 In the age of AI, coding has changed. You don't need to hand-code every single line anymore.
-
 However, because AI works with limited context, it can struggle to account for the full details of large-scale projects or handle highly specific, complex business logic.
 
 **To use AI effectively, you cannot rely on it blindly.**
 
-The core focus of this course is to equip you with the **understanding of programming concepts, control flow, and basic syntax**.
-
+The core focus of this course is to equip you with the understanding of programming concepts, control flow, and basic syntax.  
 This fundamental knowledge is the minimum requirement for you to review, modify, and fix the AI-generated content when it occasionally hallucinates or makes logical errors.
 
 ## Curriculum Structure
 
-The repository is organized into modules. Each module in this course is designed as a self-contained learning journey, moving from conceptual understanding to practical mastery. 
-
+The repository is organized into modules. Each module in this course is designed as a self-contained learning journey, moving from conceptual understanding to practical mastery.  
 To ensure a consistent and effective learning experience, Each module contains the following:
 
 1. **The "Why?"**  
@@ -40,7 +101,13 @@ To ensure a consistent and effective learning experience, Each module contains t
 3. **Core Concepts**  
    This is the heart of the module. Core Concepts provide a deep-dive explanation of programming syntax and technical concepts.  
    It includes detailed explanations and code demonstrations for each topic.
-4. **Checkpoints**  
+4. **Guided Practice**  
+   To make each module easier to follow, we also provide a step-by-step walkthrough.  
+   This section is designed to guide you through a small but complete practice sequence, allowing you to apply what you just learned in a concrete way.  
+   By following the execution flow, you will:
+   - know exactly where to start
+   - produce a small example that demonstrates the core concepts of the module
+5. **Checkpoints**  
    Checkpoints are designed to verify your learning through practical scripting.  
    Successfully completing these checkpoints serves as proof of your technical competency and readiness for the next module.  
    > **There is no single "correct" answer for the checkpoints.**  
