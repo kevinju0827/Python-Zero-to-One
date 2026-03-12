@@ -2,61 +2,88 @@
 
 ## The "Why?"
 
-In real life, you'll often run into repetitive tasks – renaming hundreds of photos, downloading files from dozens of websites, crunching large datasets, or repeating the same reporting steps every day.
-
-This is where programming shines: spending just ten minutes to write a small script can let your computer handle work that would otherwise take hours.
-
-Once automated, the workflow becomes repeatable, scalable, and less error-prone.
-
-Python is especially well-suited for these tasks because it’s straightforward to read and write, has a huge ecosystem of libraries, and works great for automation, data processing, and quick prototyping.
+In real life, you'll often run into repetitive tasks—renaming hundreds of photos, downloading files from dozens of websites, crunching large datasets, or repeating the same reporting steps every day.  
+This is where programming shines: spending just ten minutes writing a small script can let your computer handle work that would otherwise take hours.  
+Once automated, a workflow becomes repeatable, scalable, and less error-prone.  
+Python is especially well-suited for these tasks because it is easy to read and write, has a huge ecosystem of libraries, and works great for automation, data processing, and quick prototyping.
 
 ## Goals
 
-Understand what python is and how to get started with Python and Vibe Coding (AI).
+Understand what Python is and how to get started with Python and vibe coding (AI-assisted development).
 
 ## Core Concepts
 
 ### Interactive mode
 
-Unlike many programming languages (such as C, C#, Go, and Java), Python is an interpreted language.
+Unlike many programming languages (such as C, C#, Go, and Java), Python is an interpreted language.  
+In most cases, you don't need a separate compiler toolchain to see results.  
+You simply write a script and run it to execute, and you'll immediately see the results.  
+This is most easily demonstrated through Python's interactive mode, which you can treat like a "calculator + mini lab" for experimenting with ideas, testing syntax, and doing quick computations.
 
-In most cases, you don’t need a separate compiler toolchain to see results.
+You can use Python's interactive mode to solve simple math problems.  
+For example, to calculate `123 + 777`, type `123 + 777` and press Enter.
 
-You simply write a script and call it to execute, and you'll immediately see the results.
+Common math operators in Python:
 
-This is most quickly demonstrated through Python's Interactive mode, which you can treat like a “calculator + mini lab” for experimenting with ideas, testing syntax, and doing quick computations.
+- Addition: `3 + 2` → `5`
+- Subtraction: `10 - 4` → `6`
+- Multiplication: `6 * 7` → `42`
+- Division: `8 / 2` → `4.0`
 
-### Line break and indentation
+  You can also try these useful operators:
 
-In Python, indentation is not just formatting — it is part of the syntax. 
+- Floor division: `7 // 2` → `3`
+- Modulus (remainder): `7 % 2` → `1`
+- Power: `2 ** 3` → `8`
 
-Incorrect line breaks or indentation can cause errors, or worse: code that runs but behaves incorrectly.
+### Python Script
 
-If you’re coming from languages that use braces (`{}`) to define blocks, pay close attention: Python uses indentation to define blocks (for `if`, `for`, `while`, `def`, etc.).
+To avoid entering the same commands repeatedly, we can create a Python script.  
+Once written, you can run the script again in the future without retyping the commands.
 
-Recommended habits:
+Create a new file named `hello.py` and paste the following code:
 
-- Use four spaces per indentation level (avoid mixing tabs and spaces)
-- When debugging, check indentation consistency first
-- Run small increments frequently to reduce debugging time
+```python
+print("Hello, world!")
+```
+
+Run the script by entering `python hello.py` in the terminal.  
+This will display `Hello, world!` in the console.
+
+The `print()` function is used to display text or other data in the console.  
+It is a fundamental tool for debugging and communication in Python development.
 
 ### Vibe coding
 
-Vibe coding is a practical workflow for building software with AI as a collaborator.
+Vibe coding is a practical workflow for building software with AI as a collaborator.  
+You provide goals, constraints, context, and examples; the AI produces a draft solution; then you run it, observe the results, and iterate with feedback until it works reliably.  
+Python is a great match for vibe coding because it runs quickly, is straightforward to read, and provides immediate feedback.  
+AI can also help generate and work with Python scripts directly, making it useful for tasks such as complex calculations and operating system automation.
 
-You provide goals, constraints, context, and examples; the AI produces a draft solution; you run it, observe results, and iterate with feedback until it works reliably.
+> Reminder: AI is excellent at producing a first draft and exploring options, but it does not guarantee correctness. Your job is not to trust it—your job is to verify it.
 
-Python is a great match for Vibe Coding because it’s fast to run, straightforward to read, and gives immediate feedback.
+## Guided Practice
 
-AI can also call Python scripts directly. This extends the limitations of AI (complex calculations, operating systems).
+* Step 1: Open Python interactive mode  
+  Open Python's interactive mode by clicking the Python app or by typing `python` in your terminal.  
+  If you are using PyCharm, click the Python Console icon at the bottom left.  
+  You will see the Python version and a prompt like `>>>`, indicating that you are in interactive mode.
 
-> Reminder: AI is excellent at producing a first draft and exploring options, but it’s not a guarantee of correctness. Your job is not to trust it — it’s to verify it.
+* Step 2: Calculate a math problem  
+  Assume your height is `1.75` meters and your weight is `70` kilograms.  
+  To calculate your BMI, type `70 / 1.75 / 1.75` and press Enter.  
+  Use a calculator to double-check that the answer is correct.
+
+* Step 3: Save the calculation as a script  
+  Create a new script file named `bmi.py` and paste the following code: `print(70 / 1.75 / 1.75)`
+  Run the script by entering `python bmi.py` in the terminal.  
+  This will display the BMI result in the console.
+
 
 ## Checkpoints
 
-* [ ] Use Python interactive mode to calculate the following question:   
-      Let's say you're 20 years old now and have 100,000 in savings.  
-      If you invest this money in an index fund with an annualized return of 5% and reinvest the gains,  
+* [ ] Use Python to solve the following problem:  
+      Let's say you are 20 years old and currently have 100,000 in savings.  
+      If you invest this money in an index fund with an annual return of 5% and reinvest the gains,  
       how much will you have when you retire at 60 (40 years from now)?  
       (Hint: `x ** y` can be used for power calculations.)
-* [ ] Create a Python script file to solve the same problem above.
