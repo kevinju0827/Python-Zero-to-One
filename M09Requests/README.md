@@ -6,4 +6,6 @@
 
 ## Core Concepts
 
+## Guided Practice
+
 ## Checkpoints
