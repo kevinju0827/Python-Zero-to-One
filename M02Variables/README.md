@@ -26,7 +26,7 @@ weight = 70
 height = 1.75
 
 # Calling the variables to perform a calculation
-bmi = weight / (height ** 2)
+bmi = weight / height / height
 print(bmi)
 
 ```
