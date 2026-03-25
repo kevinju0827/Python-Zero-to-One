@@ -1,4 +1,4 @@
-fu/# M02 Variables
+# M02 Variables
 
 ## The "Why?"
 

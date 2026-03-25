@@ -77,13 +77,13 @@ print(f"You owe: ${final_price}")
       pass
   ```
 * Step 2: Implement the pricing logic
-  Now, replace `pass` with our calculation. Let's assume the parking lot charges a flat rate of $5 for the first hour, and $3 for every extra hour. We can use an `if/else` statement to calculate the `total_fee` based on the `hours` provided.
+  Now, replace `pass` with our calculation. Let's assume the parking lot charges a flat rate of $5 for the first two hours, and $3 for every extra hour. We can use an `if/else` statement to calculate the `total_fee` based on the `hours` provided.
   ```python
   def calculate_parking_fee(hours):
-      if hours <= 1:
+      if hours <= 2:
           total_fee = 5
       else:
-          extra_hours = hours - 1
+          extra_hours = hours - 2
           total_fee = 5 + (extra_hours * 3)
   ```
 * Step 3: Return the calculated result
