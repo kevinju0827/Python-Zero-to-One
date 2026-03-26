@@ -13,6 +13,37 @@ Understand how to repeat actions using `for` and `while` loops, iterate over seq
 
 ## Core Concepts
 
+### Lists
+
+In Python, a "List" is a way to store multiple items in a single variable. You write a list using square brackets `[]`.
+
+For example, a list can hold several fruits, movies, or any other values together in one place.
+
+```python
+fruits = ["apple", "banana", "cherry"]
+```
+
+### The `for` Loop and `range()`
+
+A `for` loop is used when you know *exactly how many times* you want to repeat a task, or when you want to go through a specific sequence of items one by one.
+
+A `for` loop makes it incredibly easy to process every item in a list.
+
+```python
+fruits = ["apple", "banana", "cherry"]
+
+for fruit in fruits:
+    print(f"I love eating {fruit}s!")
+```
+
+The `range()` function is often used with `for` loops to generate a sequence of numbers. By default, `range(5)` generates numbers from 0 up to (but not including) 5.
+
+```python
+# This will print 0, 1, 2, 3, 4
+for i in range(5):
+    print(f"Iteration number: {i}")
+```
+
 ### The `for` Loop and `range()`
 
 A `for` loop is used when you know *exactly how many times* you want to repeat a task, or when you want to go through a specific sequence of items one by one.
@@ -23,20 +54,6 @@ The `range()` function is often used with `for` loops to generate a sequence of 
 # This will print 0, 1, 2, 3, 4
 for i in range(5):
     print(f"Iteration number: {i}")
-
-```
-
-### Iterating Over Collections (Lists)
-
-In Python, a "List" is a way to store multiple items in a single variable. You write a list using square brackets `[]`.
-
-A `for` loop makes it incredibly easy to process every item in a list.
-
-```python
-fruits = ["apple", "banana", "cherry"]
-
-for fruit in fruits:
-    print(f"I love eating {fruit}s!")
 
 ```
 
@@ -57,7 +74,7 @@ graph TD
 
 ```
 
-**Warning:** If the condition never becomes `False`, the loop will run forever! This is called an "infinite loop." Always make sure something inside the loop will eventually change the condition.
+> **Warning:** If the condition never becomes `False`, the loop will run forever! This is called an "infinite loop." Always make sure something inside the loop will eventually change the condition.
 
 ```python
 countdown = 3
@@ -72,33 +89,32 @@ print("Go!")
 
 ## Guided Practice
 
-* Step 1: Count with a `for` loop
-  Create a file named `loops.py`.
-  Use a `for` loop and `range(1, 6)` to print the numbers 1 through 5.
-  *(Note: `range(start, stop)` starts at the first number and stops right before the second number).*
-* Step 2: Iterate over a list
-  In the same file, create a list of three of your favorite movies.
-  Write a `for` loop to print a sentence about each movie, like "One of my favorite movies is [Movie Name]."
-* Step 3: Create a `while` loop for user input
-  Create a new file named `password_check.py`.
-  Create a variable `password = ""`.
-  Write a `while` loop that checks if `password != "secret"`.
-  Inside the loop, use `input()` to ask the user to "Enter the password: " and assign it to the `password` variable.
-  Outside the loop (unindented), print "Access Granted!".
-  Run the script. Notice how it traps you until you type the correct word.
+* Step 1: Collect exam scores with a `while` loop  
+  Create a file named `exam_stats.py`.  
+  Create an empty list named `scores = []`.  
+  Use a `while` loop to keep asking the user to enter exam scores.  
+  If the input is a number, convert it to an integer and append it to `scores`.  
+  If the input is not a number, stop collecting scores and continue to the next step.
+
+* Step 2: Count passing and failing scores with a `for` loop  
+  Create two variables: `pass_count = 0` and `fail_count = 0`.  
+  Use a `for` loop to go through every score in `scores`.  
+  Use `if else` to check whether each score is `>= 60` or `< 60`.  
+  Increase `pass_count` for passing scores and `fail_count` for failing scores.
+
+* Step 3: Print the statistics  
+  Print the total number of scores entered, the number of passing scores, the number of failing scores, and the passing percentage.  
+  Hint: the passing percentage can be calculated with:
+
+  `pass_count / total_count * 100`
 
 ## Checkpoints
 
-* [ ] Write a Multiplication Table generator:
-  Ask the user to input a number (e.g., 7).
-  Use a `for` loop to print the multiplication table for that number from 1 to 10.
-  Output example:
-  `7 x 1 = 7`
-  `7 x 2 = 14`
-  `...`
 * [ ] Build a "Guess the Number" game:
-  Set a secret number in a variable (e.g., `secret = 42`).
-  Use a `while` loop to continuously ask the user to guess the number.
+  Use the `random` module to generate a secret number for the game.  
+  For example, set `secret = random.randint(1, 100)` to choose a random number between 1 and 100.  
+  Use a `while` loop to continuously ask the user to guess the number.  
+  Add a helpful prompt so the user knows the valid range, such as "Guess a number between 1 and 100:".  
   Combine this with conditional logic (`if/elif/else`) from M03:
   - If the guess is too high, print "Too high, try again."
   - If the guess is too low, print "Too low, try again."

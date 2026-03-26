@@ -58,7 +58,7 @@ graph TD
 
 ```
 
-**Important Note:** Python uses indentation (usually four spaces) to define code blocks. You must indent the code inside your conditional statements for the script to work properly.
+> **Important Note:** Python uses indentation (usually four spaces) to define code blocks. You must indent the code inside your conditional statements for the script to work properly.
 
 ```python
 age = 20
@@ -91,17 +91,17 @@ if score >= 80 and attendance >= 80:
 
 ## Guided Practice
 
-* Step 1: Create a simple condition
-  Create a new file named `weather.py`.
-  Create a variable `temperature` and assign it a number.
-  Write an `if` statement to print "It's a hot day!" if the temperature is greater than 30.
+* Step 1: Create a simple condition  
+  Create a new file named `weather.py`.  
+  Create a variable `temperature` and assign it a number.  
+  Write an `if` statement to print "It's a hot day!" if the temperature is greater than 30.  
   Run the script to see the result.
-* Step 2: Add multiple conditions
-  Update `weather.py` by adding an `elif` statement to print "It's a nice day." if the temperature is between 20 and 30.
-  Add an `else` statement to print "It's cold!" for any other temperature.
+* Step 2: Add multiple conditions  
+  Update `weather.py` by adding an `elif` statement to print "It's a nice day." if the temperature is between 20 and 30.  
+  Add an `else` statement to print "It's cold!" for any other temperature.  
   Change the `temperature` variable and run the script multiple times to test all three branches.
-* Step 3: Combine with user input
-  Modify the script to ask the user for the current temperature using the `input()` function.
+* Step 3: Combine with user input  
+  Modify the script to ask the user for the current temperature using the `input()` function.  
   Remember to convert the input to a float or integer before comparing it.
 
 ## Checkpoints
