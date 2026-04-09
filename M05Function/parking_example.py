@@ -7,8 +7,15 @@ def calculate_parking_fee(hours):
 
     return total_fee
 
+while True:
+  user_input = input("Enter parking hours (or type 'q' to quit): ")
 
-customer_fee = calculate_parking_fee(4)
+  if user_input.lower() == 'q':
+      break
 
-print(f"You parked for 4 hours.")
-print(f"Your total parking fee is: ${customer_fee}")
+  input_hours = int(user_input)
+  customer_fee = calculate_parking_fee(input_hours)
+
+  print(f"You parked for {input_hours} hours.")
+  print(f"Your total parking fee is: ${customer_fee}")
+  print()

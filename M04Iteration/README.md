@@ -89,6 +89,8 @@ print("Go!")
 
 ## Guided Practice
 
+This guided practice asks you to build a program that calculates the pass rate for a midterm exam.  
+
 * Step 1: Collect exam scores with a `while` loop  
   Create a file named `exam_stats.py`.  
   Create an empty list named `scores = []`.  

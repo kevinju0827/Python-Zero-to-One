@@ -57,53 +57,60 @@ except ValueError:
 
 ## Guided Practice
 
+Let's build a unit price calculator for an inventory management system. Our script will take a fixed total cost and ask the user (or another system) how many items were received to calculate the cost per item. 
+
 * Step 1: Write the fragile code
-  Create a file named `divider.py`. Let's write a simple script that asks the user for a number and divides 100 by it.
+  Create a file named `unit_price.py`. We will start with a script that assumes the user will always provide perfect input.
   ```python
-  divisor = input("Enter a number to divide 100 by: ")
-  number = int(divisor)
-  result = 100 / number
-  print(f"The result is {result}")
+  total_cost = 500.00
+  user_input = input("Enter the quantity of items received: ")
+  
+  quantity = int(user_input)
+  unit_price = total_cost / quantity
+  print(f"The unit price is ${unit_price}")
   ```
-  *(Run this script and type "hello" or "0". Watch how the program crashes and prints a traceback).*
+  *(Run this script and type a word like "ten" or the number "0". Watch how the program crashes and prints a traceback, which would break our inventory system).*
 
 * Step 2: Wrap the code in a `try` block
-  Identify the code that might fail (the conversion to integer and the division) and indent it under a `try` statement.
+  Identify the risky code (converting the text to an integer and performing the division) and indent it under a `try` statement.
   ```python
-  divisor = input("Enter a number to divide 100 by: ")
+  total_cost = 500.00
+  user_input = input("Enter the quantity of items received: ")
   
   try:
-      number = int(divisor)
-      result = 100 / number
-      print(f"The result is {result}")
+      quantity = int(user_input)
+      unit_price = total_cost / quantity
+      print(f"The unit price is ${unit_price}")
   ```
 
 * Step 3: Handle the `ValueError`
-  If the user types a word instead of a number, `int(divisor)` will trigger a `ValueError`. Let's catch it.
+  If a user types "five" instead of "5", or accidentally hits Enter without typing anything, `int(user_input)` will trigger a `ValueError`. Let's catch it so the system doesn't crash.
   ```python
-  divisor = input("Enter a number to divide 100 by: ")
+  total_cost = 500.00
+  user_input = input("Enter the quantity of items received: ")
   
   try:
-      number = int(divisor)
-      result = 100 / number
-      print(f"The result is {result}")
+      quantity = int(user_input)
+      unit_price = total_cost / quantity
+      print(f"The unit price is ${unit_price}")
   except ValueError:
-      print("That is not a number! Please enter digits only.")
+      print("System Error: Invalid quantity format. Please enter numerical digits only.")
   ```
 
 * Step 4: Handle the `ZeroDivisionError`
-  If the user types "0", the math operation will fail. Add another `except` block to handle this specific scenario gracefully.
+  In real-world systems, a quantity of "0" might be entered if an order was cancelled or damaged. Dividing the cost by zero will cause a `ZeroDivisionError`. Add another `except` block to handle this specific business logic flaw gracefully.
   ```python
-  divisor = input("Enter a number to divide 100 by: ")
+  total_cost = 500.00
+  user_input = input("Enter the quantity of items received: ")
   
   try:
-      number = int(divisor)
-      result = 100 / number
-      print(f"The result is {result}")
+      quantity = int(user_input)
+      unit_price = total_cost / quantity
+      print(f"The unit price is ${unit_price}")
   except ValueError:
-      print("That is not a number! Please enter digits only.")
+      print("System Error: Invalid quantity format. Please enter numerical digits only.")
   except ZeroDivisionError:
-      print("Math error: You cannot divide by zero!")
+      print("System Error: Quantity cannot be zero. Cannot calculate unit price for an empty shipment.")
   ```
 
 ## Checkpoints

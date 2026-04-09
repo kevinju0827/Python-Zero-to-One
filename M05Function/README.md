@@ -69,14 +69,15 @@ print(f"You owe: ${final_price}")
 
 ## Guided Practice
 
-* Step 1: Define the function and parameters
+* Step 1: Define the function and parameters  
   Let's create a function called `calculate_parking_fee` that requires one piece of information to work: the number of hours a car was parked. We will set this up using the `def` keyword and add `hours` as our parameter.
   ```python
   def calculate_parking_fee(hours):
       # We will add our pricing logic here
       pass
   ```
-* Step 2: Implement the pricing logic
+
+* Step 2: Implement the pricing logic  
   Now, replace `pass` with our calculation. Let's assume the parking lot charges a flat rate of $5 for the first two hours, and $3 for every extra hour. We can use an `if/else` statement to calculate the `total_fee` based on the `hours` provided.
   ```python
   def calculate_parking_fee(hours):
@@ -85,27 +86,25 @@ print(f"You owe: ${final_price}")
       else:
           extra_hours = hours - 2
           total_fee = 5 + (extra_hours * 3)
-  ```
-* Step 3: Return the calculated result
-  Remember the "Return Values" concept? Instead of printing the fee directly inside the function, we want to hand the `total_fee` back to our main script so it can be used later. We will add the `return` keyword at the end of our function block.
-  ```python
-  def calculate_parking_fee(hours):
-      if hours <= 1:
-          total_fee = 5
-      else:
-          extra_hours = hours - 1
-          total_fee = 5 + (extra_hours * 3)
-      
+
       return total_fee
   ```
-* Step 4: Call the function and test it
-  Finally, let's step outside the function (by removing the indentation) to see it in action. We will call the function, pass in the number of hours as our argument, save the returned value to a new variable, and print a receipt for the user.
+
+* Step 3: Call the function inside a loop
+  Instead of testing the function with only one fixed value, let's keep asking the user for the number of hours parked. We will use a `while` loop to repeatedly wait for input, calculate the fee, and display the result.
   ```python
-  # Calling the function with 4 hours
-  customer_fee = calculate_parking_fee(4)
-  
-  print(f"You parked for 4 hours.")
-  print(f"Your total parking fee is: ${customer_fee}")
+  while True:
+      user_input = input("Enter parking hours (or type 'q' to quit): ")
+
+      if user_input.lower() == 'q':
+          break
+
+      hours = int(user_input)
+      customer_fee = calculate_parking_fee(hours)
+
+      print(f"You parked for {hours} hours.")
+      print(f"Your total parking fee is: ${customer_fee}")
+      print()
   ```
 
 ## Checkpoints
