@@ -52,21 +52,28 @@ We will build a simple **Contact Book** system that saves names and phone number
     # We use '?' as placeholders to prevent security issues (SQL Injection)
     name_input = "Alice Smith"
     phone_input = "555-0199"
-    cursor.execute("INSERT INTO people (name, phone) VALUES (?, ?)", (name_input, phone_input))
 
-    # 4. Save (commit) the changes
-    conn.commit()
+    # Check if the record already exists before adding
+    cursor.execute("SELECT * FROM people WHERE name = ?", (name_input,))
+    if not cursor.fetchone():
+        cursor.execute("INSERT INTO people (name, phone) VALUES (?, ?)", (name_input, phone_input))
+        # 4. Save (commit) the changes
+        conn.commit()
+        print(f"Success: Added {name_input} to the database.")
+    else:
+        print(f"Note: {name_input} already exists in the database.")
 
     # 5. Retrieve and display data
     cursor.execute("SELECT * FROM people")
     all_contacts = cursor.fetchall()
 
-    print("--- Contact List ---")
+    print("\n--- Current Contact List ---")
     for contact in all_contacts:
         print(f"ID: {contact[0]} | Name: {contact[1]} | Phone: {contact[2]}")
 
     # 6. Always close the connection when finished
     conn.close()
+    print("\nDatabase connection closed.")
     ```
 
 ## Checkpoints

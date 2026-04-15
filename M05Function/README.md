@@ -70,7 +70,7 @@ print(f"You owe: ${final_price}")
 ## Guided Practice
 
 * Step 1: Define the function and parameters  
-  Let's create a function called `calculate_parking_fee` that requires one piece of information to work: the number of hours a car was parked. We will set this up using the `def` keyword and add `hours` as our parameter.
+  Let's create a function called `calculate_parking_fee` that requires one piece of information to work: the number of hours a car was parked. We will create a new file named `parking.py` and set this up using the `def` keyword and add `hours` as our parameter.
   ```python
   def calculate_parking_fee(hours):
       # We will add our pricing logic here
@@ -99,10 +99,10 @@ print(f"You owe: ${final_price}")
       if user_input.lower() == 'q':
           break
 
-      hours = int(user_input)
-      customer_fee = calculate_parking_fee(hours)
+      input_hours = int(user_input)
+      customer_fee = calculate_parking_fee(input_hours)
 
-      print(f"You parked for {hours} hours.")
+      print(f"You parked for {input_hours} hours.")
       print(f"Your total parking fee is: ${customer_fee}")
       print()
   ```

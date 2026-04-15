@@ -52,16 +52,22 @@ In a real-world project, you often need to handle dates beyond simple formatting
     from datetime import datetime
     from dateutil.relativedelta import relativedelta
 
-    # Define a project deadline
     deadline_str = "2026-12-31 23:59:59"
     deadline = datetime.strptime(deadline_str, "%Y-%m-%d %H:%M:%S")
+
     now = datetime.now()
 
-    # Calculate difference
     diff = relativedelta(deadline, now)
 
-    print(f"Time remaining until deadline ({deadline_str}):")
-    print(f"{diff.months} months, {diff.days} days, and {diff.hours} hours.")
+    print("--- Project Deadline Tracker ---")
+    print(f"Target Date: {deadline_str}")
+    print(f"Current Date: {now.strftime('%Y-%m-%d %H:%M:%S')}")
+    print("-" * 32)
+
+    if deadline > now:
+        print(f"Time remaining: {diff.years} years, {diff.months} months, {diff.days} days, {diff.hours} hours.")
+    else:
+        print("The deadline has already passed!")
     ```
 
 ## Checkpoints

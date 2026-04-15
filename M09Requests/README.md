@@ -38,26 +38,27 @@ We will use a free service called **JSONPlaceholder** to fetch a list of "To-Do"
     ```python
     import requests
 
-    # The URL of the API endpoint
     url = "https://jsonplaceholder.typicode.com/todos"
 
-    # Make the GET request
     try:
-        response = requests.get(url)
+        response = requests.get(url, timeout=5)
 
-        # Check if the request was successful
         if response.status_code == 200:
             todos = response.json()
             
-            print("--- Your Top 5 Tasks ---")
-            # Loop through the first 5 items
+            print(f"Successfully fetched {len(todos)} items!")
+            print("-" * 30)
+
             for task in todos[:5]:
                 status = "[✓]" if task['completed'] else "[ ]"
                 print(f"{status} {task['title']}")
         else:
-            print(f"Failed to fetch data. Error code: {response.status_code}")
+            print(f"Error: API returned status code {response.status_code}")
+
+    except requests.exceptions.ConnectionError:
+        print("Error: Could not connect to the internet.")
     except Exception as e:
-        print(f"An error occurred: {e}")
+        print(f"An unexpected error occurred: {e}")
     ```
 
 ## Checkpoints

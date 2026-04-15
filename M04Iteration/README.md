@@ -44,19 +44,6 @@ for i in range(5):
     print(f"Iteration number: {i}")
 ```
 
-### The `for` Loop and `range()`
-
-A `for` loop is used when you know *exactly how many times* you want to repeat a task, or when you want to go through a specific sequence of items one by one.
-
-The `range()` function is often used with `for` loops to generate a sequence of numbers. By default, `range(5)` generates numbers from 0 up to (but not including) 5.
-
-```python
-# This will print 0, 1, 2, 3, 4
-for i in range(5):
-    print(f"Iteration number: {i}")
-
-```
-
 ### The `while` Loop
 
 A `while` loop is used when you want to repeat a task *until a certain condition changes*. It works similarly to an `if` statement, but instead of executing the code block just once, it keeps repeating it as long as the condition remains `True`.

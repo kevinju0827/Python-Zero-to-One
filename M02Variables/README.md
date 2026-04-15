@@ -92,7 +92,8 @@ print(f"Next year, you will be {age_number + 1}.")
   Calculate the BMI and store it in a variable.
 * Step 3: Format the output  
   Update your `dynamic_bmi.py` script to output a clean sentence using an f-string.  
-  For example: `print(f"Your BMI is {bmi}")`.  
+  For example: `print(f"Your BMI is {bmi:.2f}")`.  
+  (The `:.2f` inside the curly braces tells Python to show only 2 decimal places.)  
   Run the script and enter different numbers to see how the variables handle changing data.
 
 ## Checkpoints

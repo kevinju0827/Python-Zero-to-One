@@ -36,19 +36,30 @@ We will write a "Ghost Writer" script that opens the Windows Notepad app (or any
     import pyautogui
     import time
 
-    # Give yourself 3 seconds to switch to your text editor!
-    print("Automation starting in 3 seconds... Switch to Notepad or a text editor!")
-    time.sleep(3)
+    # 1. Safety First! 
+    # Move mouse to any corner to abort the script
+    pyautogui.FAILSAFE = True
+    # Add a slight pause between every PyAutoGUI command
+    pyautogui.PAUSE = 0.5
 
-    # 1. Type a message slowly (interval makes it look like a human is typing)
+    print("--- Ghost Writer Bot ---")
+    print("Switch to your text editor (Notepad, etc.) now!")
+
+    # 2. Give the user a countdown to switch apps
+    for i in range(5, 0, -1):
+        print(f"Starting in {i}...")
+        time.sleep(1)
+
+    # 3. Type a message slowly (interval makes it look like a human is typing)
     message = "Hello! This message was typed automatically by a Python script."
     pyautogui.write(message, interval=0.1) 
 
-    # 2. Press Enter to go to a new line
+    # 4. Press Enter to go to a new line
     pyautogui.press('enter')
 
-    # 3. Type another line
-    pyautogui.write("Desktop automation with PyAutoGUI is amazing!", interval=0.1)
+    # 5. Type another line
+    pyautogui.write("Desktop automation with PyAutoGUI is amazing!", interval=0.05)
+    pyautogui.press('enter')
 
     print("Task Complete.")
     ```

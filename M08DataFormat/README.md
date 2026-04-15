@@ -34,28 +34,36 @@ In this practice, we will act as a bridge between an old spreadsheet-based inven
     3,Keyboard,75,20
     ```
 
-*   **Step 2: Write the conversion script**
-    Create a file named `inventory_converter_example.py`:
+*   **Step 2: Create `inventory_converter.py`**
     ```python
     import csv
     import json
+    import os
+
+    # 1. Ensure we are in the script's directory
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
     inventory = []
 
-    # 1. Read from CSV
-    with open('inventory.csv', mode='r', encoding='utf-8') as csv_file:
-        reader = csv.DictReader(csv_file)
-        for row in reader:
-            # Convert numeric strings to actual numbers
-            row['price'] = float(row['price'])
-            row['quantity'] = int(row['quantity'])
-            inventory.append(row)
+    # 2. Read from CSV
+    try:
+        with open('inventory.csv', mode='r', encoding='utf-8') as csv_file:
+            reader = csv.DictReader(csv_file)
+            for row in reader:
+                # Convert numeric strings to actual numbers
+                row['price'] = float(row['price'])
+                row['quantity'] = int(row['quantity'])
+                inventory.append(row)
 
-    # 2. Write to JSON
-    with open('inventory.json', mode='w', encoding='utf-8') as json_file:
-        json.dump(inventory, json_file, indent=4)
+        # 3. Write to JSON
+        with open('inventory.json', mode='w', encoding='utf-8') as json_file:
+            json.dump(inventory, json_file, indent=4)
 
-    print("Successfully converted inventory.csv to inventory.json!")
+        print("Successfully converted inventory.csv to inventory.json!")
+        print(f"Total items processed: {len(inventory)}")
+
+    except FileNotFoundError:
+        print("Error: 'inventory.csv' not found. Please create it first.")
     ```
 
 ## Checkpoints

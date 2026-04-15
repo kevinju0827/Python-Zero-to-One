@@ -50,14 +50,24 @@ We will build a **Digital Menu API** for a coffee shop. When someone visits our 
         if item_id in menu:
             return menu[item_id]
         return {"error": "Item not found"}
+
+    # Run the server directly (Alternative to CLI)
+    if __name__ == "__main__":
+        import uvicorn
+        uvicorn.run(app, host="127.0.0.1", port=8000)
     ```
 
 *   **Step 3: Run the server**
-    In your terminal, run:
+    In your terminal, you can run:
     ```bash
     uvicorn coffee_api_example:app --reload
     ```
+    OR simply run the script with Python:
+    ```bash
+    python coffee_api_example.py
+    ```
     Open your browser to `http://127.0.0.1:8000/docs` to see the interactive documentation.
+    To see the actual data, visit `http://127.0.0.1:8000/items/1`.
 
 ## Checkpoints
 
