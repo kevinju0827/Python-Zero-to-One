@@ -74,7 +74,3 @@ In a real-world project, you often need to handle dates beyond simple formatting
 
 * [ ] **The "Batteries Included" Challenge**:
     Use the standard `os` module to list all files in your current directory. Then use the `platform` module to print your computer's operating system name.
-* [ ] **Package Isolation**:
-    Create a new virtual environment named `test_env`. Install a package called `cowsay`. Run a script that uses it, then deactivate the environment and try to run the script again to see what happens.
-* [ ] **Dependencies List**:
-    Run `pip freeze > requirements.txt` in your activated environment. Open the file and see how it records the specific versions of packages you installed. This is how professional teams share project requirements.
