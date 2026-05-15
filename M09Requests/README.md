@@ -2,69 +2,369 @@
 
 ## The "Why?"
 
-The modern world is built on **APIs** (Application Programming Interfaces). Whether you are checking the weather on your phone, logging into a website with Google, or fetching the latest stock prices, your device is making a "request" to a server. The `requests` library is the most popular way for Python to talk to the internet, allowing you to fetch live data from around the globe in just a few lines of code.
+Every modern application talks to the outside world. When your phone's weather app displays today's forecast, when you log into a website, or when a payment system checks your bank balance—all of that communication happens over the internet through a standardized system called **HTTP**. Until now, your Python scripts have only been able to read and write files that already exist on your computer. In this module, you will learn how to reach beyond your machine and pull live data from anywhere on the web, turning your scripts into true networked applications.
+
+Python's built-in tools are powerful, but they are deliberately low-level. The third-party **`requests`** library was built to make HTTP feel natural and readable in Python. It is one of the most downloaded Python packages in history for a reason: it turns what used to require dozens of lines of complex networking code into just one or two clean, expressive lines.
 
 ## Goals
 
-Learn how to make HTTP GET requests, check response status codes to ensure success, and parse JSON data received from a web server.
+By the end of this module, you should be able to:
+
+* Explain what HTTP is and describe the roles of requests and responses in client-server communication.
+* Identify the most common HTTP methods (`GET`, `POST`, `PUT`, `PATCH`, `DELETE`) and describe when each one is appropriate.
+* Explain what an HTTP status code is and what the major categories (2xx, 4xx, 5xx) mean.
+* Install and import the `requests` library and use it to send HTTP requests from a Python script.
+* Access the response status code, headers, raw text, and parsed JSON data from a response object.
+* Pass query parameters and a JSON body in a request.
+* Write defensive code that checks for errors before trusting a response.
 
 ## Core Concepts
 
-Before we start pulling data from the internet, let's understand the key components of web requests.
+### How the Internet Communicates: The HTTP Protocol
 
-### APIs and Endpoints
-If a restaurant is a server, the **API (Application Programming Interface)** is the menu. It tells you what data is available to order. An **Endpoint** is the specific URL for a particular item on that menu. For example, `https://api.example.com/users` might be the endpoint to get a list of users, while `https://api.example.com/weather` gives you the weather.
+Before writing a single line of `requests` code, it is worth understanding the underlying system it relies on.
 
-### HTTP GET Requests
-A "GET" request is exactly what your web browser does when you type in a URL and press Enter. You are sending a message to a server saying, "Please *get* the information at this address and send it back to me."
+**HTTP** stands for **HyperText Transfer Protocol**. It is the agreed-upon set of rules that governs how two computers exchange information over the web. Think of it as the "language" that your browser and a remote server both agree to speak.
 
-### Status Codes
-Whenever you make a request, the server always replies with a 3-digit status code. This is a quick way to know if your request succeeded before you even look at the data:
-* **200 OK**: Perfect! The server understood the request and is returning the data.
-* **401 / 403 Forbidden**: You don't have permission to view this data (often requires an API key or login).
-* **404 Not Found**: The endpoint or resource you are looking for does not exist.
-* **500 Internal Server Error**: The server is broken or crashed on their end.
+The communication always follows a simple pattern:
 
-### The Response Object
-When the server answers your request, Python packages everything into a `Response` object. You can extract different things from it:
-* `response.status_code`: Gives you the 3-digit number.
-* `response.text`: Returns the raw data as a giant, plain text string.
-* `response.json()`: If the server sends back JSON data (which is the most common), this magical method instantly parses it and converts it directly into a highly usable Python Dictionary or List!
+1. **The Client sends a Request.** Your browser, your script, or a mobile app is the *client*. It initiates the conversation by sending a structured message to a server, saying: "I want to *do something* with *this resource*."
+2. **The Server sends a Response.** The *server* receives the request, processes it, and sends back a structured reply: "Here is the result of what you asked for."
+
+This request-response cycle is the foundation of virtually all web communication.
+
+#### Anatomy of an HTTP Request
+
+Every HTTP request carries three key pieces of information:
+
+* **Method**: A verb that tells the server *what action* you want to perform on the resource. The most common methods are:
+
+  | Method   | Meaning                                     | Real-World Analogy                     |
+  |----------|---------------------------------------------|----------------------------------------|
+  | `GET`    | Retrieve data; do not change anything       | Reading a page in a book               |
+  | `POST`   | Submit new data to be created on the server | Filling out and submitting a form      |
+  | `PUT`    | Replace an existing resource entirely       | Overwriting a saved file               |
+  | `PATCH`  | Partially update an existing resource       | Crossing out one line and rewriting it |
+  | `DELETE` | Remove a resource                           | Tearing a page out of a book           |
+
+* **URL (Uniform Resource Locator)**: The address that identifies *which resource* you are acting on. For example, `https://api.example.com/users/42` points to the user with ID 42.
+
+* **Headers**: Optional metadata attached to the request. Think of them as a cover letter accompanying your main message. Common headers include `Content-Type` (telling the server what format your data is in) and `Authorization` (proving who you are with a token or key).
+
+* **Body** (optional): The actual data payload, used mainly with `POST`, `PUT`, and `PATCH` requests. For example, when creating a new user, the body contains the new user's name and email.
+
+#### Anatomy of an HTTP Response
+
+The server's reply is equally structured:
+
+* **Status Code**: A three-digit number that immediately tells you whether the request succeeded or failed. The number categories are:
+
+  | Range | Category     | Meaning                                                                                                         |
+  |-------|--------------|-----------------------------------------------------------------------------------------------------------------|
+  | 2xx   | Success      | Everything worked. `200 OK` is the most common.                                                                 |
+  | 3xx   | Redirection  | The resource has moved; follow the new address.                                                                 |
+  | 4xx   | Client Error | *You* made a mistake. `404 Not Found` means the URL doesn't exist; `401 Unauthorized` means you need to log in. |
+  | 5xx   | Server Error | The *server* had a problem. `500 Internal Server Error` is the most common.                                     |
+
+* **Headers**: Metadata from the server, such as `Content-Type: application/json` which tells you the format of the data being returned.
+
+* **Body**: The actual content of the response—often HTML (for webpages) or JSON (for APIs).
+
+#### What is a REST API?
+
+You will frequently hear the term **REST API** (or RESTful API). REST is a popular design style for building web services that follow a clean set of conventions:
+
+* Resources are represented as URLs (e.g., `/users`, `/products/5`).
+* HTTP methods carry meaning (`GET` to read, `POST` to create, etc.).
+* Responses are typically in JSON format.
+
+When a service follows these conventions, any client (your Python script, a browser, or a mobile app) can interact with it in a predictable way. Most of the services you will interact with in this module—and in the real world—are REST APIs.
+
+---
+
+### Installing and Using the `requests` Library
+
+Unlike `csv` and `json` from M08, `requests` is **not** part of Python's standard library. You need to install it once before you can use it.
+
+Open your terminal and run:
+
+```bash
+pip install requests
+```
+
+After installation, you can import it in any script:
+
+```python
+import requests
+```
+
+---
+
+### Sending a GET Request
+
+`GET` is the most fundamental operation—fetching data without changing anything. In `requests`, it is a single function call:
+
+```python
+import requests
+
+response = requests.get('https://jsonplaceholder.typicode.com/posts/1')
+
+print(response.status_code)  # 200
+print(response.text)         # Raw response body as a plain string
+print(response.json())       # Parsed directly into a Python dictionary
+```
+
+The `response` object is the heart of the library. It holds everything the server sent back. The three attributes above are the ones you will use most often:
+
+* `response.status_code` — the HTTP status code (integer).
+* `response.text` — the response body as a raw string.
+* `response.json()` — a convenience method that calls `json.loads()` on `response.text` for you, returning a Python dictionary or list.
+
+#### Adding Query Parameters
+
+Many APIs let you filter or customize results by appending parameters to the URL. Instead of manually building ugly strings like `?userId=1&_limit=5`, you can pass a clean Python dictionary to the `params` argument:
+
+```python
+import requests
+
+# Equivalent to: GET https://jsonplaceholder.typicode.com/posts?userId=1&_limit=3
+params = {'userId': 1, '_limit': 3}
+response = requests.get('https://jsonplaceholder.typicode.com/posts', params=params)
+
+posts = response.json()
+for post in posts:
+    print(post['title'])
+```
+
+---
+
+### Sending a POST Request
+
+Use `POST` to send new data to a server and ask it to create a new resource. The data you want to send goes in the `json` argument as a Python dictionary. The `requests` library will automatically serialize it to JSON and set the correct `Content-Type` header for you.
+
+```python
+import requests
+
+new_post = {
+    'title': 'My First API Post',
+    'body': 'This was sent from a Python script!',
+    'userId': 1
+}
+
+response = requests.post(
+    'https://jsonplaceholder.typicode.com/posts',
+    json=new_post
+)
+
+print(response.status_code)  # 201 Created
+print(response.json())       # The server echoes back the created resource
+```
+
+> **`json=` vs `data=`**: Always prefer `json=` when sending structured data to a REST API. Using `data=` sends form-encoded data (like an old HTML form), which most modern APIs do not expect.
+
+---
+
+### Sending PUT and PATCH Requests
+
+Both `PUT` and `PATCH` are used to update existing resources. The key difference is scope:
+
+* **`PUT`**: Replaces the entire resource. You must send *all* fields, even the ones you are not changing.
+* **`PATCH`**: Updates only the fields you specify. Everything else on the server stays the same.
+
+```python
+import requests
+
+# PUT: Replace the entire post
+response_put = requests.put(
+    'https://jsonplaceholder.typicode.com/posts/1',
+    json={'id': 1, 'title': 'Updated Title', 'body': 'Updated body.', 'userId': 1}
+)
+print(response_put.status_code)  # 200 OK
+
+# PATCH: Only update the title
+response_patch = requests.patch(
+    'https://jsonplaceholder.typicode.com/posts/1',
+    json={'title': 'Just the Title Changed'}
+)
+print(response_patch.status_code)  # 200 OK
+```
+
+---
+
+### Sending a DELETE Request
+
+Use `DELETE` to ask the server to remove a resource. The response body is usually empty or a simple confirmation.
+
+```python
+import requests
+
+response = requests.delete('https://jsonplaceholder.typicode.com/posts/1')
+print(response.status_code)  # 200 OK (or 204 No Content on some APIs)
+```
+
+---
+
+### Sending Request Headers
+
+Some APIs require additional metadata in the request headers. The most common use case is authentication—proving your identity with an API key or token. You pass headers as a Python dictionary using the `headers` argument:
+
+```python
+import requests
+
+headers = {
+    'Authorization': 'Bearer YOUR_API_TOKEN_HERE',
+    'Accept': 'application/json'
+}
+
+response = requests.get('https://api.example.com/private-data', headers=headers)
+```
+
+> **Security Warning**: Never hardcode real API tokens or passwords directly in your source code, especially if you plan to share it or push it to GitHub. A common practice is to load secrets from environment variables instead.
+
+---
+
+### Error Handling: Writing Defensive Code
+
+A network call can fail for many reasons: the server is down, the URL is wrong, your internet connection drops, or the API returns an error code. Good Python scripts anticipate these failures and handle them gracefully rather than crashing.
+
+**Method 1: Check the status code manually**
+
+The simplest approach is to inspect `response.status_code` yourself and react accordingly.
+
+```python
+import requests
+
+response = requests.get('https://jsonplaceholder.typicode.com/posts/99999')
+
+if response.status_code == 200:
+    print(response.json())
+elif response.status_code == 404:
+    print('Error: The requested resource was not found.')
+else:
+    print(f'Unexpected error. Status code: {response.status_code}')
+```
+
+**Method 2: Use `raise_for_status()`**
+
+The `requests` library provides a built-in shortcut: calling `response.raise_for_status()` will automatically raise a `requests.exceptions.HTTPError` exception if the status code is 4xx or 5xx. This lets you write clean `try/except` blocks without manually checking every possible error code.
+
+```python
+import requests
+
+try:
+    response = requests.get('https://jsonplaceholder.typicode.com/posts/1')
+    response.raise_for_status()  # Raises an exception for 4xx/5xx responses
+    data = response.json()
+    print(data['title'])
+except requests.exceptions.HTTPError as http_err:
+    print(f'HTTP error occurred: {http_err}')
+except requests.exceptions.ConnectionError:
+    print('Could not connect to the server. Check your internet connection.')
+except requests.exceptions.Timeout:
+    print('The request timed out. The server took too long to respond.')
+except requests.exceptions.RequestException as err:
+    print(f'An unexpected error occurred: {err}')
+```
+
+Using `raise_for_status()` combined with a `try/except` block is considered best practice for any production-quality script.
+
+---
 
 ## Guided Practice
 
-Imagine we are developing a terminal interface for a task management application. We need to fetch a user's to-do list from a server. For this practice, we will use **JSONPlaceholder**, a free API service that provides fake data for developers to test their code.
+In this practice, we will build three small, self-contained scripts that progressively introduce real-world scenarios. Each one focuses on a different aspect of working with `requests`.
 
-Our goal is to write a Python script that connects to this API, verifies a successful connection, parses the JSON data into a Python list, and then displays the first 5 tasks along with a summary of how many tasks are completed versus pending.
+### Practice 1: Exploring a REST API with JSONPlaceholder
 
-### Step 1: Setting up the Tools and Target
-First, we must import the `requests` library. 
-Next, we define our target **Endpoint URL**: `https://jsonplaceholder.typicode.com/todos`. 
-This is the specific "menu item" on the server that contains the list of tasks.
+**Scenario**: You are a developer learning a new API. Before writing any logic, it is common to explore the API interactively—fetching a single resource, listing multiple resources, and simulating a creation workflow to understand what the server expects and returns.
 
-### Step 2: Making the Request and Handling Network Errors
-Internet connections are unpredictable. 
-Therefore, we wrap our request in a `try-except` block. 
-We use `requests.get()` to fetch the data and include a `timeout=10` parameter. 
-This is a best practice that tells Python, "If the server doesn't respond within 10 seconds, stop trying." 
-We also prepare to catch specific errors like `ConnectionError` (no internet) or `Timeout`.
+**Step 1: Fetch a single post**
 
-### Step 3: Verifying the Status and Parsing Data
-Once we receive a response, we check the `status_code`. 
-If it is `200`, the request was successful. We then call the `.json()` method. 
-This instantly transforms the raw JSON text from the web into a standard Python **List**, where each item is a **Dictionary** representing a single task.
+Start by making a `GET` request for one specific post. Inspect the shape of the data the server returns. Pay attention to the keys in the dictionary.
 
-### Step 4: Data Extraction and Statistics
-Now that the data is in a usable Python format (let's call it `todos`):
-1. Calculate Statistics: To provide a summary, we count the total number of tasks using `len()`. Then, we can use a loop or a "generator expression" to count how many tasks have their `'completed'` status set to `True`. Finally, we subtract the completed count from the total to find the number of pending tasks.
-2. Display Top 5: We use a `for` loop with a slice (`todos[:5]`) to iterate through the first five items. By checking the `'completed'` key (which is a Boolean `True` or `False`), we can print a visual status like `[✓]` or `[ ]` next to the task title.
+**Step 2: Fetch all posts by a specific user**
+
+Use the `params` argument to filter results. Ask for only the posts written by `userId` 1. Loop through the results and print each post's `id` and `title` on one line.
+
+**Step 3: Simulate creating a new post**
+
+Send a `POST` request with a new post payload. Check that the server responds with status code `201` and prints the newly created resource (including the server-assigned `id`) back to you.
+
+**Step 4: Simulate deleting the post**
+
+Use the `id` from the response in Step 3 to build a `DELETE` request URL. Confirm that the server returns `200` to indicate the deletion was accepted.
+
+---
+
+### Practice 2: Fetching Live Data from a Public REST API
+
+**Service**: [Frankfurter](https://www.frankfurter.app/) — a free, open-source currency exchange rate API that requires no API key or registration.
+
+**Scenario**: You are building a simple currency converter tool. The business team needs to know the current exchange rates from USD to a set of target currencies so they can generate daily financial reports.
+
+**Step 1: Read the API documentation**
+
+Before writing any code, visit `https://www.frankfurter.app/` and inspect the endpoint structure. Notice that `https://api.frankfurter.app/latest?from=USD` returns the latest rates from USD to all available currencies.
+
+**Step 2: Make the request with query parameters**
+
+Use the `params` argument to specify `from=USD` and `to=EUR,JPY,TWD`. This tells the API to return only the three currencies you care about, keeping the response small and focused.
+
+**Step 3: Parse and display the results**
+
+Call `.raise_for_status()` first. Then extract the `rates` dictionary from the JSON response and print a clean formatted report, like:
+
+```
+Exchange rates from USD (as of 2025-01-15):
+  EUR: 0.9234
+  JPY: 155.21
+  TWD: 32.85
+```
+
+**Step 4: Calculate a conversion**
+
+Ask the user (via `input()`) to enter an amount in USD. Multiply that amount by each rate and print what it converts to in each currency.
+
+---
+
+### Practice 3: Fetching Content from a Regular Webpage
+
+Not everything on the internet is a JSON API. Sometimes you need to fetch the raw HTML content of a webpage—the first step in web scraping. The `requests` library handles this identically to API calls; the difference is in what comes back.
+
+**Service**: [Books to Scrape](https://books.toscrape.com/) — a safe, legal, purpose-built website designed specifically for practicing web scraping.
+
+> **Important note**: `requests` only fetches the raw HTML text. To actually *parse* and extract structured data from HTML (like a book title or price), you would use an additional library called `BeautifulSoup`, which is the topic of the next module. In this practice, we are only focused on the fetching step.
+
+**Step 1: Send a GET request to the homepage**
+
+Make a `GET` request to `https://books.toscrape.com/`. Use `raise_for_status()` to confirm the server responded successfully.
+
+**Step 2: Inspect the response**
+
+Print `response.status_code`, `response.headers['Content-Type']`, and the first 500 characters of `response.text`.
+
+Notice how `Content-Type` is `text/html` instead of `application/json`. This is how you can tell whether you are talking to a webpage or an API.
+
+**Step 3: Compare with a JSON API**
+
+In a comment block at the bottom of your script, write a short answer to this question: *"Looking at `response.text`, why would it be difficult to extract just the list of book titles using only string methods? What kind of tool would make this easier?"* This reflection sets up the motivation for M10.
+
+---
 
 ## Checkpoints
 
-* [ ] **Interactive Pokédex**:
-    Let's catch some data! The "PokéAPI" is a famous, free API used by developers to practice web requests. 
-    Write an interactive script that uses `input()` to ask the user for a Pokémon's name (e.g., "squirtle" or "snorlax"). 
-    Dynamically append their input to the base URL: `https://pokeapi.co/api/v2/pokemon/`. 
-    Send a GET request to this dynamically generated URL. 
-    If the request is successful (Status 200), parse the JSON response to extract and print that specific Pokémon's `height` and `weight`. 
-    If the user types a name that does not exist, the API will return a 404 status code—use an `if/else` statement to catch this and print a friendly "Pokémon not found!" message instead of crashing the program.
+* [ ] **Live Earthquake Report**:
+      Taiwan's government publishes real-time earthquake data through its open data platform.
+      The endpoint `https://opendata.cwa.gov.tw/api/v1/rest/datastore/E-A0015-001` provides recent significant earthquake records.
+
+      > To use this API, you will need a free authorization token.
+      > Visit [CWA Open Data](https://opendata.cwa.gov.tw/userLogin) and register for a free account to obtain your personal `Authorization` key.
+      > Once you have it, pass it as a query parameter: `params={'Authorization': 'YOUR_KEY_HERE'}`.
+
+      Write a script that:
+      1. Fetches the latest earthquake records from the API.
+      2. Extracts and loops through the list of earthquake events.
+      3. For each earthquake, prints a formatted summary including: the earthquake's **location name**, its **magnitude**, its **depth** (in km), and the **date and time** it occurred.
+      4. After printing all events, prints one final line showing the **strongest earthquake** in the current response (the one with the highest magnitude).
+
+      *(Hint: Wrap your request in a `try/except` block using `raise_for_status()`. Inspect the raw JSON response structure carefully before writing your loop—the actual earthquake list is often nested several levels deep inside the response dictionary.)*
