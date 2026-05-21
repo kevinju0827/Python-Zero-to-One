@@ -12,10 +12,6 @@
 #
 # The requests library works identically in both cases.
 # What changes is what comes back and how we interpret it.
-#
-# NOTE: In this practice, we only FETCH the HTML. We do NOT parse it.
-# Parsing HTML to extract specific data (like titles and prices) requires
-# a library called BeautifulSoup — that is the topic of M10.
 # =============================================================================
 
 import requests
@@ -120,7 +116,7 @@ print()
 
 
 # =============================================================================
-# STEP 5: Reflection — why do we need BeautifulSoup?
+# STEP 5: The struggle of using plain string methods
 # =============================================================================
 # Try to find the word "Tipping the Velvet" (one of the book titles on the
 # homepage) inside the raw HTML using a plain Python string method.
@@ -136,7 +132,7 @@ if search_term in html:
     # Find the character position of the title in the HTML string
     position = html.find(search_term)
 
-    # Show 200 characters of context around it — notice how messy the HTML tags are
+    # Show 250 characters of context around it — notice how messy the HTML tags are
     surrounding_html = html[position - 100 : position + 150]
     print(f'Found "{search_term}" at character position {position}.')
     print()
@@ -149,35 +145,36 @@ else:
 
 print()
 
+
 # =============================================================================
-# REFLECTION (read this comment block carefully):
-#
-# Q: Why would it be difficult to extract just the list of book titles
-#    using only string methods like .find() or .split()?
-#
-# A: HTML is a deeply nested, tag-based format. Even though we *found*
-#    the title text, it is buried inside layers of tags like:
-#
-#      <article class="product_pod">
-#        <h3><a href="..." title="Tipping the Velvet">Tipping the ...</a></h3>
-#        ...
-#      </article>
-#
-#    To extract *all* titles, we would need to:
-#      - Handle inconsistent whitespace and newlines
-#      - Navigate through parent and sibling tags
-#      - Deal with truncated text (the <a> tag shows a short version)
-#      - Handle any edge cases in the HTML structure
-#
-#    String methods become brittle and hard to maintain very quickly.
-#    A proper HTML parser like BeautifulSoup understands the tree structure
-#    of the document and lets us say things like:
-#
-#      soup.find_all('article', class_='product_pod')
-#
-#    ...which is precise, readable, and robust. That is exactly what M10
-#    will teach you.
+# STEP 6: The Better Way — Using BeautifulSoup
+# =============================================================================
+# String methods break as soon as HTML structure changes or scales.
+# A proper parser like BeautifulSoup understands the tree structure of the
+# document, making data extraction precise and robust.
 # =============================================================================
 
-print('Reflection printed in the source code as a comment block.')
-print('Open this .py file and read the comment at the bottom of Step 5.')
+print('STEP 6: Extracting data with BeautifulSoup')
+print(DIVIDER)
+
+try:
+    from bs4 import BeautifulSoup
+except ImportError:
+    print('BeautifulSoup is not installed. Please run: pip install beautifulsoup4')
+    exit()
+
+# 1. Parse the raw HTML string into a BeautifulSoup object
+soup = BeautifulSoup(response.text, 'html.parser')
+
+# 2. Find all <article> tags with the class 'product_pod'
+articles = soup.find_all('article', class_='product_pod')
+
+print(f'Found {len(articles)} books on the page using BeautifulSoup. Here are all the titles:\n')
+
+# 3. Loop through the articles and extract the title attribute from the <a> tag
+for index, article in enumerate(articles, start=1):
+    # The structure is: <article> -> <h3> -> <a title="The Title">
+    title = article.h3.a['title']
+    print(f'{index:>2}. {title}')
+
+print()
