@@ -140,22 +140,157 @@ cursor.execute(
 
 ## Guided Practice
 
-We will build the data layer for a small **personal expense tracker**—the kind of tool a freelancer might use to record purchases, answer the accountant's questions, and fix typos a week after the fact. One script will walk through every CRUD operation in sequence so you see how the pieces connect.
+At the very top of your file, we need to import Python's built-in database module and ensure that our database file is always created in the exact same directory as our script.
 
-**Scenario**: You just signed your first freelance contract and want to start tracking deductible business expenses. By the end of the script, you should be able to (1) create a table, (2) seed sample data on first run, (3) answer three real questions the accountant might ask, and (4) safely fix a row and delete an accidental duplicate.
+```python
+import os
+import sqlite3
 
-**Step 1: Set up the connection and table.** Use `sqlite3.connect("expenses.db")` to open (or create) the database. Run `CREATE TABLE IF NOT EXISTS expenses (...)` with these columns: `id` (auto-incrementing primary key), `spent_on` (ISO date text), `category`, `description`, and `amount` (REAL, NOT NULL).
+# Ensure expenses.db is kept next to this script regardless of where Python is launched from
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-**Step 2: Seed the database only on the first run.** Check `SELECT COUNT(*) FROM expenses` first. If the table is empty, `executemany()` a list of five sample rows that span at least two months and three categories. Always use `?` placeholders—never f-string user data into SQL.
+```
 
-**Step 3: Answer three realistic questions with SQL.**
-1. *"What software did I buy in March?"* — `WHERE category = ? AND spent_on LIKE ?` with `'2026-03-%'`.
-2. *"What is my Q1 transport total?"* — use SQL's `SUM()` aggregate with `BETWEEN ? AND ?`.
-3. *"What was my single biggest expense this year?"* — `ORDER BY amount DESC LIMIT 1`.
+## Step 1: Establish Connection and Create Table (Create)
 
-**Step 4: Fix a mistake, then remove a duplicate.** Insert two rows that simulate the problem, then run `UPDATE expenses SET category = ? WHERE id = ?` on the first, and `DELETE FROM expenses WHERE id = ?` on the second. Always `commit()` at the end—without it, none of your changes are saved.
+We will now build a bridge to our database and define the layout of our spreadsheet-like table.
+Append this code to your file:
 
-The full implementation is in `expense_tracker_example.py`. Read it section by section and run it twice: the first run seeds data, the second confirms persistence.
+```python
+# 1. Connect to the database (creates the file if it's missing)
+conn = sqlite3.connect("expenses.db")
+cursor = conn.cursor()  # Get our database assistant
+
+# 2. Define the database table layout
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS expenses (
+        id           INTEGER PRIMARY KEY AUTOINCREMENT, -- A unique ID automatically handled by SQLite
+        spent_on     TEXT NOT NULL,    -- Date format 'YYYY-MM-DD' so it sorts correctly
+        category     TEXT NOT NULL,    -- Expense category (e.g., software, transport)
+        description  TEXT,             -- Optional notes
+        amount       REAL NOT NULL     -- Cost as a decimal/floating point number
+    )
+""")
+print("Step 1 Complete: Database and table are ready!")
+
+```
+
+---
+
+## Step 2: Safely Seed Initial Data (Insert)
+
+Now that the table exists, let's populate it with some initial mock expenses for a freelancer.
+```python
+# Sample records spanning multiple dates and categories
+sample_rows = [
+    ("2026-01-12", "software",  "Adobe subscription",     19.99),
+    ("2026-01-22", "transport", "Taxi to client meeting", 18.50),
+    ("2026-02-05", "meal",      "Coffee with prospect",    7.20),
+    ("2026-03-03", "software",  "JetBrains licence",      89.00),
+    ("2026-03-18", "transport", "Train ticket — Tainan",  35.40),
+]
+
+# Check if data already exists so we don't duplicate rows every time we run the script
+existing = cursor.execute("SELECT COUNT(*) FROM expenses").fetchone()[0]
+
+if existing == 0:
+    # Use executemany to safely insert multiple rows via '?' placeholders
+    cursor.executemany(
+        "INSERT INTO expenses (spent_on, category, description, amount) VALUES (?, ?, ?, ?)",
+        sample_rows,
+    )
+    conn.commit() # 🌟 CRITICAL: Save changes to the disk!
+    print(f"Step 2 Complete: Seeded {len(sample_rows)} initial sample rows.\n")
+else:
+    print(f"Step 2 Notice: Database already contains {existing} rows — skipping seed.\n")
+
+```
+
+---
+
+## Step 3: Extract Answers From Your Data (Select)
+
+Let's act like an accountant and query our database to answer three realistic business questions.
+```python
+print("=== Step 3: Querying the Database ===")
+
+# Question 1: What software did I buy in March?
+print("--- 1. March 2026 Software Expenses ---")
+for date, description, amount in cursor.execute(
+        "SELECT spent_on, description, amount FROM expenses "
+        "WHERE category = ? AND spent_on LIKE ? ORDER BY spent_on",
+        ("software", "2026-03-%"), # Maps directly to the '?' marks
+):
+    print(f"   Date: {date} | Item: {description:<20} | Amount: ${amount:>7.2f}")
+
+
+# Question 2: What is my Q1 transport total?
+total = cursor.execute(
+    "SELECT SUM(amount) FROM expenses WHERE category = ? AND spent_on BETWEEN ? AND ?",
+    ("transport", "2026-01-01", "2026-03-31"),
+).fetchone()[0] or 0.0 # fetchone()[0] gets the single aggregated number
+
+print(f"\n--- 2. Q1 Transport Total ---")
+print(f"   Total Spend: ${total:.2f}")
+
+
+# Question 3: What was my single biggest expense this year?
+# Sort by amount descending (highest to lowest) and restrict results to 1 row
+biggest = cursor.execute(
+    "SELECT spent_on, category, description, amount FROM expenses "
+    "WHERE spent_on LIKE ? ORDER BY amount DESC LIMIT 1",
+    ("2026-%",), # 🌟 Remember the trailing comma!
+).fetchone()
+
+print(f"\n--- 3. Biggest Expense of the Year ---")
+if biggest:
+    date, category, description, amount = biggest
+    print(f"   Top Expense: {date} [{category}] {description} (${amount:.2f})\n")
+
+```
+
+---
+
+## Step 4: Fix Mistakes and Clean Up (Update & Delete)
+
+Typos happen. Suppose we accidentally logged a "ChatGPT Subscription" twice, and we accidentally assigned it to the `meal` category instead of `software`. Here is how we remedy both issues.
+
+```python
+print("=== Step 4: Fixing Mistakes and Duplicates ===")
+
+# Let's intentionally insert a miscategorized item and a duplicate entry to demonstrate the fix
+cursor.execute("INSERT INTO expenses (spent_on, category, description, amount) VALUES (?, ?, ?, ?)",
+               ("2026-05-10", "meal", "ChatGPT Plus subscription", 20.00))
+wrong_id = cursor.lastrowid # Grabs the unique ID assigned to this newly created row
+
+cursor.execute("INSERT INTO expenses (spent_on, category, description, amount) VALUES (?, ?, ?, ?)",
+               ("2026-05-10", "meal", "ChatGPT Plus subscription", 20.00))
+duplicate_id = cursor.lastrowid
+
+# Action A: Fix the wrong category on our first entry by targeted ID
+print(f" Fixing row #{wrong_id} (Changing category from 'meal' to 'software')...")
+cursor.execute("UPDATE expenses SET category = ? WHERE id = ?", ("software", wrong_id))
+
+# Action B: Purge the duplicate row entirely
+print(f" Removing duplicate entry row #{duplicate_id}...")
+cursor.execute("DELETE FROM expenses WHERE id = ?", (duplicate_id,))
+
+# Commit all changes made in Step 4 and cleanly close the communication bridge
+conn.commit()
+conn.close()
+
+print("\n🎉 Mission Accomplished! Your database script is complete and safely disconnected.")
+
+```
+
+---
+
+## How to Verify Your Script Works
+
+1. **Run the script the 1st time**:
+Your console will output: `Seeded 5 initial sample rows.`, display the answers to the 3 analytical questions, and confirm the modification/deletion cycle.
+2. **Run the script a 2nd time**:
+You will notice the output changes to: `Database already contains X rows — skipping seed.`. This is solid proof that SQLite successfully preserved your data inside the persistent `expenses.db` file on your drive.
 
 ---
 
