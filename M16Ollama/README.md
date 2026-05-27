@@ -1,11 +1,11 @@
-# M16 Local AI (Ollama)
+﻿# M16 Local AI (Ollama)
 
-![Module 16 of 17](https://img.shields.io/badge/Module-16_of_17-6366f1?style=flat-square)
+![Module 16 of 16](https://img.shields.io/badge/Module-16_of_16-6366f1?style=flat-square)
 ![Intermediate](https://img.shields.io/badge/Difficulty-Intermediate-facc15?style=flat-square)
 ![1.5 hours](https://img.shields.io/badge/Time-1.5_hours-60a5fa?style=flat-square)
-![Prerequisites: M01–M15](https://img.shields.io/badge/Prerequisites-M01–M15-94a3b8?style=flat-square)
+![Prerequisites: M01?15](https://img.shields.io/badge/Prerequisites-M01?15-94a3b8?style=flat-square)
 
-**Topics covered:** local LLMs · Ollama setup · calling the API with `requests` · streaming vs. non-streaming · prompt engineering · defensive error handling · integrating AI into automation pipelines
+**Topics covered:** local LLMs 繚 Ollama setup 繚 calling the API with `requests` 繚 streaming vs. non-streaming 繚 prompt engineering 繚 defensive error handling 繚 integrating AI into automation pipelines
 
 ## The Why?
 
@@ -13,7 +13,7 @@ Throughout this course you have used cloud AI (Gemini, ChatGPT) as a collaborato
 
 - **Privacy:** pasting customer emails, medical records, or legal documents into a cloud service may violate laws or contracts.
 - **Cost:** every API call costs money. A script classifying 100,000 support tickets per day adds up fast.
-- **Reliability:** cloud APIs go down, change pricing, or deprecate the model your code depends on — sometimes overnight.
+- **Reliability:** cloud APIs go down, change pricing, or deprecate the model your code depends on ??sometimes overnight.
 
 **Ollama** solves all three. It runs Large Language Models (Llama 3, Mistral, Gemma, Phi, and many others) entirely on your machine. The model file lives on your disk, inference happens on your CPU/GPU, and zero data leaves your machine. The cost is zero. The service cannot disappear because *you* are the service.
 
@@ -27,13 +27,13 @@ In this module, you will combine everything you learned about `requests` (M11) w
 
 A Large Language Model is a program that, given some text, predicts what text is most likely to come next. That prediction is informed by hundreds of billions of words the model was trained on, so the "most likely continuation" of a prompt like:
 
-> *"Summarize this email in one polite sentence: …"*
+> *"Summarize this email in one polite sentence: ??*
 
 turns out to be a genuinely useful summary.
 
 What matters for practical use:
-- The model is a **function**: text in → text out.
-- The same prompt may produce slightly different outputs each run — LLMs are non-deterministic.
+- The model is a **function**: text in ??text out.
+- The same prompt may produce slightly different outputs each run ??LLMs are non-deterministic.
 - Output quality is largely determined by prompt quality.
 
 ---
@@ -51,7 +51,7 @@ What matters for practical use:
    ```
    Type a question and press Enter. You should see the model responding.
 
-Once installed, Ollama runs in the background as a local HTTP server at `http://localhost:11434` — the same kind of API you called in M11.
+Once installed, Ollama runs in the background as a local HTTP server at `http://localhost:11434` ??the same kind of API you called in M11.
 
 ---
 
@@ -75,7 +75,7 @@ response.raise_for_status()
 print(response.json()["response"])
 ```
 
-The key you almost always need is `"response"` — the model's text output.
+The key you almost always need is `"response"` ??the model's text output.
 
 ---
 
@@ -86,11 +86,11 @@ The key you almost always need is `"response"` — the model's text output.
 | `"stream": False` | Wait for full response, receive one JSON object | Scripts, batch jobs |
 | `"stream": True` | Receive chunks as they are generated (word by word) | Interactive chat UIs |
 
-For learning and automation scripts, use `stream: False` — simpler to handle.
+For learning and automation scripts, use `stream: False` ??simpler to handle.
 
 ---
 
-### Prompt Engineering — Three Rules That Cover 80% of Cases
+### Prompt Engineering ??Three Rules That Cover 80% of Cases
 
 **1. Give the model a role:**
 
@@ -122,7 +122,7 @@ Category:
 
 ---
 
-### Defensive Calls — When Ollama Is Not Running
+### Defensive Calls ??When Ollama Is Not Running
 
 ```python
 def ask_llm(prompt: str) -> str:
@@ -220,11 +220,11 @@ This is the architecture of a real data-enrichment pipeline.
 
 ## Guided Practice
 
-We will build a **polite-email rewriter** — the kind of internal tool a customer-success team would use daily. It takes a blunt draft and returns a warmer, clearer version without any data leaving the machine.
+We will build a **polite-email rewriter** ??the kind of internal tool a customer-success team would use daily. It takes a blunt draft and returns a warmer, clearer version without any data leaving the machine.
 
 **Scenario:** A colleague writes technically correct but cold emails. We want a tool that polishes the tone automatically.
 
-### Step 1 — Write the prompt
+### Step 1 ??Write the prompt
 
 Create `email_polisher_example.py`. The prompt defines the model's role and output format:
 
@@ -234,7 +234,7 @@ Rewrite the following email to be polite, warm, and professional.
 Return ONLY the rewritten email body. No subject line. No commentary."""
 ```
 
-### Step 2 — Build the rewrite function
+### Step 2 ??Build the rewrite function
 
 ```python
 import requests
@@ -255,7 +255,7 @@ def polish_email(draft: str) -> str:
         return "[Error] Model took too long. Try a shorter email."
 ```
 
-### Step 3 — Test with contrasting drafts
+### Step 3 ??Test with contrasting drafts
 
 ```python
 drafts = [
@@ -271,7 +271,7 @@ for draft in drafts:
     print()
 ```
 
-### Step 4 — Compare the outputs
+### Step 4 ??Compare the outputs
 
 Run the script. Compare how the model changed tone while preserving meaning. Notice how the role instruction (`"customer-success specialist"`) and the format instruction (`"Return ONLY the rewritten email"`) guide the output. Try removing them and see how the output changes.
 
@@ -280,16 +280,16 @@ Run the script. Compare how the model changed tone while preserving meaning. Not
 ## Checkpoints
 
 * [ ] **Customer Ticket Triage**
-  Create a `tickets.txt` with at least 8 lines — one ticket subject per line, mixing billing problems, password resets, feature requests, and spam.
+  Create a `tickets.txt` with at least 8 lines ??one ticket subject per line, mixing billing problems, password resets, feature requests, and spam.
   For each line, use few-shot prompting to ask the LLM to classify it as: `billing`, `account`, `feature_request`, or `other`.
-  Print a summary: `"Processed 8 tickets — billing: 3, account: 2, feature_request: 1, other: 2"`
+  Print a summary: `"Processed 8 tickets ??billing: 3, account: 2, feature_request: 1, other: 2"`
   *(Hint: use `collections.Counter` to tally the categories.)*
 
 * [ ] **Local Code Reviewer**
   Build a script that reads a Python file (path from `input()`).
   Send the file contents to the LLM with a prompt asking for the top 3 concrete improvements, referencing specific function names or line numbers.
   Print the review.
-  Try it on your M10 or M12 script — evaluate whether the suggestions are useful.
+  Try it on your M10 or M12 script ??evaluate whether the suggestions are useful.
 
 * [ ] **Daily News Digest with Sentiment**
   Combine M11 + M12 + M15 + M16.

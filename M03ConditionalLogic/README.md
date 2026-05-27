@@ -1,11 +1,11 @@
-# M03 Conditional Logic
+﻿# M03 Conditional Logic
 
-![Module 3 of 17](https://img.shields.io/badge/Module-3_of_17-6366f1?style=flat-square)
+![Module 3 of 16](https://img.shields.io/badge/Module-3_of_16-6366f1?style=flat-square)
 ![Beginner](https://img.shields.io/badge/Difficulty-Beginner-4ade80?style=flat-square)
 ![~1 hour](https://img.shields.io/badge/Time-~1_hour-60a5fa?style=flat-square)
-![Prerequisites: M01–M02](https://img.shields.io/badge/Prerequisites-M01–M02-94a3b8?style=flat-square)
+![Prerequisites: M01?02](https://img.shields.io/badge/Prerequisites-M01?02-94a3b8?style=flat-square)
 
-**Topics covered:** comparison operators · `if` / `elif` / `else` · logical operators (`and`, `or`, `not`) · Boolean expressions · nested conditions
+**Topics covered:** comparison operators 繚 `if` / `elif` / `else` 繚 logical operators (`and`, `or`, `not`) 繚 Boolean expressions 繚 nested conditions
 
 ## The Why?
 
@@ -16,7 +16,7 @@ A login screen only grants access *if* the password is correct.
 A store only applies a discount *if* the cart total exceeds a threshold.
 An alarm only fires *if* the temperature drops below freezing.
 
-**Conditional logic** gives your program the ability to make decisions — to follow different paths depending on the state of your data. Without it, a script can only ever do the same thing. With it, your scripts become genuinely intelligent.
+**Conditional logic** gives your program the ability to make decisions ??to follow different paths depending on the state of your data. Without it, a script can only ever do the same thing. With it, your scripts become genuinely intelligent.
 
 ---
 
@@ -52,7 +52,7 @@ else:
     do this if nothing above matched
 ```
 
-Python uses **indentation** (4 spaces) to mark which code belongs inside a block. This is not optional — inconsistent indentation causes errors.
+Python uses **indentation** (4 spaces) to mark which code belongs inside a block. This is not optional ??inconsistent indentation causes errors.
 
 ```python
 age = 20
@@ -85,7 +85,7 @@ Python checks each condition **top to bottom** and runs only the first matching 
 
 Combine multiple conditions with `and`, `or`, and `not`:
 
-| Operator | Returns `True` when… | Example |
+| Operator | Returns `True` when??| Example |
 |----------|---------------------|---------|
 | `and` | **Both** conditions are true | `age >= 13 and age < 18` |
 | `or` | **At least one** condition is true | `score >= 90 or bonus_points >= 5` |
@@ -107,7 +107,7 @@ else:
 
 ### Checking String Values
 
-Conditions work on strings too — and string comparisons are **case-sensitive**:
+Conditions work on strings too ??and string comparisons are **case-sensitive**:
 
 ```python
 answer = input("Continue? (yes/no): ")
@@ -118,7 +118,7 @@ else:
     print("Stopping.")
 ```
 
-Calling `.lower()` before comparing avoids the case-sensitivity problem — `"YES"`, `"Yes"`, and `"yes"` all become `"yes"`.
+Calling `.lower()` before comparing avoids the case-sensitivity problem ??`"YES"`, `"Yes"`, and `"yes"` all become `"yes"`.
 
 ---
 
@@ -141,7 +141,7 @@ else:
     label = "Fail"
 ```
 
-Use it when the logic is simple enough to read in one line — avoid it when the condition is complex.
+Use it when the logic is simple enough to read in one line ??avoid it when the condition is complex.
 
 </details>
 
@@ -154,7 +154,7 @@ Python lets you chain comparisons naturally, like math notation:
 # Standard
 if 18 <= age and age < 65:
 
-# Chained — reads exactly like math
+# Chained ??reads exactly like math
 if 18 <= age < 65:
 ```
 
@@ -209,8 +209,8 @@ match command:
 <summary>AI Prompting for Conditional Logic</summary>
 
 Describe the business rules clearly:
-- ❌ "Add some conditions to my script"
-- ✅ "Add conditions: if score ≥ 90 → Grade A, 80–89 → B, 70–79 → C, below 70 → F. Use elif so only one branch runs."
+- ??"Add some conditions to my script"
+- ??"Add conditions: if score ??90 ??Grade A, 80??9 ??B, 70??9 ??C, below 70 ??F. Use elif so only one branch runs."
 
 </details>
 
@@ -218,18 +218,18 @@ Describe the business rules clearly:
 
 ## Guided Practice
 
-We will build a **weather advisor** — a script that recommends what to wear based on the temperature the user inputs.
+We will build a **weather advisor** ??a script that recommends what to wear based on the temperature the user inputs.
 
-### Step 1 — Create the file and collect input
+### Step 1 ??Create the file and collect input
 
 Create `weather_example.py`. Ask the user for the current temperature and convert it to a float:
 
 ```python
-temp_str = input("Enter the current temperature (°C): ")
+temp_str = input("Enter the current temperature (簞C): ")
 temperature = float(temp_str)
 ```
 
-### Step 2 — Add basic conditions
+### Step 2 ??Add basic conditions
 
 Add `if / elif / else` to cover three temperature ranges:
 
@@ -246,7 +246,7 @@ else:
 
 Run the script and test it with `35`, `25`, `15`, and `5`.
 
-### Step 3 — Add a logical condition
+### Step 3 ??Add a logical condition
 
 Add a check for rain. Ask the user whether it is raining:
 
@@ -259,9 +259,9 @@ Now extend the logic to combine temperature and rain:
 
 ```python
 if temperature > 30 and is_raining:
-    print("Hot and raining — light clothes and an umbrella!")
+    print("Hot and raining ??light clothes and an umbrella!")
 elif temperature > 30:
-    print("Hot and sunny — sunscreen recommended.")
+    print("Hot and sunny ??sunscreen recommended.")
 elif temperature >= 20 and not is_raining:
     print("Perfect weather for a walk.")
 elif is_raining:
@@ -277,18 +277,18 @@ Test all combinations: hot+rain, hot+no-rain, mild+rain, cold+no-rain.
 ## Checkpoints
 
 * [ ] **Grading System**
-  Ask the user for a test score (0–100).
-  Print the letter grade: A (≥90), B (80–89), C (70–79), D (60–69), F (<60).
+  Ask the user for a test score (0??00).
+  Print the letter grade: A (??0), B (80??9), C (70??9), D (60??9), F (<60).
   Also print whether the student passed (grade is D or above) or failed.
   *(Bonus: what should happen if the user enters 105 or -3? Add a validation check.)*
 
 * [ ] **Smart BMI Advisor**
   Extend the BMI calculator from M02.
   After calculating BMI, use conditional logic to print:
-  - Underweight (<18.5) — "Consider consulting a nutritionist."
-  - Normal (18.5–24.9) — "Great! Your BMI is in the healthy range."
-  - Overweight (25–29.9) — "Consider increasing physical activity."
-  - Obese (≥30) — "Please consult a healthcare professional."
+  - Underweight (<18.5) ??"Consider consulting a nutritionist."
+  - Normal (18.5??4.9) ??"Great! Your BMI is in the healthy range."
+  - Overweight (25??9.9) ??"Consider increasing physical activity."
+  - Obese (??0) ??"Please consult a healthcare professional."
 
 * [ ] **ATM Transaction Simulator**
   Set an account balance and a daily withdrawal limit (e.g., `balance = 5000`, `limit = 10000`).
@@ -297,5 +297,5 @@ Test all combinations: hot+rain, hot+no-rain, mild+rain, cold+no-rain.
   - Amount must be a positive number
   - Cannot exceed the account balance
   - Cannot exceed the daily withdrawal limit
-  - If all checks pass: print "Transaction approved. New balance: ¥X"
+  - If all checks pass: print "Transaction approved. New balance: 瞼X"
   *(Hint: use `and` to combine multiple conditions in a single `if` statement.)*

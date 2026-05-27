@@ -1,17 +1,17 @@
-# M12 Database
+﻿# M12 Database
 
-![Module 12 of 17](https://img.shields.io/badge/Module-12_of_17-6366f1?style=flat-square)
+![Module 12 of 16](https://img.shields.io/badge/Module-12_of_16-6366f1?style=flat-square)
 ![Intermediate](https://img.shields.io/badge/Difficulty-Intermediate-facc15?style=flat-square)
 ![~2 hours](https://img.shields.io/badge/Time-~2_hours-60a5fa?style=flat-square)
-![Prerequisites: M01–M11](https://img.shields.io/badge/Prerequisites-M01–M11-94a3b8?style=flat-square)
+![Prerequisites: M01?11](https://img.shields.io/badge/Prerequisites-M01?11-94a3b8?style=flat-square)
 
-**Topics covered:** why databases beat flat files · SQLite · `sqlite3` module · SQL CRUD · parameterized queries · `commit()` · `WHERE` / `ORDER BY` / `LIMIT` · aggregate functions
+**Topics covered:** why databases beat flat files 繚 SQLite 繚 `sqlite3` module 繚 SQL CRUD 繚 parameterized queries 繚 `commit()` 繚 `WHERE` / `ORDER BY` / `LIMIT` 繚 aggregate functions
 
 ## The Why?
 
 In M10, you learned to save data to CSV and JSON files.
 That works well when your data is small and you only read it from top to bottom.
-But the moment your data grows — an online store with 500,000 orders, a contact app shared between multiple users — plain files start breaking down:
+But the moment your data grows ??an online store with 500,000 orders, a contact app shared between multiple users ??plain files start breaking down:
 
 - **Searching is slow:** finding "all orders by Alice in March" means loading the entire file into memory and scanning every row.
 - **No type safety:** CSV files happily store `"abc"` in a column that should be a price.
@@ -37,7 +37,7 @@ Three guarantees a database provides that a CSV file cannot:
 
 ---
 
-### SQL — The Language of Databases
+### SQL ??The Language of Databases
 
 SQL (Structured Query Language) is how you talk to a database.
 The four core operations are called **CRUD**:
@@ -83,23 +83,23 @@ conn.close()                             # Always close when done
 
 ---
 
-### Parameterized Queries — Non-Negotiable Safety
+### Parameterized Queries ??Non-Negotiable Safety
 
-**Never** build SQL by concatenating user input. This creates an **SQL injection** vulnerability — an attacker can type crafted text that deletes your entire database.
+**Never** build SQL by concatenating user input. This creates an **SQL injection** vulnerability ??an attacker can type crafted text that deletes your entire database.
 
 ```python
-# DANGEROUS — never do this:
+# DANGEROUS ??never do this:
 cursor.execute(f"SELECT * FROM contacts WHERE name = '{name}'")
 
-# SAFE — always use ? placeholders:
+# SAFE ??always use ? placeholders:
 cursor.execute("SELECT * FROM contacts WHERE name = ?", (name,))
 ```
 
-The trailing comma in `(name,)` is required — even for a single value, it must be a tuple.
+The trailing comma in `(name,)` is required ??even for a single value, it must be a tuple.
 
 ---
 
-### `commit()` — Saving Changes
+### `commit()` ??Saving Changes
 
 `INSERT`, `UPDATE`, and `DELETE` are staged in memory until you call `conn.commit()`.
 Without it, changes disappear when the script exits.
@@ -114,13 +114,13 @@ conn.commit()   # Without this, Alice is NOT saved
 ### Filtering and Shaping Results
 
 ```python
-# WHERE — filter rows
+# WHERE ??filter rows
 cursor.execute("SELECT * FROM contacts WHERE group = ?", ("work",))
 
-# ORDER BY — sort results
+# ORDER BY ??sort results
 cursor.execute("SELECT * FROM contacts ORDER BY name ASC")
 
-# LIMIT — return at most N rows
+# LIMIT ??return at most N rows
 cursor.execute("SELECT * FROM contacts ORDER BY name ASC LIMIT 10")
 
 # Aggregate functions
@@ -132,7 +132,7 @@ cursor.execute("SELECT COUNT(*), AVG(rating) FROM books WHERE genre = ?", ("fict
 ## Going Further
 
 <details>
-<summary>`row_factory` — Dict-Like Rows</summary>
+<summary>`row_factory` ??Dict-Like Rows</summary>
 
 By default, `fetchall()` returns tuples. Set `row_factory` for dict-like access:
 
@@ -158,7 +158,7 @@ with sqlite3.connect("mydata.db") as conn:
 </details>
 
 <details>
-<summary>Indexes — Making Queries Fast</summary>
+<summary>Indexes ??Making Queries Fast</summary>
 
 Without an index, every `WHERE` clause scans the entire table. Create one for frequently-queried columns:
 
@@ -188,7 +188,7 @@ WHERE orders.amount > 100
 
 We will build an **expense tracker** that demonstrates all four CRUD operations on a SQLite database.
 
-### Step 1 — Setup and table creation
+### Step 1 ??Setup and table creation
 
 Create `expense_tracker_example.py`:
 
@@ -213,7 +213,7 @@ cursor.execute("""
 print("Database ready.")
 ```
 
-### Step 2 — Seed initial data (INSERT)
+### Step 2 ??Seed initial data (INSERT)
 
 ```python
 sample_rows = [
@@ -221,7 +221,7 @@ sample_rows = [
     ("2026-01-22", "transport", "Taxi to client meeting",   18.50),
     ("2026-02-05", "meal",      "Coffee with prospect",      7.20),
     ("2026-03-03", "software",  "JetBrains licence",        89.00),
-    ("2026-03-18", "transport", "Train ticket — Tainan",    35.40),
+    ("2026-03-18", "transport", "Train ticket ??Tainan",    35.40),
 ]
 
 existing = cursor.execute("SELECT COUNT(*) FROM expenses").fetchone()[0]
@@ -233,10 +233,10 @@ if existing == 0:
     conn.commit()
     print(f"Seeded {len(sample_rows)} rows.")
 else:
-    print(f"Database already has {existing} rows — skipping seed.")
+    print(f"Database already has {existing} rows ??skipping seed.")
 ```
 
-### Step 3 — Query data (SELECT)
+### Step 3 ??Query data (SELECT)
 
 ```python
 print("\n--- Software expenses in March ---")
@@ -253,7 +253,7 @@ total = cursor.execute(
 print(f"\n--- Total transport spend: ${total:.2f} ---")
 ```
 
-### Step 4 — Fix a mistake (UPDATE and DELETE)
+### Step 4 ??Fix a mistake (UPDATE and DELETE)
 
 ```python
 # Insert a miscategorized row
@@ -286,7 +286,7 @@ print("\nDone. Run the script again to confirm data persisted.")
 ## Checkpoints
 
 * [ ] **Personal Reading Log**
-  Create a `books` table: `id`, `title`, `author`, `genre`, `finished_on`, `rating` (1–5).
+  Create a `books` table: `id`, `title`, `author`, `genre`, `finished_on`, `rating` (1??).
   On first run, create the table and insert at least four sample books.
   Then ask the user to enter a new book they just finished and insert it.
   Print all books read this year, sorted highest-rated first.
@@ -297,7 +297,7 @@ print("\nDone. Run the script again to confirm data persisted.")
   A bookstore owner needs a stock manager. Build a terminal menu with options:
   1. Add a new product
   2. Sell a product (decrease stock by 1, refuse if already 0)
-  3. Show low-stock report (stock ≤ 5)
+  3. Show low-stock report (stock ??5)
   4. Quit
   Use a `while True` loop and wrap database operations in `try/except` for robustness.
 
@@ -305,5 +305,5 @@ print("\nDone. Run the script again to confirm data persisted.")
   Combine `datetime` (M09) with SQLite. Each row records a date when the user marked a habit "done."
   On each run, ask which habit they completed today.
   Refuse to insert a duplicate for the same habit on the same day.
-  Calculate and print the **current streak** — consecutive days ending today with that habit logged.
+  Calculate and print the **current streak** ??consecutive days ending today with that habit logged.
   *(Hint: fetch dates in descending order and walk backwards using `timedelta(days=1)` until a gap appears.)*

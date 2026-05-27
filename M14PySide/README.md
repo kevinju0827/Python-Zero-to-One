@@ -1,20 +1,20 @@
-# M14 GUI Development (PySide6)
+﻿# M14 GUI Development (PySide6)
 
-![Module 14 of 17](https://img.shields.io/badge/Module-14_of_17-6366f1?style=flat-square)
+![Module 14 of 16](https://img.shields.io/badge/Module-14_of_16-6366f1?style=flat-square)
 ![Intermediate](https://img.shields.io/badge/Difficulty-Intermediate-facc15?style=flat-square)
 ![~2 hours](https://img.shields.io/badge/Time-~2_hours-60a5fa?style=flat-square)
-![Prerequisites: M01–M13](https://img.shields.io/badge/Prerequisites-M01–M13-94a3b8?style=flat-square)
+![Prerequisites: M01?13](https://img.shields.io/badge/Prerequisites-M01?13-94a3b8?style=flat-square)
 
-**Topics covered:** PySide6 · `QApplication` · widgets · layouts · signals & slots · input validation · `QMessageBox` · combining GUI with SQLite and AI
+**Topics covered:** PySide6 繚 `QApplication` 繚 widgets 繚 layouts 繚 signals & slots 繚 input validation 繚 `QMessageBox` 繚 combining GUI with SQLite and AI
 
 ## The Why?
 
 Every script you have built so far runs in a terminal.
-That is fine for you — but hand any of those scripts to a friend, a manager, or your grandmother, and the first question will be: *"Why do I have to type commands? Where are the buttons?"*
+That is fine for you ??but hand any of those scripts to a friend, a manager, or your grandmother, and the first question will be: *"Why do I have to type commands? Where are the buttons?"*
 
-A **Graphical User Interface (GUI)** — windows, buttons, text boxes, menus — is how non-programmers expect software to behave. **PySide6** is the official Python binding for **Qt**, the C++ framework behind professional applications like VLC, OBS Studio, Telegram Desktop, and Anaconda Navigator.
+A **Graphical User Interface (GUI)** ??windows, buttons, text boxes, menus ??is how non-programmers expect software to behave. **PySide6** is the official Python binding for **Qt**, the C++ framework behind professional applications like VLC, OBS Studio, Telegram Desktop, and Anaconda Navigator.
 
-The transformation matters because it changes who can use your work. The expense tracker from M12, the AI rewriter from M16, the website monitor from M15 — each of them stops being "a script" and starts being "a tool" the moment it has a window with buttons.
+The transformation matters because it changes who can use your work. The expense tracker from M12, the AI rewriter from M16, the website monitor from M15 ??each of them stops being "a script" and starts being "a tool" the moment it has a window with buttons.
 
 ---
 
@@ -33,11 +33,11 @@ window.show()                      # 3. Make it visible
 sys.exit(app.exec())               # 4. Hand control to Qt's event loop
 ```
 
-`app.exec()` starts the **event loop** — Qt's infinite loop that listens for clicks, key presses, and OS messages. Your program "lives" inside this loop until the user closes the window.
+`app.exec()` starts the **event loop** ??Qt's infinite loop that listens for clicks, key presses, and OS messages. Your program "lives" inside this loop until the user closes the window.
 
 ---
 
-### Widgets — The Visual Building Blocks
+### Widgets ??The Visual Building Blocks
 
 A widget is any visible element. Common ones:
 
@@ -47,7 +47,7 @@ A widget is any visible element. Common ones:
 | `QPushButton` | Clickable button | Triggering actions |
 | `QLineEdit` | Single-line text input | Names, numbers, search |
 | `QTextEdit` | Multi-line text input | Notes, long-form input |
-| `QSpinBox` | Number input with ▲▼ | Quantities, ratings |
+| `QSpinBox` | Number input with ?聆 | Quantities, ratings |
 | `QComboBox` | Drop-down list | Pick one from many |
 | `QCheckBox` | Toggle checkbox | Yes/No options |
 
@@ -55,25 +55,25 @@ A widget is any visible element. Common ones:
 from PySide6.QtWidgets import QLabel, QPushButton, QLineEdit
 
 name_input  = QLineEdit()
-name_input.setPlaceholderText("Enter your name…")
+name_input.setPlaceholderText("Enter your name??)
 
 submit_btn  = QPushButton("Submit")
-result_label = QLabel("Waiting for input…")
+result_label = QLabel("Waiting for input??)
 ```
 
 ---
 
-### Layouts — Arranging Widgets Responsively
+### Layouts ??Arranging Widgets Responsively
 
-Never place widgets at absolute pixel coordinates — the layout breaks on different screen sizes.
+Never place widgets at absolute pixel coordinates ??the layout breaks on different screen sizes.
 Use layout managers instead:
 
 | Layout | Behavior |
 |--------|----------|
-| `QVBoxLayout` | Stack vertically (top → bottom) |
-| `QHBoxLayout` | Arrange horizontally (left → right) |
+| `QVBoxLayout` | Stack vertically (top ??bottom) |
+| `QHBoxLayout` | Arrange horizontally (left ??right) |
 | `QFormLayout` | Two columns: label on left, field on right |
-| `QGridLayout` | 2D grid — specify row and column |
+| `QGridLayout` | 2D grid ??specify row and column |
 
 ```python
 from PySide6.QtWidgets import QVBoxLayout
@@ -89,7 +89,7 @@ Nest layouts freely: a `QHBoxLayout` of buttons can live inside a `QVBoxLayout` 
 
 ---
 
-### Signals and Slots — How Widgets Talk to Your Code
+### Signals and Slots ??How Widgets Talk to Your Code
 
 A **signal** is something a widget emits when something happens (clicked, text changed, window closed).
 A **slot** is a Python function connected to a signal.
@@ -108,8 +108,8 @@ submit_btn.clicked.connect(on_submit)
 
 Common signals:
 - `QPushButton.clicked`
-- `QLineEdit.textChanged` — fires on every keystroke
-- `QLineEdit.returnPressed` — fires when the user presses Enter
+- `QLineEdit.textChanged` ??fires on every keystroke
+- `QLineEdit.returnPressed` ??fires when the user presses Enter
 - `QComboBox.currentIndexChanged`
 
 ---
@@ -126,7 +126,7 @@ Common signals:
 
 ---
 
-### `QMessageBox` — Pop-up Dialogs
+### `QMessageBox` ??Pop-up Dialogs
 
 ```python
 from PySide6.QtWidgets import QMessageBox
@@ -144,9 +144,9 @@ if reply == QMessageBox.StandardButton.Yes:
 ## Going Further
 
 <details>
-<summary>`QTimer` — Non-Blocking Timers</summary>
+<summary>`QTimer` ??Non-Blocking Timers</summary>
 
-Never use `time.sleep()` in a GUI — it freezes the entire interface.
+Never use `time.sleep()` in a GUI ??it freezes the entire interface.
 Use `QTimer` instead:
 
 ```python
@@ -160,14 +160,14 @@ timer.start(1000)   # Call update_display() every 1000 ms
 </details>
 
 <details>
-<summary>`QThread` — Background Work Without Freezing</summary>
+<summary>`QThread` ??Background Work Without Freezing</summary>
 
 For long-running operations (API calls, file processing), run them in a `QThread` so the UI stays responsive. This is the right way to integrate Ollama (M16) calls into a GUI.
 
 </details>
 
 <details>
-<summary>Stylesheets — CSS for Qt Widgets</summary>
+<summary>Stylesheets ??CSS for Qt Widgets</summary>
 
 ```python
 window.setStyleSheet("""
@@ -201,14 +201,14 @@ def save_record():
 </details>
 
 <details>
-<summary>`QListWidget` — Displaying a List</summary>
+<summary>`QListWidget` ??Displaying a List</summary>
 
 ```python
 from PySide6.QtWidgets import QListWidget
 
 list_widget = QListWidget()
-list_widget.addItem("Alice — 0912-111-222")
-list_widget.addItem("Bob — 0923-333-444")
+list_widget.addItem("Alice ??0912-111-222")
+list_widget.addItem("Bob ??0923-333-444")
 ```
 
 </details>
@@ -217,19 +217,19 @@ list_widget.addItem("Bob — 0923-333-444")
 
 ## Guided Practice
 
-We will build a **tip calculator** — a tiny desktop app a restaurant could actually use.
+We will build a **tip calculator** ??a tiny desktop app a restaurant could actually use.
 
 **Scenario:** A friend managing a small restaurant wants wait staff to be able to calculate tips quickly, without typing commands in a terminal.
 
-### Step 1 — Plan the layout
+### Step 1 ??Plan the layout
 
 We need:
 - `QLineEdit` for the bill amount
-- `QSpinBox` for tip percentage (default 15%, range 0–30%)
+- `QSpinBox` for tip percentage (default 15%, range 0??0%)
 - `QPushButton` to calculate
 - `QLabel` to show results
 
-### Step 2 — Create the app skeleton
+### Step 2 ??Create the app skeleton
 
 Create `tip_calculator_example.py`:
 
@@ -246,7 +246,7 @@ window.setWindowTitle("Tip Calculator")
 window.setFixedSize(320, 200)
 ```
 
-### Step 3 — Add widgets and layout
+### Step 3 ??Add widgets and layout
 
 ```python
 bill_input  = QLineEdit()
@@ -258,7 +258,7 @@ tip_spin.setValue(15)
 tip_spin.setSuffix(" %")
 
 calc_btn    = QPushButton("Calculate")
-result_label = QLabel("Tip: —\nTotal: —")
+result_label = QLabel("Tip: ?nTotal: ??)
 
 layout = QFormLayout()
 layout.addRow("Bill Amount ($):", bill_input)
@@ -268,7 +268,7 @@ layout.addRow(result_label)
 window.setLayout(layout)
 ```
 
-### Step 4 — Wire the button
+### Step 4 ??Wire the button
 
 ```python
 def compute_tip():
@@ -286,14 +286,14 @@ def compute_tip():
 calc_btn.clicked.connect(compute_tip)
 ```
 
-### Step 5 — Launch and test the failure path
+### Step 5 ??Launch and test the failure path
 
 ```python
 window.show()
 sys.exit(app.exec())
 ```
 
-Run the script. Type `"abc"` in the bill field and click Calculate — a clean warning dialog should appear instead of a crash. **This is the moment your script becomes real software.**
+Run the script. Type `"abc"` in the bill field and click Calculate ??a clean warning dialog should appear instead of a crash. **This is the moment your script becomes real software.**
 
 ---
 
@@ -312,7 +312,7 @@ Run the script. Type `"abc"` in the bill field and click Calculate — a clean w
   1. A `QTextEdit` for the rough draft.
   2. A "Polish" `QPushButton`.
   3. A second `QTextEdit` (read-only) for the polished output.
-  4. A status `QLabel` showing "Idle" / "Polishing…" / "Done in X seconds".
+  4. A status `QLabel` showing "Idle" / "Polishing?? / "Done in X seconds".
   Disable the button while the model is running (re-enable after the response arrives).
 
 * [ ] **Personal Bookmark Manager**

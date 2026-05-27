@@ -1,11 +1,11 @@
-# M06 Functions
+﻿# M06 Functions
 
-![Module 6 of 17](https://img.shields.io/badge/Module-6_of_17-6366f1?style=flat-square)
+![Module 6 of 16](https://img.shields.io/badge/Module-6_of_16-6366f1?style=flat-square)
 ![Beginner](https://img.shields.io/badge/Difficulty-Beginner-4ade80?style=flat-square)
 ![1.5 hours](https://img.shields.io/badge/Time-1.5_hours-60a5fa?style=flat-square)
-![Prerequisites: M01–M05](https://img.shields.io/badge/Prerequisites-M01–M05-94a3b8?style=flat-square)
+![Prerequisites: M01?05](https://img.shields.io/badge/Prerequisites-M01?05-94a3b8?style=flat-square)
 
-**Topics covered:** `def` · parameters · return values · default arguments · variable scope · DRY principle
+**Topics covered:** `def` 繚 parameters 繚 return values 繚 default arguments 繚 variable scope 繚 DRY principle
 
 ## The Why?
 
@@ -13,9 +13,9 @@ As your scripts grow, you will find yourself copy-pasting the same logic in mult
 This creates a hidden trap: when you need to fix a bug or update a formula, you must find and change it everywhere it was pasted. Miss one, and you have a silent inconsistency.
 
 **Functions** solve this by letting you package a block of code, give it a name, and reuse it anywhere.
-This principle has a name in software development: **DRY — Don't Repeat Yourself**.
+This principle has a name in software development: **DRY ??Don't Repeat Yourself**.
 
-Functions also improve readability. A script that calls `calculate_total()`, `apply_discount()`, and `format_receipt()` is far easier to understand than one with all that logic inlined. AI assistants structure code this way by default — being able to read and modify function-based code is essential.
+Functions also improve readability. A script that calls `calculate_total()`, `apply_discount()`, and `format_receipt()` is far easier to understand than one with all that logic inlined. AI assistants structure code this way by default ??being able to read and modify function-based code is essential.
 
 ---
 
@@ -37,7 +37,7 @@ def say_hello():
     print("Hello! Welcome.")
 
 say_hello()   # Call it
-say_hello()   # Call it again — same code, no duplication
+say_hello()   # Call it again ??same code, no duplication
 ```
 
 **Important:** defining a function does *not* run its code. The code only runs when you *call* the function.
@@ -87,7 +87,7 @@ final_price = calculate_total(100, 0.05)
 print(f"You owe: ${final_price:.2f}")   # You owe: $105.00
 ```
 
-Once Python hits `return`, the function **immediately stops** — any code after it is not executed.
+Once Python hits `return`, the function **immediately stops** ??any code after it is not executed.
 
 ---
 
@@ -109,7 +109,7 @@ Parameters with defaults must come *after* parameters without defaults.
 
 ### Variable Scope
 
-Variables created inside a function are **local** — they do not exist outside:
+Variables created inside a function are **local** ??they do not exist outside:
 
 ```python
 def my_function():
@@ -117,7 +117,7 @@ def my_function():
     print(x)
 
 my_function()
-print(x)            # ❌ NameError: name 'x' is not defined
+print(x)            # ??NameError: name 'x' is not defined
 ```
 
 Variables created outside a function are **global** and are readable (but not assignable) inside:
@@ -126,7 +126,7 @@ Variables created outside a function are **global** and are readable (but not as
 TAX_RATE = 0.05    # global constant
 
 def calculate_tax(price):
-    return price * TAX_RATE   # reads global constant — OK
+    return price * TAX_RATE   # reads global constant ??OK
 ```
 
 A good rule of thumb: pass data *in* through parameters and pass data *out* through `return`. Avoid modifying globals from inside functions.
@@ -136,7 +136,7 @@ A good rule of thumb: pass data *in* through parameters and pass data *out* thro
 ## Going Further
 
 <details>
-<summary>`*args` — Accept Any Number of Positional Arguments</summary>
+<summary>`*args` ??Accept Any Number of Positional Arguments</summary>
 
 ```python
 def sum_all(*numbers):
@@ -148,7 +148,7 @@ print(sum_all(1, 2, 3, 4))   # 10
 </details>
 
 <details>
-<summary>`**kwargs` — Accept Any Number of Keyword Arguments</summary>
+<summary>`**kwargs` ??Accept Any Number of Keyword Arguments</summary>
 
 ```python
 def create_profile(**info):
@@ -190,7 +190,7 @@ def calculate_parking_fee(hours: float, daily_max: float = 30) -> float:
 <details>
 <summary>Lambda Functions</summary>
 
-A lambda is a tiny anonymous function written in one line — useful for short transformations:
+A lambda is a tiny anonymous function written in one line ??useful for short transformations:
 
 ```python
 double = lambda x: x * 2
@@ -208,7 +208,7 @@ contacts.sort(key=lambda c: c["name"])
 
 We will build a **parking fee calculator** with a tiered pricing model, demonstrating parameters, return values, and reuse.
 
-### Step 1 — Define the function
+### Step 1 ??Define the function
 
 Create `parking_example.py`. Define a function that accepts the number of hours parked:
 
@@ -217,7 +217,7 @@ def calculate_parking_fee(hours):
     pass  # we will fill this in next
 ```
 
-### Step 2 — Implement the pricing logic
+### Step 2 ??Implement the pricing logic
 
 Replace `pass` with the calculation. The lot charges $5 for the first 2 hours, then $3 per additional hour:
 
@@ -239,7 +239,7 @@ print(calculate_parking_fee(2))    # 5
 print(calculate_parking_fee(5))    # 14
 ```
 
-### Step 3 — Build an interactive loop
+### Step 3 ??Build an interactive loop
 
 Wrap the function in a `while True` loop to simulate a ticketing kiosk. Accept `q` to quit:
 
@@ -260,7 +260,7 @@ while True:
         print("Please enter a valid number.")
 ```
 
-### Step 4 — Add a daily maximum
+### Step 4 ??Add a daily maximum
 
 Extend the function with a default parameter for a daily maximum fee:
 

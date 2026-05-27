@@ -5,7 +5,7 @@
 This course takes you from knowing nothing about code (**Zero**) to building your first Python application (**One**).
 You will learn how to use AI to generate rapid prototypes, then refine those outputs into reliable code by understanding the syntax and logic behind them.
 
-**Total estimated time: ~30 hours across 17 modules.**
+**Total estimated time: ~28 hours across 16 modules.**
 
 ---
 
@@ -88,11 +88,10 @@ graph LR
         M11 --> M12["M12\nDatabase"]
         M12 --> M13["M13\nWeb API"]
     end
-    subgraph "Applications (M14–M17)"
+    subgraph "Applications (M14–M16)"
         M13 --> M14["M14\nGUI"]
         M14 --> M15["M15\nScheduling"]
         M15 --> M16["M16\nLocal AI"]
-        M16 --> M17["M17\nDesktop Auto"]
     end
 ```
 
@@ -114,7 +113,6 @@ graph LR
 | M14 | **[GUI Development](M14PySide/README.md)** | PySide6 · widgets · layouts · signals & slots · `QMessageBox` | ~2 hr |
 | M15 | **[Scheduling](M15Schedule/README.md)** | `time.sleep()` · `schedule` library · long-running scripts · graceful shutdown | ~1.5 hr |
 | M16 | **[Local AI (Ollama)](M16Ollama/README.md)** | LLMs locally · Ollama API · prompt engineering · streaming · defensive calls | ~1.5 hr |
-| M17 | **[Desktop Automation](M17PyAutoGUI/README.md)** | PyAutoGUI · screen coordinates · mouse/keyboard control · screenshots · fail-safe | ~1.5 hr |
 
 ---
 

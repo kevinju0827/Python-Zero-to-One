@@ -1,17 +1,17 @@
-# M11 Web Requests
+﻿# M11 Web Requests
 
-![Module 11 of 17](https://img.shields.io/badge/Module-11_of_17-6366f1?style=flat-square)
+![Module 11 of 16](https://img.shields.io/badge/Module-11_of_16-6366f1?style=flat-square)
 ![Intermediate](https://img.shields.io/badge/Difficulty-Intermediate-facc15?style=flat-square)
 ![~2 hours](https://img.shields.io/badge/Time-~2_hours-60a5fa?style=flat-square)
-![Prerequisites: M01–M10](https://img.shields.io/badge/Prerequisites-M01–M10-94a3b8?style=flat-square)
+![Prerequisites: M01?10](https://img.shields.io/badge/Prerequisites-M01?10-94a3b8?style=flat-square)
 
-**Topics covered:** HTTP protocol · `requests` library · GET / POST / PATCH / DELETE · query parameters · headers · status codes · `raise_for_status()` · web scraping intro with BeautifulSoup
+**Topics covered:** HTTP protocol 繚 `requests` library 繚 GET / POST / PATCH / DELETE 繚 query parameters 繚 headers 繚 status codes 繚 `raise_for_status()` 繚 web scraping intro with BeautifulSoup
 
 ## The Why?
 
-Every script you have written so far lives entirely on your machine — it reads local files, processes local data, and writes local output. The moment you connect to the web, your programs stop being isolated experiments and start being real networked applications.
+Every script you have written so far lives entirely on your machine ??it reads local files, processes local data, and writes local output. The moment you connect to the web, your programs stop being isolated experiments and start being real networked applications.
 
-When your weather app shows today's forecast, when a payment service validates your card, when you pull live stock prices into a spreadsheet — all of that communication follows a single protocol: **HTTP**. Python's `requests` library makes HTTP feel as natural as calling a function.
+When your weather app shows today's forecast, when a payment service validates your card, when you pull live stock prices into a spreadsheet ??all of that communication follows a single protocol: **HTTP**. Python's `requests` library makes HTTP feel as natural as calling a function.
 
 This module is the gateway to the entire "live data" portion of the course: every module from M12 onward either fetches from the web, serves to the web, or processes data that came from the web.
 
@@ -19,17 +19,17 @@ This module is the gateway to the entire "live data" portion of the course: ever
 
 ## Core Concepts
 
-### How the Web Works: HTTP Request–Response
+### How the Web Works: HTTP Request?esponse
 
 Every web interaction follows the same two-step pattern:
 
 ```
-Client (your script) ──── HTTP Request ────▶ Server (API or website)
-Client (your script) ◀─── HTTP Response ──── Server
+Client (your script) ???? HTTP Request ??????Server (API or website)
+Client (your script) ???? HTTP Response ???? Server
 ```
 
 **An HTTP Request contains:**
-- **Method** — what action you want to perform:
+- **Method** ??what action you want to perform:
 
   | Method | Meaning | Analogy |
   |--------|---------|---------|
@@ -39,12 +39,12 @@ Client (your script) ◀─── HTTP Response ──── Server
   | `PATCH` | Partially update an existing resource | Crossing out one line |
   | `DELETE` | Remove a resource | Tearing out a page |
 
-- **URL** — the address of the resource (`https://api.example.com/users/42`)
-- **Headers** — metadata (e.g., `Authorization: Bearer token123`)
-- **Body** — data payload (used with POST/PUT/PATCH)
+- **URL** ??the address of the resource (`https://api.example.com/users/42`)
+- **Headers** ??metadata (e.g., `Authorization: Bearer token123`)
+- **Body** ??data payload (used with POST/PUT/PATCH)
 
 **An HTTP Response contains:**
-- **Status code** — a three-digit number indicating outcome:
+- **Status code** ??a three-digit number indicating outcome:
 
   | Range | Category | Common codes |
   |-------|----------|-------------|
@@ -53,14 +53,14 @@ Client (your script) ◀─── HTTP Response ──── Server
   | 4xx | Client error | `404 Not Found`, `401 Unauthorized` |
   | 5xx | Server error | `500 Internal Server Error` |
 
-- **Headers** — metadata about the response (e.g., `Content-Type: application/json`)
-- **Body** — the actual content (JSON, HTML, or other data)
+- **Headers** ??metadata about the response (e.g., `Content-Type: application/json`)
+- **Body** ??the actual content (JSON, HTML, or other data)
 
 ---
 
 ### Installing and Using `requests`
 
-`requests` is not in the standard library — install it once:
+`requests` is not in the standard library ??install it once:
 
 ```bash
 pip install requests
@@ -74,7 +74,7 @@ import requests
 
 ---
 
-### GET — Fetching Data
+### GET ??Fetching Data
 
 ```python
 import requests
@@ -86,10 +86,10 @@ print(response.json())        # Python dict from the JSON body
 ```
 
 The `response` object holds everything the server sent back:
-- `.status_code` — integer status code
-- `.text` — raw body as a string
-- `.json()` — parses the JSON body into a Python dict or list
-- `.headers` — response headers as a dict
+- `.status_code` ??integer status code
+- `.text` ??raw body as a string
+- `.json()` ??parses the JSON body into a Python dict or list
+- `.headers` ??response headers as a dict
 
 **With query parameters:**
 
@@ -105,23 +105,23 @@ posts = response.json()   # A list of dicts
 ### POST, PATCH, DELETE
 
 ```python
-# POST — create a new resource
+# POST ??create a new resource
 new_post = {"title": "Hello", "body": "World", "userId": 1}
 response = requests.post("https://jsonplaceholder.typicode.com/posts", json=new_post)
 print(response.status_code)   # 201 Created
 
-# PATCH — update specific fields only
+# PATCH ??update specific fields only
 update = {"title": "Updated Title"}
 response = requests.patch("https://jsonplaceholder.typicode.com/posts/1", json=update)
 
-# DELETE — remove a resource
+# DELETE ??remove a resource
 response = requests.delete("https://jsonplaceholder.typicode.com/posts/1")
 print(response.status_code)   # 200
 ```
 
 ---
 
-### Error Handling — Defensive HTTP
+### Error Handling ??Defensive HTTP
 
 Network calls can fail. Write defensive code:
 
@@ -144,7 +144,7 @@ except requests.exceptions.HTTPError as e:
 
 ---
 
-### Web Scraping Intro — HTML via `requests` + BeautifulSoup
+### Web Scraping Intro ??HTML via `requests` + BeautifulSoup
 
 Not every data source is a clean JSON API. Sometimes you need to extract data from a regular webpage (HTML). `requests` fetches the page; **BeautifulSoup** parses and navigates the HTML tree.
 
@@ -191,7 +191,7 @@ response = requests.get("https://api.example.com/private", headers=headers)
 </details>
 
 <details>
-<summary>Sessions — Reusing Connections and Headers</summary>
+<summary>Sessions ??Reusing Connections and Headers</summary>
 
 A `Session` object maintains persistent headers and connection pooling:
 
@@ -236,13 +236,13 @@ Add `time.sleep(1)` between requests to avoid overwhelming small servers.
 
 We will build three small, self-contained scripts covering the full CRUD cycle, a live data API, and basic web scraping.
 
-### Practice 1 — Full CRUD with JSONPlaceholder
+### Practice 1 ??Full CRUD with JSONPlaceholder
 
-[JSONPlaceholder](https://jsonplaceholder.typicode.com) is a free fake REST API — perfect for learning because you cannot break anything.
+[JSONPlaceholder](https://jsonplaceholder.typicode.com) is a free fake REST API ??perfect for learning because you cannot break anything.
 
 Create `jsonplaceholder_example.py`:
 
-**Step 1 — Fetch a single post:**
+**Step 1 ??Fetch a single post:**
 
 ```python
 import requests
@@ -255,7 +255,7 @@ print(f"Title: {post['title']}")
 print(f"Body:  {post['body'][:80]}...")
 ```
 
-**Step 2 — Filter multiple posts:**
+**Step 2 ??Filter multiple posts:**
 
 ```python
 params = {"userId": 1, "_limit": 3}
@@ -264,7 +264,7 @@ for post in response.json():
     print(f"  ID {post['id']:>3} | {post['title'][:50]}")
 ```
 
-**Step 3 — Create, update, delete:**
+**Step 3 ??Create, update, delete:**
 
 ```python
 # Create
@@ -282,7 +282,7 @@ resp = requests.delete(f"{BASE_URL}/posts/{post_id}")
 print(f"Deleted, status {resp.status_code}")
 ```
 
-### Practice 2 — Live Currency Converter
+### Practice 2 ??Live Currency Converter
 
 [Frankfurter](https://www.frankfurter.app/) provides live exchange rates with no API key.
 
@@ -313,7 +313,7 @@ for currency, rate in rates.items():
     print(f"  {currency}: {fmt}")
 ```
 
-### Practice 3 — Web Scraping Book Titles
+### Practice 3 ??Web Scraping Book Titles
 
 Create `books_to_scrape_example.py`:
 

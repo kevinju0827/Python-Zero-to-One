@@ -1,19 +1,19 @@
-# M13 Web API (FastAPI)
+﻿# M13 Web API (FastAPI)
 
-![Module 13 of 17](https://img.shields.io/badge/Module-13_of_17-6366f1?style=flat-square)
+![Module 13 of 16](https://img.shields.io/badge/Module-13_of_16-6366f1?style=flat-square)
 ![Intermediate](https://img.shields.io/badge/Difficulty-Intermediate-facc15?style=flat-square)
 ![~2 hours](https://img.shields.io/badge/Time-~2_hours-60a5fa?style=flat-square)
-![Prerequisites: M01–M12](https://img.shields.io/badge/Prerequisites-M01–M12-94a3b8?style=flat-square)
+![Prerequisites: M01?12](https://img.shields.io/badge/Prerequisites-M01?12-94a3b8?style=flat-square)
 
-**Topics covered:** FastAPI · Uvicorn · routes · path/query parameters · Pydantic models · HTTP status codes · `HTTPException` · Swagger UI · combining FastAPI with SQLite
+**Topics covered:** FastAPI 繚 Uvicorn 繚 routes 繚 path/query parameters 繚 Pydantic models 繚 HTTP status codes 繚 `HTTPException` 繚 Swagger UI 繚 combining FastAPI with SQLite
 
 ## The Why?
 
-Until now, you have always been the **client** — in M11 you sent requests to JSONPlaceholder; you posted prompts to local APIs. Someone else built the server, and you called it.
+Until now, you have always been the **client** ??in M11 you sent requests to JSONPlaceholder; you posted prompts to local APIs. Someone else built the server, and you called it.
 
-This module flips the relationship. You will build the **server** — the program that listens for incoming requests, executes your Python logic, and returns structured JSON to whoever calls it.
+This module flips the relationship. You will build the **server** ??the program that listens for incoming requests, executes your Python logic, and returns structured JSON to whoever calls it.
 
-This is what makes your work shareable. A mobile app, a JavaScript frontend, a spreadsheet macro in a colleague's Excel file, or even an LLM tool-call — any of them can become a client of your Python code once it is wrapped in an API.
+This is what makes your work shareable. A mobile app, a JavaScript frontend, a spreadsheet macro in a colleague's Excel file, or even an LLM tool-call ??any of them can become a client of your Python code once it is wrapped in an API.
 
 **FastAPI** is the most popular modern Python framework for this job. It is fast, generates interactive documentation automatically, and its syntax is intentionally close to writing ordinary Python functions. Companies including Netflix, Uber, and Microsoft use it in production.
 
@@ -21,12 +21,12 @@ This is what makes your work shareable. A mobile app, a JavaScript frontend, a s
 
 ## Core Concepts
 
-### FastAPI and Uvicorn — Two Layers
+### FastAPI and Uvicorn ??Two Layers
 
 | Component | Role |
 |-----------|------|
-| **FastAPI** | The framework — defines routes, validates data, returns responses |
-| **Uvicorn** | The server — opens a TCP port, accepts connections, passes requests to FastAPI |
+| **FastAPI** | The framework ??defines routes, validates data, returns responses |
+| **Uvicorn** | The server ??opens a TCP port, accepts connections, passes requests to FastAPI |
 
 Install both:
 
@@ -40,7 +40,7 @@ Start the server:
 uvicorn main:app --reload
 ```
 
-`--reload` restarts the server every time you save a file — essential during development.
+`--reload` restarts the server every time you save a file ??essential during development.
 
 ---
 
@@ -63,10 +63,10 @@ Run with `uvicorn main:app --reload`, then open `http://127.0.0.1:8000/` in your
 
 ---
 
-### Auto-Generated Docs — Your Best Friend
+### Auto-Generated Docs ??Your Best Friend
 
 Open `http://127.0.0.1:8000/docs` as soon as the server starts.
-You will see a **Swagger UI** with every endpoint listed, interactive forms to try each one, and the actual JSON responses — all generated automatically from your code. No extra work required.
+You will see a **Swagger UI** with every endpoint listed, interactive forms to try each one, and the actual JSON responses ??all generated automatically from your code. No extra work required.
 
 Make `/docs` your first stop after every change.
 
@@ -80,7 +80,7 @@ def get_user(user_id: int):
     return {"id": user_id, "name": "placeholder"}
 ```
 
-The `: int` type hint is not cosmetic — FastAPI validates it. Calling `/users/abc` returns a clean `422 Unprocessable Entity` error automatically.
+The `: int` type hint is not cosmetic ??FastAPI validates it. Calling `/users/abc` returns a clean `422 Unprocessable Entity` error automatically.
 
 ---
 
@@ -94,12 +94,12 @@ def search(q: str, limit: int = 10):
     return {"query": q, "limit": limit}
 ```
 
-Calling `GET /search?q=python&limit=5` → `search(q="python", limit=5)`.
+Calling `GET /search?q=python&limit=5` ??`search(q="python", limit=5)`.
 Default values make parameters optional.
 
 ---
 
-### Pydantic Models — Validated Request Bodies
+### Pydantic Models ??Validated Request Bodies
 
 For `POST` and `PUT` requests, describe the expected JSON body with a Pydantic model:
 
@@ -116,11 +116,11 @@ def add_book(book: NewBook):
     return {"saved": book.title, "author": book.author}
 ```
 
-If a client sends `{"title": "Dune"}` (missing `author` and `rating`), FastAPI rejects it with a clear error — without you writing any validation logic.
+If a client sends `{"title": "Dune"}` (missing `author` and `rating`), FastAPI rejects it with a clear error ??without you writing any validation logic.
 
 ---
 
-### `HTTPException` — Returning the Right Status Codes
+### `HTTPException` ??Returning the Right Status Codes
 
 ```python
 from fastapi import HTTPException
@@ -163,7 +163,7 @@ The combination of M12 (SQL) and M13 (FastAPI) is the most common backend patter
 ## Going Further
 
 <details>
-<summary>Dependency Injection — Sharing a DB Connection</summary>
+<summary>Dependency Injection ??Sharing a DB Connection</summary>
 
 Rather than opening a connection in every route, use FastAPI's dependency system:
 
@@ -194,10 +194,10 @@ from contextlib import asynccontextmanager
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Code here runs ONCE on startup
-    print("Server starting…")
+    print("Server starting??)
     yield
     # Code here runs ONCE on shutdown
-    print("Server shutting down…")
+    print("Server shutting down??)
 
 app = FastAPI(lifespan=lifespan)
 ```
@@ -205,7 +205,7 @@ app = FastAPI(lifespan=lifespan)
 </details>
 
 <details>
-<summary>CORS — Allowing Frontend Apps</summary>
+<summary>CORS ??Allowing Frontend Apps</summary>
 
 If a JavaScript frontend at a different domain calls your API, you need to enable CORS:
 
@@ -243,9 +243,9 @@ async def proxy_weather(city: str):
 
 ## Guided Practice
 
-We will build a **mini coffee-shop menu API** — a service that exposes a café's drink list as JSON so any future client (mobile app, website, Slack bot) can fetch from one source of truth.
+We will build a **mini coffee-shop menu API** ??a service that exposes a caf矇's drink list as JSON so any future client (mobile app, website, Slack bot) can fetch from one source of truth.
 
-### Step 1 — Define the data
+### Step 1 ??Define the data
 
 Create `coffee_menu_api_example.py`:
 
@@ -262,7 +262,7 @@ MENU = {
 }
 ```
 
-### Step 2 — `GET /menu` — return all items
+### Step 2 ??`GET /menu` ??return all items
 
 ```python
 @app.get("/menu")
@@ -270,9 +270,9 @@ def get_menu():
     return MENU
 ```
 
-### Step 3 — `GET /menu/search?q=...`
+### Step 3 ??`GET /menu/search?q=...`
 
-Define this **before** the `{drink_id}` route — FastAPI matches routes top-down, and `/menu/search` would otherwise be captured as a drink id of `"search"`.
+Define this **before** the `{drink_id}` route ??FastAPI matches routes top-down, and `/menu/search` would otherwise be captured as a drink id of `"search"`.
 
 ```python
 @app.get("/menu/search")
@@ -284,7 +284,7 @@ def search_menu(q: str):
     return results
 ```
 
-### Step 4 — `GET /menu/{drink_id}`
+### Step 4 ??`GET /menu/{drink_id}`
 
 ```python
 @app.get("/menu/{drink_id}")
@@ -295,7 +295,7 @@ def get_drink(drink_id: str):
     return drink
 ```
 
-### Step 5 — Run and explore `/docs`
+### Step 5 ??Run and explore `/docs`
 
 ```python
 if __name__ == "__main__":
@@ -305,7 +305,7 @@ if __name__ == "__main__":
 
 Start the server and open `http://127.0.0.1:8000/docs`.
 Expand each endpoint, click **"Try it out"**, and execute.
-Notice what happens when you search for a drink that does not exist — the `404` error is returned cleanly.
+Notice what happens when you search for a drink that does not exist ??the `404` error is returned cleanly.
 
 ---
 
@@ -313,21 +313,21 @@ Notice what happens when you search for a drink that does not exist — the `404
 
 * [ ] **Personal Weather Proxy**
   Build a proxy API so multiple tools can share one upstream source:
-  1. `GET /weather/{city}` — fetches from `https://goweather.xyz/weather/{city}` (M11) and returns the parsed JSON.
-  2. `GET /weather` (no city) — returns `400` with `detail="Please provide a city in the path"`.
+  1. `GET /weather/{city}` ??fetches from `https://goweather.xyz/weather/{city}` (M11) and returns the parsed JSON.
+  2. `GET /weather` (no city) ??returns `400` with `detail="Please provide a city in the path"`.
   3. On any upstream failure, return `502` with `detail="Upstream service unavailable"`.
-  *(The "proxy" pattern insulates your clients from upstream changes — the same idea behind API gateways like AWS API Gateway.)*
+  *(The "proxy" pattern insulates your clients from upstream changes ??the same idea behind API gateways like AWS API Gateway.)*
 
 * [ ] **Habit Tracker REST API**
   Re-implement the habit tracker from M12 as a REST API:
-  - `POST /habits` — creates a habit, returns `201` + the new row.
-  - `POST /habits/{habit_id}/checkins` — marks done today; returns `409` if already logged today.
-  - `GET /habits/{habit_id}/streak` — returns `{"habit": "exercise", "current_streak": 7}`.
-  - `GET /habits` — returns all habits with their current streaks.
+  - `POST /habits` ??creates a habit, returns `201` + the new row.
+  - `POST /habits/{habit_id}/checkins` ??marks done today; returns `409` if already logged today.
+  - `GET /habits/{habit_id}/streak` ??returns `{"habit": "exercise", "current_streak": 7}`.
+  - `GET /habits` ??returns all habits with their current streaks.
   Persist everything in SQLite.
 
 * [ ] **AI Polish Service**
   Combine M16 (Ollama) + M13 (FastAPI):
-  - `POST /polish` — body `{"text": "rough draft…"}`. Calls local Ollama, returns `{"polished": "…", "elapsed_seconds": 3.2}`.
+  - `POST /polish` ??body `{"text": "rough draft??}`. Calls local Ollama, returns `{"polished": "??, "elapsed_seconds": 3.2}`.
   - If Ollama is unreachable, return `503` with a clear `detail`.
-  Once working, update your M14 PySide app to call this endpoint instead of calling Ollama directly. You have just decoupled the UI from the AI — any future frontend can share the same service.
+  Once working, update your M14 PySide app to call this endpoint instead of calling Ollama directly. You have just decoupled the UI from the AI ??any future frontend can share the same service.

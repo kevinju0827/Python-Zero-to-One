@@ -1,11 +1,11 @@
-# M10 Data Formats
+﻿# M10 Data Formats
 
-![Module 10 of 17](https://img.shields.io/badge/Module-10_of_17-6366f1?style=flat-square)
+![Module 10 of 16](https://img.shields.io/badge/Module-10_of_16-6366f1?style=flat-square)
 ![Beginner](https://img.shields.io/badge/Difficulty-Beginner-4ade80?style=flat-square)
 ![1.5 hours](https://img.shields.io/badge/Time-1.5_hours-60a5fa?style=flat-square)
-![Prerequisites: M01–M09](https://img.shields.io/badge/Prerequisites-M01–M09-94a3b8?style=flat-square)
+![Prerequisites: M01?09](https://img.shields.io/badge/Prerequisites-M01?09-94a3b8?style=flat-square)
 
-**Topics covered:** CSV format · `csv.reader` / `DictReader` / `writer` · JSON format · `json.load` / `dump` / `loads` / `dumps` · type conversion when reading structured files
+**Topics covered:** CSV format 繚 `csv.reader` / `DictReader` / `writer` 繚 JSON format 繚 `json.load` / `dump` / `loads` / `dumps` 繚 type conversion when reading structured files
 
 ## The Why?
 
@@ -13,8 +13,8 @@ Programs rarely run in isolation. They need to save state (a high score, a confi
 
 Two formats handle the vast majority of structured data in the real world:
 
-- **CSV** (Comma-Separated Values) — the universal language of spreadsheets and tabular data
-- **JSON** (JavaScript Object Notation) — the universal language of web APIs and configuration files
+- **CSV** (Comma-Separated Values) ??the universal language of spreadsheets and tabular data
+- **JSON** (JavaScript Object Notation) ??the universal language of web APIs and configuration files
 
 Once you can read and write both, your Python scripts can communicate with Excel, Google Sheets, REST APIs, databases, and virtually any modern software system. This module builds directly on the file I/O from M09 and the dict structure from M04.
 
@@ -22,7 +22,7 @@ Once you can read and write both, your Python scripts can communicate with Excel
 
 ## Core Concepts
 
-### CSV — Tabular Data as Plain Text
+### CSV ??Tabular Data as Plain Text
 
 A CSV file is a spreadsheet stripped of all formatting. Each line is a row; commas separate columns.
 
@@ -55,7 +55,7 @@ with open("products.csv", mode="r", encoding="utf-8", newline="") as f:
         print(f"Name: {row[1]}, Price: {float(row[2]):.2f}")
 ```
 
-**Reading with `csv.DictReader` (rows as dicts — recommended):**
+**Reading with `csv.DictReader` (rows as dicts ??recommended):**
 
 ```python
 import csv
@@ -67,7 +67,7 @@ with open("products.csv", mode="r", encoding="utf-8", newline="") as f:
         print(f"Name: {row['name']}, Price: {float(row['price']):.2f}")
 ```
 
-`DictReader` uses the first row as keys — you access columns by name, not by fragile index numbers.
+`DictReader` uses the first row as keys ??you access columns by name, not by fragile index numbers.
 
 **Writing with `csv.DictWriter`:**
 
@@ -91,9 +91,9 @@ with open("output.csv", mode="w", encoding="utf-8", newline="") as f:
 
 ---
 
-### JSON — Structured Data as Text
+### JSON ??Structured Data as Text
 
-JSON looks almost exactly like Python dicts and lists — because it was inspired by them.
+JSON looks almost exactly like Python dicts and lists ??because it was inspired by them.
 
 **JSON file:**
 ```json
@@ -109,10 +109,10 @@ Python's built-in `json` module converts between JSON text and Python objects:
 
 | Function | Direction | Usage |
 |----------|-----------|-------|
-| `json.load(f)` | File → Python dict/list | Reading a `.json` file |
-| `json.dump(data, f)` | Python → File | Writing a `.json` file |
-| `json.loads(string)` | String → Python | Parsing JSON text in memory |
-| `json.dumps(data)` | Python → String | Converting to JSON string |
+| `json.load(f)` | File ??Python dict/list | Reading a `.json` file |
+| `json.dump(data, f)` | Python ??File | Writing a `.json` file |
+| `json.loads(string)` | String ??Python | Parsing JSON text in memory |
+| `json.dumps(data)` | Python ??String | Converting to JSON string |
 
 ```python
 import json
@@ -166,7 +166,7 @@ print(data["user"]["address"]["city"])   # Taipei
 </details>
 
 <details>
-<summary>CSV Dialects — Semicolon Separators</summary>
+<summary>CSV Dialects ??Semicolon Separators</summary>
 
 Some European software uses `;` instead of `,`. Specify the delimiter:
 
@@ -203,7 +203,7 @@ Useful prompts:
 
 We will build an **inventory converter** that reads a `products.csv` file, ensures numeric fields are the correct type, and exports a clean `inventory.json` file for a front-end team.
 
-### Step 1 — Create the input CSV
+### Step 1 ??Create the input CSV
 
 Create `inventories.csv` with this content:
 
@@ -215,7 +215,7 @@ id,name,price,quantity
 4,Monitor,350.00,8
 ```
 
-### Step 2 — Read the CSV and fix types
+### Step 2 ??Read the CSV and fix types
 
 Create `inventories_converter_example.py`:
 
@@ -241,7 +241,7 @@ print("Sample:", products[0])
 
 Run the script. Confirm the types are correct (`price` should be a float, not a string).
 
-### Step 3 — Export to JSON
+### Step 3 ??Export to JSON
 
 Append this code to write the clean data to a JSON file:
 
@@ -254,7 +254,7 @@ print("Exported to inventory.json")
 
 Open `inventory.json` and verify the formatting.
 
-### Step 4 — Read the JSON back
+### Step 4 ??Read the JSON back
 
 Add a verification step that reads the JSON and prints a summary:
 
@@ -272,8 +272,8 @@ print(f"\nInventory summary: {len(loaded)} products, total value: ${total_value:
 
 * [ ] **Sales Revenue Calculator**
   Create a `daily_sales.csv` with columns: `date`, `product_name`, `quantity`, `unit_price`.
-  Write a script that reads it, calculates `revenue = quantity × unit_price` for each row, and prints a grand total.
-  *(Remember: CSV values are always strings — convert before multiplying.)*
+  Write a script that reads it, calculates `revenue = quantity ? unit_price` for each row, and prints a grand total.
+  *(Remember: CSV values are always strings ??convert before multiplying.)*
 
 * [ ] **Config File Manager**
   Create a `settings.json` with keys like `username`, `theme`, `language`, `notifications_enabled`.
@@ -283,6 +283,6 @@ print(f"\nInventory summary: {len(loaded)} products, total value: ${total_value:
   3. Updates the value in the dict and saves it back to the file.
   Run the script twice to confirm the change persists between runs.
 
-* [ ] **JSON → CSV Transformer**
+* [ ] **JSON ??CSV Transformer**
   Given a JSON file containing a list of objects (you can generate it from an API response or write one manually), write a script that reads the JSON and writes it out as a clean CSV file with a proper header row.
   *(Hint: use `data[0].keys()` to get the column names from the first record.)*

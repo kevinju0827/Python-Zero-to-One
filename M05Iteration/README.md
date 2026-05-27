@@ -1,17 +1,17 @@
-# M05 Iteration
+﻿# M05 Iteration
 
-![Module 5 of 17](https://img.shields.io/badge/Module-5_of_17-6366f1?style=flat-square)
+![Module 5 of 16](https://img.shields.io/badge/Module-5_of_16-6366f1?style=flat-square)
 ![Beginner](https://img.shields.io/badge/Difficulty-Beginner-4ade80?style=flat-square)
 ![1.5 hours](https://img.shields.io/badge/Time-1.5_hours-60a5fa?style=flat-square)
-![Prerequisites: M01–M04](https://img.shields.io/badge/Prerequisites-M01–M04-94a3b8?style=flat-square)
+![Prerequisites: M01?04](https://img.shields.io/badge/Prerequisites-M01?04-94a3b8?style=flat-square)
 
-**Topics covered:** `for` loop · `while` loop · `range()` · `enumerate()` · iterating over lists and dicts · `break` · `continue`
+**Topics covered:** `for` loop 繚 `while` loop 繚 `range()` 繚 `enumerate()` 繚 iterating over lists and dicts 繚 `break` 繚 `continue`
 
 ## The Why?
 
 Humans dislike doing the same thing a thousand times. Computers don't.
 
-Imagine renaming 1,000 image files, sending customized emails to 500 subscribers, or calculating statistics for every row in a 50,000-row spreadsheet. Writing out the code for each individual item would take forever — and it would break the moment the data changes.
+Imagine renaming 1,000 image files, sending customized emails to 500 subscribers, or calculating statistics for every row in a 50,000-row spreadsheet. Writing out the code for each individual item would take forever ??and it would break the moment the data changes.
 
 **Iteration** (loops) lets you write a block of code *once* and have the computer repeat it as many times as needed. Combined with the data structures from M04 (lists, dicts, sets), loops unlock the true power of automation: processing large collections effortlessly.
 
@@ -19,7 +19,7 @@ Imagine renaming 1,000 image files, sending customized emails to 500 subscribers
 
 ## Core Concepts
 
-### The `for` Loop — When You Know What to Iterate Over
+### The `for` Loop ??When You Know What to Iterate Over
 
 A `for` loop walks through a sequence item by item.
 
@@ -38,7 +38,7 @@ for fruit in fruits:
     print(f"I like {fruit}s!")
 ```
 
-**Iterating over a dict** — `for` loops over keys by default:
+**Iterating over a dict** ??`for` loops over keys by default:
 
 ```python
 student = {"name": "Alice", "gpa": 3.8, "major": "CS"}
@@ -48,12 +48,12 @@ for key in student:
 
 # Or iterate over both key and value together:
 for key, value in student.items():
-    print(f"{key} → {value}")
+    print(f"{key} ??{value}")
 ```
 
 ---
 
-### `range()` — Generating Number Sequences
+### `range()` ??Generating Number Sequences
 
 `range(n)` generates the integers from `0` up to (but **not including**) `n`.
 
@@ -71,7 +71,7 @@ for i in range(2, 10, 2):
 
 ---
 
-### `enumerate()` — Loop With an Index
+### `enumerate()` ??Loop With an Index
 
 When you need both the index and the value:
 
@@ -91,7 +91,7 @@ Output:
 
 ---
 
-### The `while` Loop — Repeat Until a Condition Changes
+### The `while` Loop ??Repeat Until a Condition Changes
 
 A `while` loop keeps running as long as a condition is `True`.
 It is the right choice when you do not know in advance how many times to repeat.
@@ -120,7 +120,7 @@ while countdown > 0:
 print("Go!")
 ```
 
-> **Warning:** If the condition never becomes `False`, the loop runs forever — called an **infinite loop**. Always make sure something inside the loop moves toward the exit condition.
+> **Warning:** If the condition never becomes `False`, the loop runs forever ??called an **infinite loop**. Always make sure something inside the loop moves toward the exit condition.
 
 ---
 
@@ -149,7 +149,7 @@ for number in range(10):
 ## Going Further
 
 <details>
-<summary>`zip()` — Pair Up Two Lists</summary>
+<summary>`zip()` ??Pair Up Two Lists</summary>
 
 ```python
 names  = ["Alice", "Bob", "Carol"]
@@ -164,7 +164,7 @@ for name, score in zip(names, scores):
 <details>
 <summary>Nested Loops</summary>
 
-A loop inside a loop — classic for processing 2D grids or generating combinations:
+A loop inside a loop ??classic for processing 2D grids or generating combinations:
 
 ```python
 for row in range(3):
@@ -205,7 +205,7 @@ grade_map = {name: score for name, score in zip(names, scores)}
 <details>
 <summary>Performance Tip</summary>
 
-Never modify a list while iterating over it directly — use a copy (`my_list[:]`) or build a new list with a comprehension.
+Never modify a list while iterating over it directly ??use a copy (`my_list[:]`) or build a new list with a comprehension.
 
 </details>
 
@@ -215,7 +215,7 @@ Never modify a list while iterating over it directly — use a copy (`my_list[:]
 
 We will build an **exam statistics calculator** that collects scores from the user, then reports how many passed and failed.
 
-### Step 1 — Collect scores with a `while` loop
+### Step 1 ??Collect scores with a `while` loop
 
 Create `exam_stats_example.py`. Keep asking the user for scores until they enter something non-numeric:
 
@@ -237,7 +237,7 @@ while True:
 
 Run the script and enter a few numbers, then type "done" to stop.
 
-### Step 2 — Count passing and failing scores
+### Step 2 ??Count passing and failing scores
 
 Add a `for` loop to process each score:
 
@@ -252,7 +252,7 @@ for score in scores:
         fail_count += 1
 ```
 
-### Step 3 — Calculate and print statistics
+### Step 3 ??Calculate and print statistics
 
 ```python
 total = len(scores)
@@ -272,7 +272,7 @@ else:
     print(f"Lowest:   {min(scores)}")
 ```
 
-### Step 4 — Print a ranked score list
+### Step 4 ??Print a ranked score list
 
 Use `enumerate()` to print each score with its position (highest first):
 
@@ -300,13 +300,13 @@ for rank, score in enumerate(sorted(scores, reverse=True), start=1):
   *(Bonus: use the loop to find and print the most expensive item.)*
 
 * [ ] **Multiplication Table Generator**
-  Ask the user for a number `n` (1–12).
+  Ask the user for a number `n` (1??2).
   Print the complete multiplication table for `n`, formatted neatly:
   ```
-  5 ×  1 =  5
-  5 ×  2 = 10
+  5 ?  1 =  5
+  5 ?  2 = 10
   ...
-  5 × 12 = 60
+  5 ? 12 = 60
   ```
 
 * [ ] **Password Strength Checker**
