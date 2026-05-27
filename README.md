@@ -1,169 +1,187 @@
 # Python Zero to One
 
-> **From absolute beginner to building modern, efficient Python applications—amplified by AI.**
+> **From absolute beginner to building modern, efficient Python applications — amplified by AI.**
 
-Welcome to **Python Zero to One**.
+This course takes you from knowing nothing about code (**Zero**) to building your first Python application (**One**).
+You will learn how to use AI to generate rapid prototypes, then refine those outputs into reliable code by understanding the syntax and logic behind them.
 
-This course is designed to take you from knowing nothing about code (Zero) to building your first Python application (One).  
-(The name is inspired by the phrase "Zero to Hero.")  
-We'll learn how to use AI to generate rapid prototypes, then refine those outputs into more concise and reliable code by learning basic syntax and concepts.  
-The total estimated time required to complete this course is approximately 30 hours.
+**Total estimated time: ~30 hours across 17 modules.**
+
+---
 
 ## Getting Started
 
-Before you begin this course, please set up the following environment.  
-> The following tools are not mandatory; you can use any alternative.
+Before beginning, set up the following environment.
 
-* Step 1: Prepare at least one AI Assistant
+### Step 1 — Prepare an AI Assistant
 
-  AI assistants can generate examples, explain unfamiliar syntax, and help you debug errors while learning.  
-  Gemini was launched by Google and is offered free of charge.  
-  We will use Gemini as our AI assistant throughout the course.  
-  Open [Gemini](https://gemini.google.com/) in your browser.  
-  If you encounter any problems, you can first ask Gemini to help you confirm what went wrong and how to fix it.
+AI assistants can explain unfamiliar syntax, generate examples, and help debug errors while you learn.
+We recommend **[Gemini](https://gemini.google.com/)** (free, no install required).
+If you hit a problem at any point, ask Gemini first.
 
-* Step 2: Install Python
+### Step 2 — Install Python
 
-  Python is the core programming language used throughout this course.  
-  It is the environment that runs your scripts and allows you to build applications.  
-  Download and install [Python](https://www.python.org/downloads/).
+Python is the language this entire course runs on.
+Download and install **[Python 3.12+](https://www.python.org/downloads/)**.
 
-  During installation, make sure Python is added to your system PATH if the installer provides that option.  
-  After installation, open your terminal and run the following command to confirm it works:
+During installation, **check the box that says "Add Python to PATH".**
 
-  ```bash
-  python --version
-  ```
+Verify it works by opening a terminal and running:
+```bash
+python --version
+```
 
-* Step 3: Install a code editor / IDE
+### Step 3 — Install an IDE
 
-  Code editors and IDEs make it easier to write, run, and debug Python code.  
-  Even if you can use a plain text editor, a dedicated development tool will significantly improve your learning efficiency.  
-  JetBrains is a leading provider of IDEs and tools.  
-  Download and install [JetBrains PyCharm](https://www.jetbrains.com/pycharm/).
+A dedicated code editor makes writing, running, and debugging Python dramatically faster.
+We recommend **[JetBrains PyCharm Community Edition](https://www.jetbrains.com/pycharm/)** (free).
+[Visual Studio Code](https://code.visualstudio.com/) with the Python extension is also excellent.
 
-* Step 4: Clone this repository
+### Step 4 — Clone this repository
 
-  Git is a version control system that allows you to easily update the course materials.  
-  Download and install [Git](https://git-scm.com/).  
-  Open your PyCharm and click the `Clone Repository` button.  
-  Copy the URL of this repository: `https://github.com/kevinju0827/Python-Zero-to-One.git` and paste the URL into the field.  
-  Click the `Clone` button to download the repository to your local machine.  
-  Next time you want to update the course materials, you can simply click the `Update Project` button to pull the latest changes.
+Install **[Git](https://git-scm.com/)**, then open a terminal and run:
+```bash
+git clone https://github.com/kevinju0827/Python-Zero-to-One.git
+```
 
-  > **MacOS Users**  
-  > On macOS, we recommend installing [Homebrew](https://brew.sh/) first, then using it to install Git.  
-  > Homebrew is a package manager for macOS that makes it much easier to install and manage developer tools.  
-  > Open the `Terminal` app and run the following commands:
-  > ```bash
-  > /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  > ```
-  > Then, run the following command to install Git:
-  > ```bash
-  > brew install git
-  > ```
+Open the cloned folder in your IDE.
+When new modules are released, pull the latest changes with `git pull`.
 
-* Step 5: Open the `README.md` file
+> **macOS users:** Install [Homebrew](https://brew.sh/) first, then `brew install git`.
 
-  `README.md` is the first file you should see when you open the repository.  
-  Open the `Python-Zero-to-One` repository in your PyCharm and click the `README.md` file to open it.  
-  Switch to the `Preview` tab at the top right to view the content.
+### Step 5 — Open a module README
 
-  > `.md` stands for Markdown, which is a lightweight markup language that allows you to write formatted text using a simple syntax.  
-  > It is not necessary to understand Markdown to follow along with this course.  
-  > You can refer to the [Markdown Guide](https://www.markdownguide.org/basic-syntax/) for a quick introduction.
+Each module folder contains a `README.md` with all learning materials.
+Open it in your IDE and switch to **Preview** mode to see it rendered.
 
-  In every module, we will also provide a `README.md` file as a learning guide.
+---
 
-## Philosophy
+## Course Philosophy
 
-**AI is best suited for handling common requirements, boilerplate code, or building rapid prototypes.**
+**AI is a first-draft generator, not a final authority.**
 
-In the age of AI, coding has changed. You don't need to hand-code every single line anymore.
-However, because AI works with limited context, it can struggle to account for the full details of large-scale projects or handle highly specific, complex business logic.
+In the AI era, you no longer need to hand-code every line. However, AI works with limited context—it cannot fully understand your project's business logic or edge cases. It hallucinates, makes off-by-one errors, and confidently produces broken code.
 
-**To use AI effectively, you cannot rely on it blindly.**
+**To use AI effectively, you need enough Python literacy to review and fix what it produces.**
 
-The core focus of this course is to equip you with the understanding of programming concepts, control flow, and basic syntax.  
-This fundamental knowledge is the minimum requirement for you to review, modify, and fix the AI-generated content when it occasionally hallucinates or makes logical errors.
+That is the core skill this course builds: not the ability to write everything from scratch, but the ability to *read*, *understand*, *modify*, and *guide* AI-generated code. A well-crafted follow-up prompt is often more valuable than typing code yourself.
 
-## Curriculum Structure
+---
 
-The repository is organized into modules. Each module in this course is designed as a self-contained learning journey, moving from conceptual understanding to practical mastery.  
-To ensure a consistent and effective learning experience, Each module contains the following:
+## Curriculum
 
-1. **The "Why?"**  
-   Before diving into the code, we answer the most important question: Why are we learning this?  
-   You will explore how these specific concepts are applied in the real-world context.
-2. **Goals**  
-   The Goals serve as your objectives for learning this module.   
-   Written in plain, accessible language, these goals define what you should understand and be able to articulate by the end of the module.
-3. **Core Concepts**  
-   This is the heart of the module. Core Concepts provide a deep-dive explanation of programming syntax and technical concepts.  
-   It includes detailed explanations and code demonstrations for each topic.
-4. **Guided Practice**  
-   To make each module easier to follow, we also provide a step-by-step walkthrough.  
-   This section is designed to guide you through a small but complete practice sequence, allowing you to apply what you just learned in a concrete way.  
-   By following the execution flow, you will:
-   - know exactly where to start
-   - produce a small example that demonstrates the core concepts of the module
-5. **Checkpoints**  
-   Checkpoints are designed to verify your learning through practical scripting.  
-   Successfully completing these checkpoints serves as proof of your technical competency and readiness for the next module.  
-   > **There is no single "correct" answer for the checkpoints.**  
-   > Programming is about problem-solving. Since we embrace AI tools for code generation, success is defined by your ability to **explain** your logic, handle errors, and **modify** your code confidently.  
-   > Please do not consider a checkpoint "done" just because AI produced an output.
+```mermaid
+graph LR
+    subgraph "Foundation (M01–M09)"
+        M01["M01\nPython Basic"] --> M02["M02\nVariables & Types"]
+        M02 --> M03["M03\nConditional Logic"]
+        M03 --> M04["M04\nData Structures"]
+        M04 --> M05["M05\nIteration"]
+        M05 --> M06["M06\nFunctions"]
+        M06 --> M07["M07\nOOP"]
+        M07 --> M08["M08\nError Handling"]
+        M08 --> M09["M09\nModules & File I/O"]
+    end
+    subgraph "Data & Web (M10–M13)"
+        M09 --> M10["M10\nData Formats"]
+        M10 --> M11["M11\nWeb Requests"]
+        M11 --> M12["M12\nDatabase"]
+        M12 --> M13["M13\nWeb API"]
+    end
+    subgraph "Applications (M14–M17)"
+        M13 --> M14["M14\nGUI"]
+        M14 --> M15["M15\nScheduling"]
+        M15 --> M16["M16\nLocal AI"]
+        M16 --> M17["M17\nDesktop Auto"]
+    end
+```
+
+| # | Module | Topics | Time |
+|---|--------|--------|------|
+| M01 | **[Python Basic](M01PythonBasic/README.md)** | Interactive mode · `print()` · math operators · scripts · vibe coding | ~1 hr |
+| M02 | **[Variables & Types](M02Variables/README.md)** | Variables · `str` / `int` / `float` / `bool` · type conversion · f-strings · `input()` | ~1 hr |
+| M03 | **[Conditional Logic](M03ConditionalLogic/README.md)** | Comparison operators · `if` / `elif` / `else` · logical operators · Boolean expressions | ~1 hr |
+| M04 | **[Data Structures](M04DataStructures/README.md)** | `list` · `tuple` · `dict` · `set` · indexing · slicing · common methods | ~1.5 hr |
+| M05 | **[Iteration](M05Iteration/README.md)** | `for` loop · `while` loop · `range()` · `enumerate()` · `break` / `continue` | ~1.5 hr |
+| M06 | **[Functions](M06Function/README.md)** | `def` · parameters · return values · default args · scope · DRY principle | ~1.5 hr |
+| M07 | **[OOP](M07OOP/README.md)** | Classes · `__init__` · methods · `self` · inheritance · `super()` · `__str__` | ~1.5 hr |
+| M08 | **[Error Handling](M08ErrorHandling/README.md)** | Exceptions · `try` / `except` / `finally` · specific error types · defensive code | ~1 hr |
+| M09 | **[Modules & File I/O](M09Packages/README.md)** | `import` · stdlib (`os`, `datetime`, `math`, `random`) · `pip` · `venv` · `open()` · read/write files | ~1.5 hr |
+| M10 | **[Data Formats](M10DataFormat/README.md)** | CSV (`csv` module) · JSON (`json` module) · file-to-Python type conversion | ~1.5 hr |
+| M11 | **[Web Requests](M11Requests/README.md)** | HTTP protocol · `requests` library · REST APIs · GET / POST / PATCH / DELETE · error handling | ~2 hr |
+| M12 | **[Database](M12Database/README.md)** | SQLite · `sqlite3` · SQL CRUD · parameterized queries · `commit()` · `WHERE` / `ORDER BY` | ~2 hr |
+| M13 | **[Web API](M13FastAPI/README.md)** | FastAPI · Uvicorn · routes · path/query params · Pydantic · status codes · Swagger UI | ~2 hr |
+| M14 | **[GUI Development](M14PySide/README.md)** | PySide6 · widgets · layouts · signals & slots · `QMessageBox` | ~2 hr |
+| M15 | **[Scheduling](M15Schedule/README.md)** | `time.sleep()` · `schedule` library · long-running scripts · graceful shutdown | ~1.5 hr |
+| M16 | **[Local AI (Ollama)](M16Ollama/README.md)** | LLMs locally · Ollama API · prompt engineering · streaming · defensive calls | ~1.5 hr |
+| M17 | **[Desktop Automation](M17PyAutoGUI/README.md)** | PyAutoGUI · screen coordinates · mouse/keyboard control · screenshots · fail-safe | ~1.5 hr |
+
+---
+
+## How Each Module Is Structured
+
+Every module contains the same five sections, so you always know where to look:
+
+1. **The Why?** — Real-world motivation. Why does this exist, and what problem does it solve?
+2. **Core Concepts** — The technical content: syntax, pseudocode examples, analogies, and diagrams.
+3. **Going Further** *(collapsible)* — Optional deep dives: advanced patterns, AI usage tips, performance notes. Skip freely.
+4. **Guided Practice** — A step-by-step walkthrough of a realistic mini-project using that module's skills.
+5. **Checkpoints** — Independent exercises for you to complete on your own. Proof that you understood the material.
+
+> **On checkpoints:** There is no single correct answer. Since we embrace AI-assisted development, "done" means you can *explain* your logic, *handle errors*, and *modify* your code with confidence — not just that the AI produced output.
+
+---
 
 ## Tech Stack
 
-### Languages
+### Core Language
 
-- **[Python](https://www.python.org/)**  
-  The core environment required to run your scripts. We focus on modern Python 3.x features.
+- **[Python 3.12+](https://www.python.org/)** — The only language used throughout this course.
 
-### Tools
+### Development Tools
 
-#### Integrated Development Environment (IDE)
+| Tool | Purpose |
+|------|---------|
+| [PyCharm Community](https://www.jetbrains.com/pycharm/) | Recommended IDE — Python-specific, built-in debugger |
+| [VS Code](https://code.visualstudio.com/) + Python extension | Lightweight alternative IDE |
+| [Gemini](https://gemini.google.com/) | AI assistant for explaining concepts and generating code |
+| [JetBrains AI](https://www.jetbrains.com/ai-ides/) | In-IDE AI for PyCharm users |
 
-- **[Visual Studio Code](https://code.visualstudio.com/)**  
-  The industry-standard, lightweight code editor. It supports a massive ecosystem of extensions, making it perfect for Python.
-  - **[GitHub Copilot Chat](https://github.com/microsoft/vscode-copilot-chat)**  
-    The AI pair programmer for VS Code. You can chat with it to generate algorithms, explain complex logic, or debug errors directly in your editor.
-- **[JetBrains PyCharm](https://www.jetbrains.com/pycharm/)**  
-  A powerful IDE designed specifically for professional Python development. It provides deep code analysis and intelligent refactoring right out of the box.
-  - **[JetBrains AI](https://www.jetbrains.com/ai-ides/)**  
-    Integrated AI assistant that provides code generation, explanation, and unit test writing seamlessly within PyCharm.
-  - **[Junie](https://www.jetbrains.com/junie/)**  
-    The next-generation AI agent for JetBrains, focusing on advanced predictive coding assistance.
+### Third-Party Libraries (installed per module)
 
-#### AI
+| Library | Module | Purpose |
+|---------|--------|---------|
+| `requests` | M11 | HTTP requests to web APIs |
+| `beautifulsoup4` | M11 | HTML parsing / web scraping |
+| `fastapi`, `uvicorn` | M13 | Building REST APIs |
+| `PySide6` | M14 | Desktop GUI applications |
+| `schedule` | M15 | Human-readable task scheduling |
+| `ollama` / local API | M16 | Running LLMs locally via Ollama |
+| `pyautogui` | M17 | Mouse and keyboard automation |
 
-- **[Gemini](https://gemini.google.com/)**  
-    Google’s AI assistant for brainstorming, explaining concepts, and generating code or content from prompts.
+### Practice APIs & Datasets
 
-#### External Data
+| Resource | Used In | What It Provides |
+|----------|---------|-----------------|
+| [JSONPlaceholder](https://jsonplaceholder.typicode.com/) | M11 | Fake REST API — free CRUD practice |
+| [Frankfurter](https://www.frankfurter.app/) | M11 | Live currency exchange rates, no key needed |
+| [Books to Scrape](https://books.toscrape.com/) | M11 | Safe HTML scraping practice target |
+| [Taiwan Open Data](https://data.gov.tw/) | M11 | Real government datasets |
+| [Kaggle Datasets](https://www.kaggle.com/datasets) | M10, M12 | Community CSV / JSON datasets |
 
-- **[JSONPlaceholder](https://jsonplaceholder.typicode.com/)**  
-  A free, fake REST API. Perfect for practicing how to fetch and process data using Python without dealing with complex authentication.
-- **[Kaggle Datasets](https://www.kaggle.com/datasets)**  
-  A huge repository of community-published datasets. Great for finding real-world CSV or JSON data to manipulate and analyze with your scripts.
-- **[Taiwan Government Open Data](https://data.gov.tw/)**  
-  A massive collection of real-world datasets provided by the Taiwanese government. An excellent resource for practicing how to fetch, parse, and analyze localized CSV or JSON data (such as real-time weather forecasts, public transit status, or economic indicators) using Python's requests and JSON modules.
+---
 
 ## Recommended Resources
 
-(Optional) In addition to the resources provided within this repository, we highly recommend learning from and utilizing the following:
+These are not required, but they will accelerate your learning:
 
-- **[Official Python Documentation](https://docs.python.org/3/)**  
-  The gold standard documentation. While it can be dense, it is the ultimate source of truth for how Python works under the hood.
-- **[roadmap.sh Python Developer](https://roadmap.sh/python)**  
-  A visual guide to the Python landscape. Use this to track your progress and understand what concepts to learn next.
-- **[Real Python](https://realpython.com/)**  
-  One of the highest-quality sources for Python tutorials. It provides in-depth, practical examples covering everything from basic syntax to advanced concepts.
-- **[Atguigu Python](https://youtu.be/n97hSmVyjsg?list=PLmOn9nNkQxJFWhyrhPNkpI3lMuKxBTxBe)**  
-  Comprehensive and free video tutorials in Chinese. An excellent choice if you prefer learning complex concepts through video content in Mandarin.
-- **[LeetCode](https://leetcode.com/)**  
-  Gamified platforms for practicing coding challenges. Essential for sharpening your algorithmic thinking and preparing for technical interviews.
+- **[Official Python Docs](https://docs.python.org/3/)** — The authoritative reference. Dense but accurate.
+- **[Real Python](https://realpython.com/)** — In-depth, practical tutorials for all skill levels.
+- **[roadmap.sh/python](https://roadmap.sh/python)** — Visual map of the Python learning landscape.
+- **[Atguigu Python (Chinese)](https://youtu.be/n97hSmVyjsg?list=PLmOn9nNkQxJFWhyrhPNkpI3lMuKxBTxBe)** — Comprehensive free video series in Mandarin.
+- **[LeetCode](https://leetcode.com/)** — Coding challenge platform; great for sharpening algorithmic thinking.
+
+---
 
 ## License
 
