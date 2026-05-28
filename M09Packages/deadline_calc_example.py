@@ -1,24 +1,29 @@
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
-# Define a project deadline
-# In a real scenario, this might come from a database or user input
-deadline_str = "2026-12-31 23:59:59"
-deadline = datetime.strptime(deadline_str, "%Y-%m-%d %H:%M:%S")
+DEADLINE = "2026-12-31 23:59:59"
+LOG_FILE = "deadline_log.txt"
 
-# Get the current time
-now = datetime.now()
+deadline = datetime.strptime(DEADLINE, "%Y-%m-%d %H:%M:%S")
+now      = datetime.now()
+diff     = relativedelta(deadline, now)
 
-# Calculate the difference using relativedelta (from python-dateutil)
-# This handles months and days much better than standard subtraction
-diff = relativedelta(deadline, now)
-
-print("--- Project Deadline Tracker ---")
-print(f"Target Date: {deadline_str}")
-print(f"Current Date: {now.strftime('%Y-%m-%d %H:%M:%S')}")
-print("-" * 32)
+report_lines = [
+    "=== Project Deadline Tracker ===",
+    f"Checked at  : {now.strftime('%Y-%m-%d %H:%M:%S')}",
+    f"Target date : {DEADLINE}",
+]
 
 if deadline > now:
-    print(f"Time remaining: {diff.years} years, {diff.months} months, {diff.days} days, {diff.hours} hours.")
+    remaining = f"{diff.months}m {diff.days}d {diff.hours}h remaining"
+    report_lines.append(f"Status      : ON TRACK — {remaining}")
 else:
-    print("The deadline has already passed!")
+    report_lines.append("Status      : — DEADLINE PASSED")
+
+for line in report_lines:
+    print(line)
+
+with open(LOG_FILE, mode="a", encoding="utf-8") as log:
+    log.write("\n".join(report_lines) + "\n\n")
+
+print(f"\nLog appended to {LOG_FILE}")

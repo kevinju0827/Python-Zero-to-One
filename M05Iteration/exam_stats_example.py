@@ -1,11 +1,15 @@
 scores = []
 
-while True:
-    user_input = input("Enter an exam score (enter a non-numeric value to stop): ")
+print("Enter exam scores one at a time.")
+print("Type anything non-numeric when done.\n")
 
-    if user_input.isdigit():
+while True:
+    user_input = input("Score: ")
+
+    if user_input.isnumeric():
         scores.append(int(user_input))
     else:
+        print("Input ended.")
         break
 
 pass_count = 0
@@ -17,14 +21,23 @@ for score in scores:
     else:
         fail_count += 1
 
-total_count = len(scores)
+total = len(scores)
 
-if total_count > 0:
-    pass_percentage = pass_count / total_count * 100
+if total == 0:
+    print("No scores entered.")
 else:
-    pass_percentage = 0
+    pass_rate = pass_count / total * 100
+    average   = sum(scores) / total
 
-print(f"Total students: {total_count}")
-print(f"Passing students: {pass_count}")
-print(f"Failing students: {fail_count}")
-print(f"Passing percentage: {pass_percentage:.2f}%")
+    print(f"\n=== Exam Statistics ===")
+    print(f"Total:    {total}")
+    print(f"Passed:   {pass_count}  ({pass_rate:.1f}%)")
+    print(f"Failed:   {fail_count}")
+    print(f"Average:  {average:.1f}")
+    print(f"Highest:  {max(scores)}")
+    print(f"Lowest:   {min(scores)}")
+
+    print("\n=== Individual Scores ===")
+    for rank, score in enumerate(sorted(scores, reverse=True), start=1):
+        status = "PASS" if score >= 60 else "FAIL"
+        print(f"  {rank}. {score:>3}  [{status}]")

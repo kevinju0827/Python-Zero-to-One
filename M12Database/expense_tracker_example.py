@@ -1,4 +1,4 @@
-"""M10 Guided Practice — A freelancer's expense tracker.
+"""M12 Guided Practice — A freelancer's expense tracker.
 
 This one script walks through every CRUD operation against a real
 SQLite database: it creates the table, seeds sample data, runs

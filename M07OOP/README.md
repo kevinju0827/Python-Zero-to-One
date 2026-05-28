@@ -3,9 +3,9 @@
 ![Module 7 of 16](https://img.shields.io/badge/Module-7_of_16-6366f1?style=flat-square)
 ![Beginner](https://img.shields.io/badge/Difficulty-Beginner-4ade80?style=flat-square)
 ![1.5 hours](https://img.shields.io/badge/Time-1.5_hours-60a5fa?style=flat-square)
-![Prerequisites: M01?06](https://img.shields.io/badge/Prerequisites-M01?06-94a3b8?style=flat-square)
+![Prerequisites: M06 — def & return](https://img.shields.io/badge/Prerequisites-M06:_def_%26_return-94a3b8?style=flat-square)
 
-**Topics covered:** classes 繚 `__init__` 繚 instance attributes 繚 methods 繚 `self` 繚 inheritance 繚 `super()` 繚 `__str__`
+**Topics covered:** classes · `__init__` · instance attributes · methods · `self` · inheritance · `super()` · `__str__`
 
 ## The Why?
 
@@ -24,13 +24,13 @@ This matters for two practical reasons:
 
 ### What Is a Class?
 
-A class defines a new **type** of object ??its data (attributes) and its behaviours (methods).
+A class defines a new **type** of object —its data (attributes) and its behaviours (methods).
 
 ```
 Pseudocode:
 class ThingName:
     def __init__(self, initial_data):
-        self.data = initial_data       ??store data on the object
+        self.data = initial_data       —store data on the object
 
     def do_something(self):
         use self.data to do work
@@ -57,7 +57,7 @@ Each object has its **own copy** of the attributes. Changing `dog1.name` does no
 
 ---
 
-### `__init__` ??The Constructor
+### `__init__` —The Constructor
 
 `__init__` is called automatically every time you create a new object.
 Use it to set the object's initial state.
@@ -74,10 +74,10 @@ print(account.balance)   # 1000
 
 ---
 
-### `self` ??Referring to the Current Object
+### `self` —Referring to the Current Object
 
 `self` is the first parameter of every method. It refers to the specific instance the method was called on.
-Python passes it automatically ??you never supply it yourself when calling.
+Python passes it automatically —you never supply it yourself when calling.
 
 ```python
 class Counter:
@@ -100,7 +100,7 @@ print(c.count)   # 0
 
 ---
 
-### Methods ??Functions That Belong to a Class
+### Methods —Functions That Belong to a Class
 
 Any function defined inside a class is a **method**. Methods have access to the object's data through `self`.
 
@@ -128,7 +128,7 @@ class BankAccount:
 
 ---
 
-### `__str__` ??Human-Readable Representation
+### `__str__` —Human-Readable Representation
 
 Define `__str__` to control what `print(object)` shows:
 
@@ -142,11 +142,11 @@ account = BankAccount("Alice", 500)
 print(account)   # BankAccount(Alice, $500.00)
 ```
 
-Without `__str__`, `print(account)` shows something like `<__main__.BankAccount object at 0x...>` ??not useful.
+Without `__str__`, `print(account)` shows something like `<__main__.BankAccount object at 0x...>` —not useful.
 
 ---
 
-### Inheritance ??Reusing and Extending Classes
+### Inheritance —Reusing and Extending Classes
 
 A **child class** inherits all attributes and methods from its **parent class**, and can add or override them.
 
@@ -154,8 +154,8 @@ A **child class** inherits all attributes and methods from its **parent class**,
 Pseudocode:
 class ChildClass(ParentClass):
     def __init__(self, ...):
-        super().__init__(...)   ??call the parent's __init__ first
-        self.extra = value      ??add child-specific attributes
+        super().__init__(...)   —call the parent's __init__ first
+        self.extra = value      —add child-specific attributes
 ```
 
 ```python
@@ -175,17 +175,17 @@ savings.apply_interest()    # only on SavingsAccount
 savings.summary()           # inherited from BankAccount
 ```
 
-`super().__init__(...)` is required ??without it, the parent's setup code never runs.
+`super().__init__(...)` is required —without it, the parent's setup code never runs.
 
 ---
 
 ### When to Use a Class
 
 ```
-Multiple functions share the same piece of state? ??class
-You need multiple independent instances of the same structure? ??class
-You're building something AI generated that uses classes? ??understand it as-is
-Simple script, no shared state, few functions? ??plain functions are fine
+Multiple functions share the same piece of state? —class
+You need multiple independent instances of the same structure? —class
+You're building something AI generated that uses classes? —understand it as-is
+Simple script, no shared state, few functions? —plain functions are fine
 ```
 
 ---
@@ -199,10 +199,10 @@ Attributes set directly on the class (outside `__init__`) are **shared** by all 
 
 ```python
 class Dog:
-    species = "Canis lupus familiaris"   # class attribute ??shared
+    species = "Canis lupus familiaris"   # class attribute —shared
 
     def __init__(self, name):
-        self.name = name                 # instance attribute ??per object
+        self.name = name                 # instance attribute —per object
 
 d1 = Dog("Rex")
 d2 = Dog("Bella")
@@ -216,9 +216,9 @@ Use class attributes for data that is the same for every instance (constants, co
 </details>
 
 <details>
-<summary>`@property` ??Computed Attributes</summary>
+<summary>`@property` —Computed Attributes</summary>
 
-Use `@property` to define a method that behaves like an attribute ??no parentheses needed when accessing it:
+Use `@property` to define a method that behaves like an attribute —no parentheses needed when accessing it:
 
 ```python
 class Circle:
@@ -231,17 +231,17 @@ class Circle:
         return math.pi * self.radius ** 2
 
 c = Circle(5)
-print(c.area)   # 78.54...  ??no () needed
+print(c.area)   # 78.54...  —no () needed
 ```
 
-This is common in AI-generated code ??you will recognize it now.
+This is common in AI-generated code —you will recognize it now.
 
 </details>
 
 <details>
 <summary>`@staticmethod` and `@classmethod`</summary>
 
-**`@staticmethod`** ??a function that logically belongs to the class but does not need `self` or `cls`:
+**`@staticmethod`** —a function that logically belongs to the class but does not need `self` or `cls`:
 
 ```python
 class Temperature:
@@ -252,7 +252,7 @@ class Temperature:
 print(Temperature.celsius_to_fahrenheit(100))   # 212.0
 ```
 
-**`@classmethod`** ??receives the class itself as `cls`, useful for alternative constructors:
+**`@classmethod`** —receives the class itself as `cls`, useful for alternative constructors:
 
 ```python
 class BankAccount:
@@ -309,9 +309,9 @@ When AI generates a class you do not understand, ask:
 
 ## Guided Practice
 
-We will build a **library book tracker** ??a `Book` class and a `Library` class that manages a collection of books.
+**Scenario:** A small community library tracks check-outs on a whiteboard. You offer to replace it with a Python script that manages the book collection, shows which titles are in or out at a glance, and lets staff search by title or author. We will build a **library book tracker** using a `Book` class and a `Library` class.
 
-### Step 1 ??Define the `Book` class
+### Step 1 —Define the `Book` class
 
 Create `library_example.py`:
 
@@ -336,10 +336,10 @@ class Book:
 
     def __str__(self):
         status = "OUT" if self.is_checked_out else "IN"
-        return f"[{status}] {self.title} ??{self.author} ({self.year})"
+        return f"[{status}] {self.title} —{self.author} ({self.year})"
 ```
 
-### Step 2 ??Define the `Library` class
+### Step 2 —Define the `Library` class
 
 ```python
 class Library:
@@ -364,7 +364,7 @@ class Library:
         return results
 ```
 
-### Step 3 ??Use the classes together
+### Step 3 —Use the classes together
 
 ```python
 lib = Library("City Library")
@@ -383,7 +383,7 @@ lib.books[0].return_book()
 lib.show_all()
 ```
 
-### Step 4 ??Add search and extend with inheritance
+### Step 4 —Add search and extend with inheritance
 
 ```python
 results = lib.search("python")
@@ -414,10 +414,10 @@ lib.show_all()
 
 * [ ] **Student Grade Book**
   Create a `Student` class with `name`, `scores` (list), and these methods:
-  - `add_score(score)` ??appends to the list
-  - `average()` ??returns the mean score
-  - `grade()` ??returns "A"/"B"/"C"/"D"/"F" based on the average
-  - `__str__` ??displays `"Alice: avg 87.5 (B)"`
+  - `add_score(score)` —appends to the list
+  - `average()` —returns the mean score
+  - `grade()` —returns "A"/"B"/"C"/"D"/"F" based on the average
+  - `__str__` —displays `"Alice: avg 87.5 (B)"`
   Create at least 3 students, add scores to each, and print a sorted class ranking (highest average first).
 
 * [ ] **Bank Account System**

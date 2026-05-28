@@ -1,5 +1,5 @@
 # =============================================================================
-# M09 - Practice 1: Exploring a REST API with JSONPlaceholder
+# M11 - Practice 1: Exploring a REST API with JSONPlaceholder
 # =============================================================================
 # JSONPlaceholder is a free, fake REST API perfect for learning.
 # It simulates a real server without requiring any sign-up or API key.

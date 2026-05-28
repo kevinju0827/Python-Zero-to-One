@@ -1,11 +1,14 @@
 total_cost = 500.00
-user_input = input("Enter the quantity of items received: ")
 
-try:
-    quantity = int(user_input)
-    unit_price = total_cost / quantity
-    print(f"The unit price is ${unit_price}")
-except ValueError:
-    print("System Error: Invalid quantity format. Please enter numerical digits only.")
-except ZeroDivisionError:
-    print("System Error: Quantity cannot be zero. Cannot calculate unit price for an empty shipment.")
+while True:
+    try:
+        qty = int(input("Quantity received: "))
+        if qty <= 0:
+            raise ValueError("Quantity must be a positive number.")
+        unit_price = total_cost / qty
+        print(f"Unit price: ${unit_price:.2f}")
+        break
+    except ValueError as e:
+        print(f"Invalid input: {e}. Please try again.")
+    finally:
+        print("--- Input attempt recorded ---")

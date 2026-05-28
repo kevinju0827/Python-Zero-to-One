@@ -1,5 +1,5 @@
 # =============================================================================
-# M09 - Practice 2: Fetching Live Data from a Public REST API
+# M11 - Practice 2: Fetching Live Data from a Public REST API
 # =============================================================================
 # Service : Frankfurter (https://www.frankfurter.app/)
 # API Base: https://api.frankfurter.app

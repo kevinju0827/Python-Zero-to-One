@@ -1,21 +1,23 @@
-def calculate_parking_fee(hours):
+def calculate_parking_fee(hours, daily_max=30):
     if hours <= 2:
         total_fee = 5
     else:
         extra_hours = hours - 2
         total_fee = 5 + (extra_hours * 3)
+    return min(total_fee, daily_max)
 
-    return total_fee
 
 while True:
-  user_input = input("Enter parking hours (or type 'q' to quit): ")
+    user_input = input("\nEnter parking hours (or 'q' to quit): ")
 
-  if user_input.lower() == 'q':
-      break
+    if user_input.lower() == "q":
+        print("Goodbye!")
+        break
 
-  input_hours = int(user_input)
-  customer_fee = calculate_parking_fee(input_hours)
-
-  print(f"You parked for {input_hours} hours.")
-  print(f"Your total parking fee is: ${customer_fee}")
-  print()
+    try:
+        hours = float(user_input)
+        fee   = calculate_parking_fee(hours)
+        print(f"Hours parked: {hours:.1f}")
+        print(f"Total fee:    ${fee:.2f}")
+    except ValueError:
+        print("Please enter a valid number.")

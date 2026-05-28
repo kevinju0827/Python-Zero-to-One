@@ -1,21 +1,28 @@
 import csv
 import json
 
-inventories = []
+products = []
 
-try:
-    with open('inventories.csv', mode='r', encoding='utf-8') as csv_file:
-        reader = csv.DictReader(csv_file)
-        for row in reader:
-            row['price'] = float(row['price'])
-            row['quantity'] = int(row['quantity'])
-            inventories.append(row)
+with open("inventories.csv", mode="r", encoding="utf-8", newline="") as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        products.append({
+            "id":       int(row["id"]),
+            "name":     row["name"],
+            "price":    float(row["price"]),
+            "quantity": int(row["quantity"]),
+        })
 
-    with open('inventories.json', mode='w', encoding='utf-8') as json_file:
-        json.dump(inventories, json_file, indent=4)
+print(f"Read {len(products)} products from CSV.")
+print("Sample:", products[0])
 
-    print("Successfully converted inventories.csv to inventories.json!")
-    print(f"Total items processed: {len(inventories)}")
+with open("inventory.json", mode="w", encoding="utf-8") as f:
+    json.dump(products, f, indent=4, ensure_ascii=False)
 
-except FileNotFoundError:
-    print("Error: 'inventories.csv' not found. Please create it first.")
+print("Exported to inventory.json")
+
+with open("inventory.json", mode="r", encoding="utf-8") as f:
+    loaded = json.load(f)
+
+total_value = sum(p["price"] * p["quantity"] for p in loaded)
+print(f"\nInventory summary: {len(loaded)} products, total value: ${total_value:,.2f}")

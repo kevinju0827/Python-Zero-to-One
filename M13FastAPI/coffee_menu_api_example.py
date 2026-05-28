@@ -17,10 +17,10 @@ app = FastAPI(title="Mini Coffee Menu API")
 # In a real deployment this would live in a database (see Practice 3).
 # A module-level dict is enough to learn the routing concepts.
 MENU: dict[str, dict] = {
-    "1": {"name": "Latte",      "price": 4.5, "in_stock": True},
-    "2": {"name": "Espresso",   "price": 3.0, "in_stock": True},
-    "3": {"name": "Cappuccino", "price": 4.0, "in_stock": False},
-    "4": {"name": "Cold Brew",  "price": 5.0, "in_stock": True},
+    "latte":     {"name": "Latte",     "price": 120, "in_stock": True},
+    "espresso":  {"name": "Espresso",  "price":  80, "in_stock": True},
+    "matcha":    {"name": "Matcha",    "price": 140, "in_stock": False},
+    "americano": {"name": "Americano", "price":  90, "in_stock": True},
 }
 
 

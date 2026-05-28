@@ -3,26 +3,26 @@
 ![Module 9 of 16](https://img.shields.io/badge/Module-9_of_16-6366f1?style=flat-square)
 ![Beginner](https://img.shields.io/badge/Difficulty-Beginner-4ade80?style=flat-square)
 ![1.5 hours](https://img.shields.io/badge/Time-1.5_hours-60a5fa?style=flat-square)
-![Prerequisites: M01?08](https://img.shields.io/badge/Prerequisites-M01?08-94a3b8?style=flat-square)
+![Prerequisites: M08 — try / except](https://img.shields.io/badge/Prerequisites-M08:_try_%2F_except-94a3b8?style=flat-square)
 
-**Topics covered:** `import` 繚 standard library (`os`, `datetime`, `math`, `random`) 繚 `pip` 繚 virtual environments (`venv`) 繚 `open()` 繚 reading and writing files
+**Topics covered:** `import` · standard library (`os`, `datetime`, `math`, `random`) · `pip` · virtual environments (`venv`) · `open()` · reading and writing files
 
 ## The Why?
 
 So far, every variable your scripts create disappears when the program exits.
-A real application needs to **persist data** ??save a report to a file, read a configuration on startup, log activity to disk.
+A real application needs to **persist data** —save a report to a file, read a configuration on startup, log activity to disk.
 
 Python solves this in two complementary ways:
 
-1. **Modules and packages** ??you do not write everything from scratch. Python's standard library includes hundreds of pre-built tools, and the broader ecosystem (PyPI) has hundreds of thousands more. Learning how to find, install, and manage these packages is what transforms you from a student writing scripts into a developer building applications.
+1. **Modules and packages** —you do not write everything from scratch. Python's standard library includes hundreds of pre-built tools, and the broader ecosystem (PyPI) has hundreds of thousands more. Learning how to find, install, and manage these packages is what transforms you from a student writing scripts into a developer building applications.
 
-2. **File I/O** ??reading and writing plain files. This is the simplest form of persistence, and it underpins CSV/JSON (M10), databases (M12), and almost every other data workflow in the course.
+2. **File I/O** —reading and writing plain files. This is the simplest form of persistence, and it underpins CSV/JSON (M10), databases (M12), and almost every other data workflow in the course.
 
 ---
 
 ## Core Concepts
 
-### `import` ??Using Modules
+### `import` —Using Modules
 
 A module is a Python file that contains reusable code. You load it with `import`:
 
@@ -41,11 +41,11 @@ print(sqrt(25))   # 5.0
 
 ---
 
-### The Standard Library ??Batteries Included
+### The Standard Library —Batteries Included
 
 Python ships with hundreds of built-in modules. The ones you will use most often:
 
-**`datetime` ??working with dates and times:**
+**`datetime` —working with dates and times:**
 
 ```python
 from datetime import datetime, timedelta
@@ -57,7 +57,7 @@ tomorrow = now + timedelta(days=1)
 print(tomorrow.date())
 ```
 
-**`os` ??interacting with the operating system:**
+**`os` —interacting with the operating system:**
 
 ```python
 import os
@@ -67,17 +67,17 @@ files = os.listdir(".")         # List all files in current folder
 os.makedirs("output", exist_ok=True)  # Create a folder (no error if it exists)
 ```
 
-**`random` ??generating random numbers:**
+**`random` —generating random numbers:**
 
 ```python
 import random
 
-print(random.randint(1, 100))         # Random integer 1??00
+print(random.randint(1, 100))         # Random integer 1–100
 print(random.choice(["a", "b", "c"])) # Random item from a list
 random.shuffle(my_list)               # Shuffle a list in place
 ```
 
-**`math` ??mathematical functions:**
+**`math` —mathematical functions:**
 
 ```python
 import math
@@ -88,7 +88,7 @@ math.log(100, 10) # 2.0
 
 ---
 
-### PyPI and `pip` ??Installing Third-Party Packages
+### PyPI and `pip` —Installing Third-Party Packages
 
 The **Python Package Index (PyPI)** is a public repository of over 500,000 packages.
 `pip` is the tool that downloads and installs them:
@@ -102,7 +102,7 @@ pip uninstall requests      # Remove a package
 
 ---
 
-### Virtual Environments (`venv`) ??Project Isolation
+### Virtual Environments (`venv`) —Project Isolation
 
 Without a virtual environment, every package you install goes into the **global** Python installation. This causes conflicts when different projects need different versions of the same library.
 
@@ -116,7 +116,7 @@ python -m venv .venv
 .venv\Scripts\activate       # Windows
 source .venv/bin/activate    # macOS / Linux
 
-# Install packages ??they go into .venv, not your global Python
+# Install packages —they go into .venv, not your global Python
 pip install requests
 
 # When done, deactivate
@@ -127,9 +127,9 @@ deactivate
 
 ---
 
-### File I/O ??Reading and Writing Files
+### File I/O —Reading and Writing Files
 
-Use `open()` to open a file. Always use the `with` statement ??it **automatically closes** the file even if an error occurs:
+Use `open()` to open a file. Always use the `with` statement —it **automatically closes** the file even if an error occurs:
 
 ```python
 # Writing a text file
@@ -163,7 +163,7 @@ Always specify `encoding="utf-8"` to avoid character encoding issues on Windows.
 ## Going Further
 
 <details>
-<summary>`pathlib` ??Modern File Paths</summary>
+<summary>`pathlib` —Modern File Paths</summary>
 
 The `pathlib` module is the modern, object-oriented way to handle file paths (replaces `os.path`):
 
@@ -181,7 +181,7 @@ print(log_file.read_text(encoding="utf-8"))
 </details>
 
 <details>
-<summary>`requirements.txt` ??Sharing Dependencies</summary>
+<summary>`requirements.txt` —Sharing Dependencies</summary>
 
 When collaborating, share the list of packages your project needs:
 
@@ -195,7 +195,7 @@ pip install -r requirements.txt  # Restore them on another machine
 <details>
 <summary>Reading a Binary File</summary>
 
-Text mode (`"r"`, `"w"`) handles strings. Binary mode (`"rb"`, `"wb"`) handles raw bytes ??needed for images, PDFs, executables:
+Text mode (`"r"`, `"w"`) handles strings. Binary mode (`"rb"`, `"wb"`) handles raw bytes —needed for images, PDFs, executables:
 
 ```python
 with open("photo.jpg", mode="rb") as f:
@@ -219,9 +219,9 @@ When AI suggests a package you have never heard of:
 
 ## Guided Practice
 
-We will build a **project deadline calculator** that reads a config file, computes time remaining, and writes a daily log entry.
+**Scenario:** You are managing a year-long project and want a script you can run each morning that tells you exactly how many months, days, and hours remain — and keeps a running log file so you can look back and see how the countdown progressed over time. We will build a **project deadline calculator** that computes time remaining and appends each check to a persistent log.
 
-### Step 1 ??Create and activate a virtual environment
+### Step 1 —Create and activate a virtual environment
 
 Open a terminal inside the `M09Packages` folder:
 
@@ -231,13 +231,13 @@ python -m venv .venv
 # source .venv/bin/activate   # macOS/Linux
 ```
 
-### Step 2 ??Install `python-dateutil`
+### Step 2 —Install `python-dateutil`
 
 ```bash
 pip install python-dateutil
 ```
 
-### Step 3 ??Write the deadline calculator
+### Step 3 —Write the deadline calculator
 
 Create `deadline_calc_example.py`:
 
@@ -261,9 +261,9 @@ report_lines = [
 
 if deadline > now:
     remaining = f"{diff.months}m {diff.days}d {diff.hours}h remaining"
-    report_lines.append(f"Status      : ON TRACK ??{remaining}")
+    report_lines.append(f"Status      : ON TRACK —{remaining}")
 else:
-    report_lines.append("Status      : ??DEADLINE PASSED")
+    report_lines.append("Status      : —DEADLINE PASSED")
 
 for line in report_lines:
     print(line)
@@ -275,9 +275,9 @@ with open(LOG_FILE, mode="a", encoding="utf-8") as log:
 print(f"\nLog appended to {LOG_FILE}")
 ```
 
-### Step 4 ??Inspect the log
+### Step 4 —Inspect the log
 
-Run the script twice. Open `deadline_log.txt` ??you should see two timestamped entries, not two overwrites. This is the difference between `"w"` and `"a"` modes.
+Run the script twice. Open `deadline_log.txt` —you should see two timestamped entries, not two overwrites. This is the difference between `"w"` and `"a"` modes.
 
 ---
 
@@ -291,10 +291,10 @@ Run the script twice. Open `deadline_log.txt` ??you should see two timestamped e
 
 * [ ] **Batteries Included Challenge**
   Write a single script that uses four different standard library modules:
-  1. `os` ??print the current working directory and list all `.py` files in it.
-  2. `datetime` ??print the current date in `"Wednesday, 27 May 2026"` format.
-  3. `random` ??pick a random motivational quote from a list of five you define.
-  4. `math` ??calculate and print `??` and `?` to 10 decimal places.
+  1. `os` —print the current working directory and list all `.py` files in it.
+  2. `datetime` —print the current date in `"Wednesday, 27 May 2026"` format.
+  3. `random` —pick a random motivational quote from a list of five you define.
+  4. `math` — calculate and print `π` and `e` to 10 decimal places.
 
 * [ ] **Word Count Tool**
   Ask the user for a filename.

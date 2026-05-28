@@ -3,9 +3,9 @@
 ![Module 15 of 16](https://img.shields.io/badge/Module-15_of_16-6366f1?style=flat-square)
 ![Intermediate](https://img.shields.io/badge/Difficulty-Intermediate-facc15?style=flat-square)
 ![1.5 hours](https://img.shields.io/badge/Time-1.5_hours-60a5fa?style=flat-square)
-![Prerequisites: M01?14](https://img.shields.io/badge/Prerequisites-M01?14-94a3b8?style=flat-square)
+![Prerequisites: M14 — OOP & GUI](https://img.shields.io/badge/Prerequisites-M14:_OOP_%26_GUI-94a3b8?style=flat-square)
 
-**Topics covered:** one-shot vs. long-running scripts 繚 `time.sleep()` 繚 `schedule` library 繚 job registration 繚 `run_pending()` loop 繚 graceful Ctrl+C shutdown 繚 OS-level schedulers
+**Topics covered:** one-shot vs. long-running scripts · `time.sleep()` · `schedule` library · job registration · `run_pending()` loop · graceful Ctrl+C shutdown · OS-level schedulers
 
 ## The Why?
 
@@ -13,7 +13,7 @@ Every script you have built so far follows the same shape: it runs, does its wor
 
 Real automation is different. A bank reconciles accounts at midnight without anyone pressing a button. An e-commerce site checks inventory levels every 10 minutes. A monitoring service pings your server every 30 seconds and alerts you the moment it goes down.
 
-**Scheduling** is what turns one-off scripts into the kind of long-running automations that real teams rely on daily. Combined with everything you have already built ??M11 to fetch live data, M12 to persist it, M10 to export reports ??scheduling is the final piece that makes your programs act on time instead of waiting for you.
+**Scheduling** is what turns one-off scripts into the kind of long-running automations that real teams rely on daily. Combined with everything you have already built —M11 to fetch live data, M12 to persist it, M10 to export reports —scheduling is the final piece that makes your programs act on time instead of waiting for you.
 
 ---
 
@@ -22,8 +22,8 @@ Real automation is different. A bank reconciles accounts at midnight without any
 ### One-Shot vs. Long-Running Scripts
 
 ```
-One-shot:   run ??do work ??exit
-Long-running: run ??loop forever ??wake up periodically ??do work ??sleep ??repeat
+One-shot:   run —do work —exit
+Long-running: run —loop forever —wake up periodically —do work —sleep —repeat
 ```
 
 Long-running scripts introduce concerns you have not faced before:
@@ -34,7 +34,7 @@ Long-running scripts introduce concerns you have not faced before:
 
 ---
 
-### `time.sleep()` ??The Simplest Scheduler
+### `time.sleep()` —The Simplest Scheduler
 
 ```python
 import time
@@ -48,7 +48,7 @@ This works for "every N seconds" tasks but has limitations: you cannot easily sa
 
 ---
 
-### The `schedule` Library ??Human-Readable Timing
+### The `schedule` Library —Human-Readable Timing
 
 ```bash
 pip install schedule
@@ -70,14 +70,14 @@ schedule.every().day.at("09:00").do(send_report)
 schedule.every().monday.at("17:30").do(send_report)
 ```
 
-`.do(function)` registers the job ??it does NOT call it immediately.
+`.do(function)` registers the job —it does NOT call it immediately.
 You still need the main loop:
 
 ```python
 try:
     while True:
         schedule.run_pending()   # Run any jobs that are due right now
-        time.sleep(1)            # Heartbeat ??check again in 1 second
+        time.sleep(1)            # Heartbeat —check again in 1 second
 except KeyboardInterrupt:
     print("\nScheduler stopped. Goodbye.")
 ```
@@ -100,7 +100,7 @@ Keyword arguments after the function are forwarded every time the job fires.
 
 ---
 
-### Defensive Jobs ??Don't Let One Failure Kill the Scheduler
+### Defensive Jobs —Don't Let One Failure Kill the Scheduler
 
 ```python
 def fetch_weather():
@@ -157,7 +157,7 @@ schedule.every(5).seconds.do(send_welcome_email)
 </details>
 
 <details>
-<summary>Threading ??Non-Blocking Jobs</summary>
+<summary>Threading —Non-Blocking Jobs</summary>
 
 If a job takes longer than the sleep interval, it will block the entire loop.
 For long-running jobs, run them in a background thread:
@@ -195,11 +195,9 @@ Format: `minute hour day-of-month month day-of-week command`
 
 ## Guided Practice
 
-We will build a **website health monitor** ??the same pattern used by commercial uptime services. The script pings a list of URLs on a schedule and alerts loudly if any are down.
+**Scenario:** You run a small blog and a portfolio site. You want to know immediately if either goes down without manually refreshing them. We will build a **website health monitor** —the same pattern used by commercial uptime services, pinging a list of URLs on a schedule and alerting loudly if any are down.
 
-**Scenario:** You run a small blog and a portfolio site. You want to know immediately if either goes down without manually refreshing them.
-
-### Step 1 ??Define a defensive `check_site()` function
+### Step 1 —Define a defensive `check_site()` function
 
 Create `website_monitor_example.py`:
 
@@ -216,16 +214,16 @@ def check_site(url):
         if response.status_code == 200:
             print(f"[{timestamp}] [OK]    {url}")
         else:
-            print(f"[{timestamp}] [WARN]  {url} ??HTTP {response.status_code}")
+            print(f"[{timestamp}] [WARN]  {url} —HTTP {response.status_code}")
     except requests.exceptions.Timeout:
-        print(f"[{timestamp}] [ALERT] {url} ??Timed out")
+        print(f"[{timestamp}] [ALERT] {url} —Timed out")
     except requests.exceptions.ConnectionError:
-        print(f"[{timestamp}] [ALERT] {url} ??Connection failed")
+        print(f"[{timestamp}] [ALERT] {url} —Connection failed")
     except requests.exceptions.RequestException as e:
-        print(f"[{timestamp}] [ALERT] {url} ??{e}")
+        print(f"[{timestamp}] [ALERT] {url} —{e}")
 ```
 
-### Step 2 ??Register jobs
+### Step 2 —Register jobs
 
 ```python
 schedule.every(30).seconds.do(check_site, url="https://www.python.org")
@@ -233,9 +231,9 @@ schedule.every(30).seconds.do(check_site, url="https://httpstat.us/200")
 schedule.every(30).seconds.do(check_site, url="https://this-domain-does-not-exist-xyz.com")
 ```
 
-The third URL is deliberately invalid ??you will see `[ALERT]` on the very first run.
+The third URL is deliberately invalid —you will see `[ALERT]` on the very first run.
 
-### Step 3 ??Run the main loop
+### Step 3 —Run the main loop
 
 ```python
 print("Website monitor started. Press Ctrl+C to stop.\n")
@@ -249,10 +247,10 @@ except KeyboardInterrupt:
     print("\nMonitor stopped. Goodbye.")
 ```
 
-### Step 4 ??Test the failure path
+### Step 4 —Test the failure path
 
 While the script is running, temporarily disconnect your Wi-Fi.
-You should see `[ALERT]` lines appear. Reconnect ??`[OK]` resumes without restarting.
+You should see `[ALERT]` lines appear. Reconnect —`[OK]` resumes without restarting.
 That is the practical payoff of defensive error handling in a long-running script.
 
 ---
@@ -260,10 +258,10 @@ That is the practical payoff of defensive error handling in a long-running scrip
 ## Checkpoints
 
 * [ ] **Pomodoro Timer**
-  Implement the [Pomodoro technique](https://en.wikipedia.org/wiki/Pomodoro_Technique): 25 minutes of focus, 5-minute break, ? 4, then a 15-minute long break.
+  Implement the [Pomodoro technique](https://en.wikipedia.org/wiki/Pomodoro_Technique): 25 minutes of focus, 5-minute break, × 4, then a 15-minute long break.
   Print a clear notification at each transition.
   Use **seconds** instead of minutes while testing (e.g., 25 seconds for "focus"), then switch to real minutes once it works.
-  *(Hint: this is sequential timing, not interval scheduling ??`time.sleep()` is the right tool here, not the `schedule` library. Recognizing which tool fits is part of the skill.)*
+  *(Hint: this is sequential timing, not interval scheduling —`time.sleep()` is the right tool here, not the `schedule` library. Recognizing which tool fits is part of the skill.)*
 
 * [ ] **Auto Currency Snapshot to Database**
   Combine M11 + M12 + M15.
