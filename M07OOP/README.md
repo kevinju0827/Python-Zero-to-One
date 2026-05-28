@@ -309,104 +309,114 @@ When AI generates a class you do not understand, ask:
 
 ## Guided Practice
 
-**Scenario:** A small community library tracks check-outs on a whiteboard. You offer to replace it with a Python script that manages the book collection, shows which titles are in or out at a glance, and lets staff search by title or author. We will build a **library book tracker** using a `Book` class and a `Library` class.
+**Scenario:** A small shop needs to track customer orders. Each order contains one or more items, each with a name, unit price, and quantity. You will build an **order management system** using an `OrderItem` class and an `Order` class.
 
-### Step 1 —Define the `Book` class
+### Step 1 —Define the `OrderItem` class
 
-Create `library_example.py`:
+Create `order_example.py`:
 
 ```python
-class Book:
-    def __init__(self, title, author, year):
-        self.title     = title
-        self.author    = author
-        self.year      = year
-        self.is_checked_out = False
+class OrderItem:
+    def __init__(self, name, price, quantity):
+        self.name     = name
+        self.price    = price
+        self.quantity = quantity
 
-    def checkout(self):
-        if self.is_checked_out:
-            print(f"'{self.title}' is already checked out.")
-        else:
-            self.is_checked_out = True
-            print(f"Checked out: '{self.title}'")
-
-    def return_book(self):
-        self.is_checked_out = False
-        print(f"Returned: '{self.title}'")
+    def total(self):
+        return self.price * self.quantity
 
     def __str__(self):
-        status = "OUT" if self.is_checked_out else "IN"
-        return f"[{status}] {self.title} —{self.author} ({self.year})"
+        return f"{self.name} x{self.quantity} @ ${self.price:.2f} = ${self.total():.2f}"
 ```
 
-### Step 2 —Define the `Library` class
+`total()` multiplies unit price by quantity —each item knows its own subtotal.
+
+### Step 2 —Define the `Order` class
 
 ```python
-class Library:
-    def __init__(self, name):
-        self.name  = name
-        self.books = []
+class Order:
+    def __init__(self, order_id):
+        self.order_id = order_id
+        self.items    = []
 
-    def add_book(self, book):
-        self.books.append(book)
-        print(f"Added: '{book.title}'")
+    def add_item(self, item):
+        self.items.append(item)
 
-    def show_all(self):
-        print(f"\n=== {self.name} ===")
-        if not self.books:
-            print("  No books.")
-        for book in self.books:
-            print(f"  {book}")
+    def total(self):
+        return sum(item.total() for item in self.items)
 
-    def search(self, keyword):
-        keyword = keyword.lower()
-        results = [b for b in self.books if keyword in b.title.lower() or keyword in b.author.lower()]
-        return results
+    def show(self):
+        print(f"\n=== Order #{self.order_id} ===")
+        if not self.items:
+            print("  No items.")
+            return
+        for item in self.items:
+            print(f"  {item}")
+        print(f"  {'-' * 32}")
+        print(f"  Total: ${self.total():.2f}")
+
+    def __str__(self):
+        return f"Order #{self.order_id} | {len(self.items)} item(s) | Total: ${self.total():.2f}"
 ```
+
+`Order.total()` calls `item.total()` on each `OrderItem` and sums the results.
 
 ### Step 3 —Use the classes together
 
 ```python
-lib = Library("City Library")
+order = Order(1001)
+order.add_item(OrderItem("Laptop",     999.00, 1))
+order.add_item(OrderItem("Mouse",       29.99, 2))
+order.add_item(OrderItem("USB-C Cable",  9.99, 3))
 
-lib.add_book(Book("Clean Code",          "Robert C. Martin", 2008))
-lib.add_book(Book("The Pragmatic Programmer", "Hunt & Thomas", 1999))
-lib.add_book(Book("Python Crash Course", "Eric Matthes",     2023))
-
-lib.show_all()
-
-lib.books[0].checkout()
-lib.books[0].checkout()   # Should print "already checked out"
-lib.show_all()
-
-lib.books[0].return_book()
-lib.show_all()
+order.show()
+print(order)
 ```
 
-### Step 4 —Add search and extend with inheritance
+Expected output:
+```
+=== Order #1001 ===
+  Laptop x1 @ $999.00 = $999.00
+  Mouse x2 @ $29.99 = $59.98
+  USB-C Cable x3 @ $9.99 = $29.97
+  --------------------------------
+  Total: $1088.95
+Order #1001 | 3 item(s) | Total: $1088.95
+```
+
+### Step 4 —Extend with inheritance: `DiscountOrder`
+
+Add a child class that applies a percentage discount to the order total:
 
 ```python
-results = lib.search("python")
-print(f"\nSearch 'python': {len(results)} result(s)")
-for b in results:
-    print(f"  {b}")
+class DiscountOrder(Order):
+    def __init__(self, order_id, discount_rate):
+        super().__init__(order_id)
+        self.discount_rate = discount_rate   # e.g. 0.10 for 10%
+
+    def total(self):
+        return super().total() * (1 - self.discount_rate)
+
+    def show(self):
+        print(f"\n=== Order #{self.order_id} (Discount: {self.discount_rate:.0%}) ===")
+        if not self.items:
+            print("  No items.")
+            return
+        for item in self.items:
+            print(f"  {item}")
+        subtotal = super().total()
+        print(f"  {'-' * 32}")
+        print(f"  Subtotal: ${subtotal:.2f}")
+        print(f"  Discount: -${subtotal * self.discount_rate:.2f}")
+        print(f"  Total:    ${self.total():.2f}")
+
+promo = DiscountOrder(1002, discount_rate=0.10)
+promo.add_item(OrderItem("Keyboard", 79.99, 1))
+promo.add_item(OrderItem("Monitor",  299.99, 1))
+promo.show()
 ```
 
-Now extend with an `EBook` that adds a `file_size_mb` attribute:
-
-```python
-class EBook(Book):
-    def __init__(self, title, author, year, file_size_mb):
-        super().__init__(title, author, year)
-        self.file_size_mb = file_size_mb
-
-    def __str__(self):
-        base = super().__str__()
-        return f"{base} [{self.file_size_mb} MB]"
-
-lib.add_book(EBook("Automate the Boring Stuff", "Al Sweigart", 2019, 3.2))
-lib.show_all()
-```
+`DiscountOrder` overrides `total()` and `show()` while reusing `add_item()` from `Order`.
 
 ---
 
