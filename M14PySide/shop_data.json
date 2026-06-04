@@ -1,0 +1,43 @@
+{
+  "month": "2026-06",
+  "kpis": { "revenue": 262150, "profit": 167520, "units": 3835, "margin": 63.9 },
+  "categories": [
+    { "category": "Beverages", "units": 1720, "color": "#5865f2" },
+    { "category": "Snacks",    "units": 900,  "color": "#f0b232" },
+    { "category": "Bakery",    "units": 855,  "color": "#23a55a" },
+    { "category": "Meals",     "units": 360,  "color": "#eb459e" }
+  ],
+  "daily": [
+    [1, 110], [2, 125], [3, 98], [4, 140], [5, 135], [6, 150], [7, 160],
+    [8, 120], [9, 130], [10, 105], [11, 145], [12, 138], [13, 155], [14, 168],
+    [15, 128], [16, 135], [17, 112], [18, 150], [19, 142], [20, 160], [21, 175],
+    [22, 132], [23, 140], [24, 118], [25, 152], [26, 148], [27, 165], [28, 180],
+    [29, 138], [30, 145]
+  ],
+  "products": [
+    { "name": "Latte",         "category": "Beverages", "in_qty": 900, "in_cost": 31500, "out_qty": 820, "revenue": 73800, "profit": 45100 },
+    { "name": "Americano",     "category": "Beverages", "in_qty": 660, "in_cost": 16500, "out_qty": 600, "revenue": 42000, "profit": 27000 },
+    { "name": "Sandwich",      "category": "Meals",     "in_qty": 240, "in_cost": 10800, "out_qty": 220, "revenue": 26400, "profit": 16500 },
+    { "name": "Croissant",     "category": "Bakery",    "in_qty": 480, "in_cost": 8640,  "out_qty": 440, "revenue": 24200, "profit": 16280 },
+    { "name": "Green Tea",     "category": "Beverages", "in_qty": 330, "in_cost": 6600,  "out_qty": 300, "revenue": 18000, "profit": 12000 },
+    { "name": "Cheesecake",    "category": "Bakery",    "in_qty": 180, "in_cost": 7200,  "out_qty": 165, "revenue": 18150, "profit": 11550 },
+    { "name": "Salad Bowl",    "category": "Meals",     "in_qty": 150, "in_cost": 7500,  "out_qty": 140, "revenue": 18200, "profit": 11200 },
+    { "name": "Chocolate Bar", "category": "Snacks",    "in_qty": 560, "in_cost": 5600,  "out_qty": 520, "revenue": 15600, "profit": 10400 },
+    { "name": "Bagel",         "category": "Bakery",    "in_qty": 270, "in_cost": 4050,  "out_qty": 250, "revenue": 12500, "profit": 8750 },
+    { "name": "Potato Chips",  "category": "Snacks",    "in_qty": 420, "in_cost": 5040,  "out_qty": 380, "revenue": 13300, "profit": 8740 }
+  ],
+  "records": [
+    { "date": "2026-06-30", "name": "Latte",         "category": "Beverages", "kind": "out", "qty": 32,  "unit": 90, "total": 2880 },
+    { "date": "2026-06-30", "name": "Croissant",     "category": "Bakery",    "kind": "out", "qty": 18,  "unit": 55, "total": 990 },
+    { "date": "2026-06-29", "name": "Americano",     "category": "Beverages", "kind": "out", "qty": 24,  "unit": 70, "total": 1680 },
+    { "date": "2026-06-29", "name": "Chocolate Bar", "category": "Snacks",    "kind": "out", "qty": 22,  "unit": 30, "total": 660 },
+    { "date": "2026-06-28", "name": "Sandwich",      "category": "Meals",     "kind": "out", "qty": 9,   "unit": 120, "total": 1080 },
+    { "date": "2026-06-28", "name": "Potato Chips",  "category": "Snacks",    "kind": "out", "qty": 15,  "unit": 35, "total": 525 },
+    { "date": "2026-06-15", "name": "Latte",         "category": "Beverages", "kind": "in",  "qty": 360, "unit": 35, "total": 12600 },
+    { "date": "2026-06-15", "name": "Cheesecake",    "category": "Bakery",    "kind": "in",  "qty": 72,  "unit": 40, "total": 2880 },
+    { "date": "2026-06-14", "name": "Green Tea",     "category": "Beverages", "kind": "out", "qty": 12,  "unit": 60, "total": 720 },
+    { "date": "2026-06-10", "name": "Salad Bowl",    "category": "Meals",     "kind": "out", "qty": 6,   "unit": 130, "total": 780 },
+    { "date": "2026-06-05", "name": "Bagel",         "category": "Bakery",    "kind": "out", "qty": 10,  "unit": 50, "total": 500 },
+    { "date": "2026-06-01", "name": "Latte",         "category": "Beverages", "kind": "in",  "qty": 360, "unit": 35, "total": 12600 }
+  ]
+}
