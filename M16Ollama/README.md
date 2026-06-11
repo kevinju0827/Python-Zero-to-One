@@ -1,23 +1,25 @@
-﻿# M16 Local AI (Ollama)
+# M16 Local AI (Ollama)
 
 ![Module 16 of 16](https://img.shields.io/badge/Module-16_of_16-6366f1?style=flat-square)
 ![Intermediate](https://img.shields.io/badge/Difficulty-Intermediate-facc15?style=flat-square)
-![1.5 hours](https://img.shields.io/badge/Time-1.5_hours-60a5fa?style=flat-square)
-![Prerequisites: M15 — requests & schedule](https://img.shields.io/badge/Prerequisites-M15:_requests_%26_schedule-94a3b8?style=flat-square)
+![2 hours](https://img.shields.io/badge/Time-2_hours-60a5fa?style=flat-square)
+![Prerequisites: M11 — Web Requests](https://img.shields.io/badge/Prerequisites-M11:_Web_Requests-94a3b8?style=flat-square)
 
-**Topics covered:** local LLMs · Ollama setup · calling the API with `requests` · streaming vs. non-streaming · prompt engineering · defensive error handling · integrating AI into automation pipelines
+**Topics covered:** local LLMs · Ollama setup · the `ollama` library · messages & roles · system prompts · prompt engineering · `format="json"` structured output · `temperature` · streaming · defensive AI calls
 
 ## The Why?
 
-Throughout this course you have used cloud AI (Gemini, ChatGPT) as a collaborator. That works beautifully for learning. In real production work, three problems quickly surface:
+This course began with a promise: use AI to help you write programs. This final module flips it around — **your programs use AI**.
 
-- **Privacy:** pasting customer emails, medical records, or legal documents into a cloud service may violate laws or contracts.
-- **Cost:** every API call costs money. A script classifying 100,000 support tickets per day adds up fast.
-- **Reliability:** cloud APIs go down, change pricing, or deprecate the model your code depends on —sometimes overnight.
+Every program you have written so far computes with *structured* data: numbers, exact strings, rows, JSON keys. Show it a sentence like *"Waited twenty-five minutes for my food and the staff never even apologized"* and it is helpless — no `if` statement can tell you this customer is angry about service. A Large Language Model can. Plugging one into your code gives your programs a new ability: **reading messy human text** — classifying it, summarizing it, rewriting it, extracting data from it.
 
-**Ollama** solves all three. It runs Large Language Models (Llama 3, Mistral, Gemma, Phi, and many others) entirely on your machine. The model file lives on your disk, inference happens on your CPU/GPU, and zero data leaves your machine. The cost is zero. The service cannot disappear because *you* are the service.
+You could do this with a cloud API (ChatGPT, Gemini, Claude). But cloud AI has three problems for real work:
 
-In this module, you will combine everything you learned about `requests` (M11) with a locally running AI to build the kind of small AI-powered tools that used to require an entire ML team.
+- **Privacy:** pasting customer emails or medical records into a cloud service may violate laws or contracts.
+- **Cost:** every call costs money. Classifying 100,000 support tickets a day adds up fast.
+- **Reliability:** cloud APIs go down, change pricing, or retire the model your code depends on — sometimes overnight.
+
+**Ollama** removes all three. It runs open models (Qwen, Llama, Gemma, Mistral...) entirely on your machine: the model file lives on your disk, zero data leaves your computer, and the price is zero. You will combine it with M11's API skills and M10's CSV + JSON to build the kind of small AI-powered tool that used to require an ML team.
 
 ---
 
@@ -25,181 +27,341 @@ In this module, you will combine everything you learned about `requests` (M11) w
 
 ### What Is an LLM, Really?
 
-A Large Language Model is a program that, given some text, predicts what text is most likely to come next. That prediction is informed by hundreds of billions of words the model was trained on, so the "most likely continuation" of a prompt like:
+A Large Language Model is a program that, given some text, predicts what text most likely comes next — informed by the billions of words it was trained on. The "most likely continuation" of *"Summarize this email in one sentence:"* turns out to be a genuinely useful summary.
 
-> *"Summarize this email in one polite sentence: —*
+What matters for using one in code:
 
-turns out to be a genuinely useful summary.
-
-What matters for practical use:
-- The model is a **function**: text in —text out.
-- The same prompt may produce slightly different outputs each run —LLMs are non-deterministic.
-- Output quality is largely determined by prompt quality.
+- The model is a **function**: text in → text out. Nothing magical at the calling end.
+- The same prompt can produce **different output each run** — LLMs are non-deterministic.
+- It **predicts plausible text; it does not look up facts**. It will state wrong things confidently (a "hallucination"). Never treat its output as verified truth.
+- Output quality is mostly determined by **prompt quality** — that is the skill you are training here.
 
 ---
 
-### Installing Ollama
+### Installing Ollama and Pulling a Model
 
-1. Download from **[ollama.com](https://ollama.com/)** and run the installer.
-2. Pull a model (one-time download, a few GB):
-   ```bash
-   ollama pull llama3
-   ```
-3. Verify it works:
-   ```bash
-   ollama run llama3
-   ```
-   Type a question and press Enter. You should see the model responding.
+1. Download from **[ollama.com](https://ollama.com/)** and run the installer. Ollama then runs in the background.
+2. Download a model (one-time, a few GB — do this on good Wi-Fi):
 
-Once installed, Ollama runs in the background as a local HTTP server at `http://localhost:11434` —the same kind of API you called in M11.
+   ```bash
+   ollama pull qwen2.5:7b
+   ```
+
+3. Smoke-test it in the terminal:
+
+   ```bash
+   ollama run qwen2.5:7b
+   ```
+
+   Type a question, get an answer, then exit with `/bye`.
+
+**Why `qwen2.5:7b`?** It is a strong all-round small model that follows formatting instructions well — exactly what you need when code, not a human, reads the output. It needs roughly 8 GB of RAM. Alternatives:
+
+| Model | Size | RAM | Notes |
+|-------|------|-----|-------|
+| `qwen2.5:7b` | ~4.7 GB | 8 GB+ | Best instruction-following of the three — course default |
+| `qwen2.5:3b` | ~1.9 GB | 4 GB+ | Same family, lighter machines |
+| `llama3.2:3b` | ~2 GB | 4 GB+ | Popular lightweight alternative |
+
+Everything in this module works with any of them — change one string.
 
 ---
 
-### Calling Ollama from Python
+### Ollama Is a Server (You Have Built One of These)
 
-The key endpoint is `POST /api/generate`:
+When Ollama is running, it listens at `http://localhost:11434` — a REST API on your own machine, exactly the kind you *called* in M11 and *built* in M13:
+
+```
+your script  ──HTTP──▶  Ollama server (localhost:11434)  ──▶  model on your disk
+     ◀──────────────────  generated text  ◀─────────────────────┘
+```
+
+Nothing new conceptually. The only difference from M11: this API speaks human language.
+
+---
+
+### First Call from Python
+
+Install the official client:
+
+```bash
+pip install ollama
+```
 
 ```python
-import requests
+import ollama
 
-response = requests.post(
-    "http://localhost:11434/api/generate",
-    json={
-        "model": "llama3",
-        "prompt": "Explain recursion in one sentence.",
-        "stream": False,   # Wait for the full response
-    },
-    timeout=120,           # Local models can be slow on modest hardware
+response = ollama.chat(
+    model="qwen2.5:7b",
+    messages=[
+        {"role": "user", "content": "What is a variable in Python?"},
+    ],
 )
-response.raise_for_status()
-print(response.json()["response"])
+print(response["message"]["content"])
 ```
 
-The key you almost always need is `"response"` —the model's text output.
+```
+In Python, a variable is a name that refers to a value stored in memory.
+Variables allow you to store data so that it can be manipulated and used
+throughout your program. Here are some key points about variables in Python:
+
+1. **Dynamic Typing**: Python is dynamically typed, meaning you don't need
+   to declare the type of a variable when you create it. ...
+```
+
+...followed by roughly **forty more lines** of bullet points and code samples.
+
+That is the entire core API. `messages` is a list of dictionaries (M04), the reply comes back as a dictionary, and the text lives at `["message"]["content"]`.
+
+(Look closely at that output. You asked a simple question and got an essay. Hold that thought — the next section gives you the control panel.)
+
+> **Under the hood** it is just M11: the library sends `requests.post("http://localhost:11434/api/chat", json={...})` for you. You could write this module with raw `requests` — the package only saves boilerplate. AI calls are API calls; there is no magic layer.
 
 ---
 
-### Streaming vs. Non-Streaming
+### Messages and Roles — How Conversations Work
 
-| Mode | Behavior | Best for |
-|------|----------|---------|
-| `"stream": False` | Wait for full response, receive one JSON object | Scripts, batch jobs |
-| `"stream": True` | Receive chunks as they are generated (word by word) | Interactive chat UIs |
+Each message dictionary has a `role`:
 
-For learning and automation scripts, use `stream: False` —simpler to handle.
+| Role | Who is speaking | Used for |
+|------|-----------------|---------|
+| `system` | You, setting the rules | Personality, tone, language, output format — obeyed for the whole conversation |
+| `user` | The human | Questions, input data |
+| `assistant` | The model | Its previous replies |
 
----
-
-### Prompt Engineering —Three Rules That Cover 80% of Cases
-
-**1. Give the model a role:**
-
-```
-You are a professional customer-success specialist.
-Rewrite the following email to be polite, warm, and concise.
-```
-
-**2. Be explicit about the output format:**
-
-```
-Return ONLY a JSON object in this exact shape, no extra commentary:
-{"category": "...", "priority": "high|medium|low"}
-```
-
-**3. Provide an example (few-shot prompting):**
-
-```
-Classify the ticket as 'billing', 'technical', or 'other'.
-
-Example:
-Ticket: "My invoice shows the wrong amount."
-Category: billing
-
-Now classify:
-Ticket: "{ticket_text}"
-Category:
-```
-
----
-
-### Defensive Calls —When Ollama Is Not Running
+The `system` message is your control panel. Left to its own devices the model fills every unstated gap with maximum helpfulness — that forty-line essay you just got. Set the rules once and they hold for the whole conversation:
 
 ```python
-def ask_llm(prompt: str) -> str:
-    try:
-        resp = requests.post(
-            "http://localhost:11434/api/generate",
-            json={"model": "llama3", "prompt": prompt, "stream": False},
-            timeout=120,
-        )
-        resp.raise_for_status()
-        return resp.json()["response"].strip()
-    except requests.exceptions.ConnectionError:
-        return "[Error] Cannot reach Ollama. Is it running?"
-    except requests.exceptions.HTTPError as e:
-        return f"[Error] HTTP {e.response.status_code}. Did you run `ollama pull llama3`?"
-    except requests.exceptions.Timeout:
-        return "[Error] Model timed out. Try a shorter prompt or a smaller model."
+messages = [
+    {"role": "system", "content": "You are a teaching assistant for absolute "
+                                  "beginners. Always answer in one short "
+                                  "sentence, with no code and no markdown."},
+    {"role": "user",   "content": "What is a variable in Python?"},
+]
 ```
+
+```
+A variable in Python is a name that refers to a value or object.
+```
+
+Same model, same question — one sentence instead of an essay. Every serious AI application you have used has a system prompt working behind the scenes like this.
+
+Second key fact: **the model has no memory.** Every call starts from zero. A "conversation" is an illusion you maintain by resending the whole history each time:
+
+```python
+messages.append({"role": "assistant", "content": reply})                    # What it said
+messages.append({"role": "user", "content": "Can you give an example?"})    # Your follow-up
+response = ollama.chat(model="qwen2.5:7b", messages=messages)               # Send EVERYTHING again
+```
+
+The model only "remembers" what is inside the list you send. (This also explains why long chats get slow — the input keeps growing.)
+
+---
+
+### Prompt Engineering — The Four Building Blocks
+
+A prompt that works once is luck; a prompt that works every time is engineering. Reliable prompts are assembled from four building blocks:
+
+**1. Instruction — what to do.** The task itself, stated as one clear command. Verb first, specific, no ambiguity:
+
+```
+Classify the customer review below.
+```
+
+Weak instructions produce wandering answers. "Tell me about this review" invites an essay; "Classify the review" demands a verdict.
+
+**2. Constraints — the rules of the answer.** Format, length, allowed values, what NOT to do. The model fills every unstated gap with chattiness ("Sure! Here is the classification you asked for..."), so if code will read the output, leave no room:
+
+```
+Return ONLY the category name. No explanation, no other text.
+The category MUST be one of: food, service, environment, price.
+```
+
+**3. Context — what the model needs to know.** The background that shapes judgment: who the model is supposed to be (a role/persona), the situation, and the input data itself. Quality jumps when the model knows whose eyes to look through:
+
+```
+You are a cafe manager with ten years of experience, skilled at spotting
+concrete, fixable problems in customer feedback.
+
+Review: "{text}"
+```
+
+**4. Examples — show, don't just tell.** One worked example (called *few-shot prompting*) beats three sentences of description, especially for format or edge cases words struggle to pin down:
+
+```
+Example:
+Review: "Great coffee but the barista was rude." → service
+```
+
+Assembled, the four blocks make one prompt:
+
+```
+You are a cafe manager reviewing customer feedback.            ← context (role)
+
+Classify the review as: food, service, environment, or price.  ← instruction
+
+Return ONLY the category name. No explanation.                 ← constraints
+
+Example:                                                       ← examples
+Review: "Great coffee but the barista was rude." → service
+
+Review: "{text}" →                                             ← context (data)
+```
+
+Not every prompt needs all four — a simple task may skip the examples, a general question may skip constraints. But when a prompt misbehaves, debug it like code: check the blocks one at a time. *Is the instruction one clear task? Did a constraint get left unstated? Is context missing? Would one example settle it?*
+
+---
+
+### Structured Output — Turning Text into Data
+
+The single most useful trick in this module. Free-text replies are for humans; **your program needs data**. Ask for JSON and pass `format="json"`, which forces Ollama to emit syntactically valid JSON:
+
+```python
+import json
+
+prompt = """Analyze this review. Reply with ONLY JSON in this format:
+{"sentiment": "positive|negative|neutral", "category": "food|service|environment|price"}
+
+Review: "Waited twenty-five minutes for my food and the staff never even apologized.\""""
+
+response = ollama.chat(
+    model="qwen2.5:7b",
+    messages=[{"role": "user", "content": prompt}],
+    format="json",                  # Guarantee valid JSON syntax
+    options={"temperature": 0},     # Classification wants consistency, not creativity
+)
+result = json.loads(response["message"]["content"])   # M10's json — full circle
+print(result["sentiment"], result["category"])        # → negative service
+```
+
+Now the LLM is a normal function returning a dictionary — you can `if` on it, count it, store it in SQLite (M12), or chart it with M15's pandas. This pattern (LLM + JSON + loop) is the backbone of nearly every real-world "AI feature."
+
+About `temperature`: it controls randomness. `0` = pick the most likely token every time (classification, extraction); higher (`0.7`–`1.0`, the default range) = varied, creative output (writing, brainstorming). One number, two different tools.
+
+> `format="json"` guarantees *valid JSON syntax* — it does not guarantee the **keys or values** you asked for. The model can still return `{"feeling": "bad"}`. Spell out the exact shape in the prompt, and validate before trusting (next section).
+
+---
+
+### Defensive AI Calls — Three Ways It Fails
+
+A local AI call has all of M08's failure modes plus one new one:
+
+```python
+import json
+import ollama
+
+def ask(prompt: str) -> dict:
+    try:
+        response = ollama.chat(
+            model="qwen2.5:7b",
+            messages=[{"role": "user", "content": prompt}],
+            format="json",
+        )
+        return json.loads(response["message"]["content"])
+    except ConnectionError:
+        # 1. Ollama is not running
+        raise SystemExit("[Error] Cannot reach Ollama — start it first.")
+    except ollama.ResponseError as e:
+        # 2. Model not pulled / bad request — e.g. "model 'xx' not found (status code: 404)"
+        raise SystemExit(f"[Error] {e.error}")
+    except json.JSONDecodeError:
+        # 3. Output was not the JSON we hoped for
+        return {"sentiment": "unknown", "category": "unknown"}
+```
+
+And the failure no `except` can catch: **the model answered fluently and was wrong.** Treat LLM output the way you treat user input — validate what you can, never execute it blindly, and keep a human in the loop for decisions that matter.
+
+---
+
+### Streaming — Watching the Answer Arrive
+
+By default `ollama.chat` waits for the *complete* answer — on a slow laptop a long reply means ten silent seconds. `stream=True` returns chunks as they are generated, like ChatGPT's typing effect:
+
+```python
+for chunk in ollama.chat(
+    model="qwen2.5:7b",
+    messages=[{"role": "user", "content": "Suggest three ways to practice Python."}],
+    stream=True,
+):
+    print(chunk["message"]["content"], end="", flush=True)   # No newline between chunks
+print()
+```
+
+Rule of thumb: **streaming for humans watching, non-streaming for scripts parsing.** (You cannot `json.loads` half an answer — batch jobs like the Guided Practice use `stream=False`.)
 
 ---
 
 ## Going Further
 
 <details>
-<summary>The Chat Endpoint (`/api/chat`)</summary>
+<summary>The Raw REST API — No Package Required</summary>
 
-For multi-turn conversations, use `/api/chat` instead of `/api/generate`:
+Everything the `ollama` package does, `requests` can do directly — useful on machines where you cannot install extra packages, or just to prove there is no magic:
 
 ```python
-messages = [
-    {"role": "system", "content": "You are a concise Python tutor."},
-    {"role": "user",   "content": "What is a list comprehension?"},
-]
+import requests
 
 resp = requests.post(
     "http://localhost:11434/api/chat",
-    json={"model": "llama3", "messages": messages, "stream": False},
-    timeout=120,
+    json={
+        "model": "qwen2.5:7b",
+        "messages": [{"role": "user", "content": "What is an API?"}],
+        "stream": False,
+    },
+    timeout=120,    # Local models can be slow on modest hardware
 )
+resp.raise_for_status()
 print(resp.json()["message"]["content"])
 ```
 
 </details>
 
 <details>
-<summary>Structured JSON Output</summary>
-
-When you need machine-readable output, force JSON in the prompt AND parse the result:
+<summary>Tuning Generation with options</summary>
 
 ```python
-import json
-
-prompt = """Classify this ticket as exactly one of: billing, technical, other.
-Return ONLY: {"category": "..."}
-Ticket: "I can't log in after the password reset."""
-
-raw = ask_llm(prompt)
-try:
-    result = json.loads(raw)
-    print(result["category"])
-except json.JSONDecodeError:
-    print("Model did not return valid JSON:", raw)
+options={
+    "temperature": 0.2,   # 0 = deterministic, ~1 = creative
+    "num_predict": 200,   # Cap the reply length (tokens)
+    "num_ctx": 8192,      # Context window — how much input the model can see
+}
 ```
+
+If long prompts seem "forgotten", you ran past `num_ctx` — the model literally never saw the start of your text.
 
 </details>
 
 <details>
-<summary>Choosing a Model</summary>
+<summary>Vision — Models That Read Images</summary>
 
-| Model | Size | Good for |
-|-------|------|---------|
-| `llama3` | ~4 GB | General-purpose, good quality |
-| `phi3` | ~2 GB | Faster on low-RAM machines |
-| `mistral` | ~4 GB | Instruction following |
-| `gemma2` | ~5 GB | Google's open model |
+Multimodal models accept image files alongside text:
 
-Start with `phi3` if your machine has less than 8 GB RAM.
+```python
+response = ollama.chat(
+    model="gemma3:4b",     # A vision-capable model (ollama pull gemma3:4b)
+    messages=[{
+        "role": "user",
+        "content": "Describe this image in one paragraph.",
+        "images": ["photo.jpg"],
+    }],
+)
+```
+
+Receipt readers, photo organizers, chart describers — same pattern, one extra key.
+
+</details>
+
+<details>
+<summary>Same Pattern, Cloud Models</summary>
+
+The `messages`/roles structure you learned here is the de-facto industry standard — OpenAI, Anthropic, and Google APIs all look nearly identical. Swap the client and add an API key, and your Ollama code becomes cloud code. Learn once, call anything.
+
+</details>
+
+<details>
+<summary>Choosing Models — ollama.com/library</summary>
+
+Browse **[ollama.com/library](https://ollama.com/library)**. Reading a listing: `7b` = 7 billion parameters (bigger = smarter = slower = more RAM); tags like `instruct` (tuned to follow instructions — what you want) vs `base` (raw text predictor — not what you want). Rough RAM rule: model file size + 2–3 GB headroom.
 
 </details>
 
@@ -207,10 +369,10 @@ Start with `phi3` if your machine has less than 8 GB RAM.
 <summary>Combining Modules in a Pipeline</summary>
 
 The real power comes from chaining modules:
-- **M15 (schedule):** run the pipeline on a timer
 - **M11 (requests):** fetch data to process
 - **M16 (Ollama):** classify or summarize each item
 - **M12 (SQLite):** store the results
+- **M15 (pandas):** analyze and chart what accumulated
 
 This is the architecture of a real data-enrichment pipeline.
 
@@ -220,78 +382,195 @@ This is the architecture of a real data-enrichment pipeline.
 
 ## Guided Practice
 
-**Scenario:** A colleague writes technically correct but cold emails. We want a tool that polishes the tone automatically, without any data leaving the machine. We will build a **polite-email rewriter** —the kind of internal tool a customer-success team would use daily.
+**Scenario:** a cafe owner hands you `reviews.csv` (in this folder) — 40 free-text customer reviews. She wants to know: *is feedback mostly positive? What do unhappy customers complain about?* No loop or `if` can read prose — and doing it by hand means reading all 40, judging each one, and typing the verdicts into a spreadsheet: half an hour of mind-numbing clerical work, with drifting standards as you get bored. You will build an **AI review analyzer** instead: each review goes to the local LLM, comes back as structured JSON, and a counting loop turns the pile into answers — a few unattended minutes, identical criteria for review #1 and review #40. And when next month brings 400 reviews, the same script still costs you zero extra effort.
 
-### Step 1 —Write the prompt
+The finished script is `review_analyzer_example.py`. Build it step by step:
 
-Create `email_polisher_example.py`. The prompt defines the model's role and output format:
+### Step 1 — Smoke test the connection
+
+Create `review_analyzer_example.py`. Before building anything, prove the plumbing works:
 
 ```python
-SYSTEM_PROMPT = """You are an experienced customer-success specialist.
-Rewrite the following email to be polite, warm, and professional.
-Return ONLY the rewritten email body. No subject line. No commentary."""
+import ollama
+
+response = ollama.chat(
+    model="qwen2.5:7b",
+    messages=[{"role": "user", "content": "Say one short sentence to prove you are alive."}],
+)
+print(response["message"]["content"])
 ```
 
-### Step 2 —Build the rewrite function
+Run it. If you get a sentence, the whole stack works — Python → Ollama server → model → back. If it dies with `ConnectionError`, start Ollama; with `ResponseError ... not found`, you have not pulled the model.
+
+### Step 2 — Design the prompt
+
+The prompt is the heart of the tool — role + task + exact output shape, with the review text injected by `str.format()` (the doubled `{{ }}` braces survive as literal braces):
 
 ```python
-import requests
+PROMPT_TEMPLATE = """You are a review analyst for the restaurant industry.
+Analyze the customer review below. Reply with ONLY JSON, no other text,
+in exactly this format:
+{{"sentiment": "positive, negative or neutral",
+  "category": "food, service, environment or price",
+  "summary": "a summary in ten words or fewer"}}
 
-def polish_email(draft: str) -> str:
-    prompt = f"{SYSTEM_PROMPT}\n\nOriginal email:\n{draft}"
+"category" MUST be exactly one of: food, service, environment, price.
+Pick the closest one.
+
+Review: "{review}\""""
+```
+
+Map this onto the four building blocks from Core Concepts: the **context** ("You are a review analyst...", plus the review itself at the bottom), the **instruction** ("Analyze the customer review below"), and the **constraints** ("ONLY JSON", the exact key shape, the MUST list). One block is missing — **examples**. That is a deliberate choice, not an oversight: `format="json"` plus tight constraints already pin the output down, and each example would be re-sent on every one of the 40 calls. Start without examples; add one only if the model strays.
+
+That blunt `MUST be exactly one of` line earned its place: without it, this exact script once classified a review's category as `"overall experience"` — a value we never offered. `format="json"` guaranteed the *syntax*; only the prompt pins down the *values*. When a model strays, tighten the prompt.
+
+### Step 3 — Wrap the call in a defensive function
+
+```python
+import json
+
+def analyze_review(review: str) -> dict:
+    """Send one review to the local LLM and return the parsed verdict."""
     try:
-        resp = requests.post(
-            "http://localhost:11434/api/generate",
-            json={"model": "llama3", "prompt": prompt, "stream": False},
-            timeout=120,
+        resp = ollama.chat(
+            model="qwen2.5:7b",
+            messages=[{"role": "user",
+                       "content": PROMPT_TEMPLATE.format(review=review)}],
+            format="json",                  # Valid JSON syntax, guaranteed
+            options={"temperature": 0},     # Same review → same verdict
         )
-        resp.raise_for_status()
-        return resp.json()["response"].strip()
-    except requests.exceptions.ConnectionError:
-        return "[Error] Ollama is not running. Start it from the menu bar."
-    except requests.exceptions.Timeout:
-        return "[Error] Model took too long. Try a shorter email."
+        return json.loads(resp["message"]["content"])
+    except ConnectionError:
+        raise SystemExit("[Error] Cannot reach Ollama — start Ollama first.")
+    except ollama.ResponseError as e:
+        raise SystemExit(f"[Error] {e.error} — did you `ollama pull qwen2.5:7b`?")
+    except json.JSONDecodeError:
+        return {"sentiment": "unknown", "category": "unknown",
+                "summary": "(could not parse model output)"}
 ```
 
-### Step 3 —Test with contrasting drafts
+Test it on one review before looping — always:
 
 ```python
-drafts = [
-    "Refund not possible. Ticket closed.",
-    "Auth token expired. API rejected. Check logs and fix config.",
-]
-
-for draft in drafts:
-    print("--- Original ---")
-    print(draft)
-    print("\n--- Polished ---")
-    print(polish_email(draft))
-    print()
+print(analyze_review("Waited twenty-five minutes for my food "
+                     "and the staff never even apologized."))
+# → {'sentiment': 'negative', 'category': 'service', 'summary': 'Long wait no apology'}
 ```
 
-### Step 4 —Compare the outputs
+### Step 4 — Loop over the CSV
 
-Run the script. Compare how the model changed tone while preserving meaning. Notice how the role instruction (`"customer-success specialist"`) and the format instruction (`"Return ONLY the rewritten email"`) guide the output. Try removing them and see how the output changes.
+M10's `csv.DictReader` loads the reviews, a plain `for` loop feeds them to the model (M05). As each verdict comes back, `row.update(verdict)` bolts the three new keys onto the original row — text and judgment travel together from here on. Print progress as you go — at a few seconds per review, a silent loop feels broken:
+
+```python
+import csv
+
+with open("reviews.csv", encoding="utf-8-sig", newline="") as f:
+    reviews = list(csv.DictReader(f))
+
+print(f"Analyzing {len(reviews)} reviews — local models take a moment per review...\n")
+
+report = []
+for i, row in enumerate(reviews, start=1):
+    verdict = analyze_review(row["review"])
+    row.update(verdict)         # Verdict columns join the original columns
+    report.append(row)
+    print(f"[{i:>2}/{len(reviews)}] {row['sentiment']:<8} | "
+          f"{row['category']:<11} | {row['summary']}")
+```
+
+```
+[ 1/40] positive | food        | Excellent coffee quality
+[ 2/40] negative | service     | Long wait no apology
+[ 3/40] neutral  | environment | Good for working quietly
+[ 4/40] negative | price       | Expensive drink
+...
+[26/40] negative | food        | Hair found in sandwich
+...
+[40/40] positive | price       | Fair prices with reliable quality
+```
+
+Go get some water and watch it work through the pile. Forty pieces of prose are becoming forty rows of data — the boring half hour the owner dreaded, running by itself while you stretch.
+
+### Step 5 — Summarize and export
+
+`report` is a list of dictionaries, and the owner's questions are counting questions — M04's `dict.get()` trick handles them. Write one small helper instead of two copy-pasted loops (M06's DRY principle):
+
+```python
+def count_by(rows: list, key: str) -> dict:
+    """Count how many rows share each value of `key`, e.g. {'negative': 18}."""
+    counts = {}
+    for row in rows:
+        value = row[key]
+        counts[value] = counts.get(value, 0) + 1
+    return counts
+```
+
+Export the enriched table with M10's `csv.DictWriter`, then answer the questions:
+
+```python
+with open("reviews_analyzed.csv", "w", encoding="utf-8-sig", newline="") as f:
+    writer = csv.DictWriter(f, fieldnames=report[0].keys())
+    writer.writeheader()
+    writer.writerows(report)
+
+print("\n=== Sentiment overview ===")
+sentiments = count_by(report, "sentiment")
+for sentiment in sorted(sentiments, key=sentiments.get, reverse=True):
+    print(f"{sentiment:<10} {sentiments[sentiment]}")
+
+print("\n=== What do negative reviews complain about? ===")
+negative_rows = []
+for row in report:
+    if row["sentiment"] == "negative":
+        negative_rows.append(row)
+categories = count_by(negative_rows, "category")
+for category in sorted(categories, key=categories.get, reverse=True):
+    print(f"{category:<12} {categories[category]}")
+```
+
+(`sorted(sentiments, key=sentiments.get, reverse=True)` sorts the dictionary's keys by their counts, biggest first — handy for any "ranking" printout.)
+
+```
+=== Sentiment overview ===
+negative   18
+positive   15
+neutral    7
+
+=== What do negative reviews complain about? ===
+food         6
+service      4
+price        4
+environment  4
+```
+
+The owner's answer, measured: feedback leans negative, and food complaints lead. Open `reviews_analyzed.csv` in Excel and admire it: original text on the left, machine-readable verdicts on the right — the spreadsheet she would have spent her evening typing. You have built a pipeline no module could build alone — M10's CSV and JSON, M11's API thinking, M08's defensive calls, and an AI that reads. **That is Zero to One.** (And if you want charts of these counts, the `report` list is one `pd.DataFrame(report)` away from everything you learned in M15.)
+
+### Step 6 — Break it on purpose
+
+Three experiments, one minute each:
+
+1. Quit Ollama and run the script — confirm your `ConnectionError` message appears instead of a traceback.
+2. Change the model name to `qwen99` — confirm the `ResponseError` path.
+3. Set `temperature` to `1.0` and rerun twice — watch verdicts wobble between runs, then put `0` back. Now you know *why* it was there.
 
 ---
 
 ## Checkpoints
 
-* [ ] **Customer Ticket Triage**
-  Create a `tickets.txt` with at least 8 lines —one ticket subject per line, mixing billing problems, password resets, feature requests, and spam.
-  For each line, use few-shot prompting to ask the LLM to classify it as: `billing`, `account`, `feature_request`, or `other`.
-  Print a summary: `"Processed 8 tickets —billing: 3, account: 2, feature_request: 1, other: 2"`
-  *(Hint: use `collections.Counter` to tally the categories.)*
+* [ ] **Polite Email Polisher**
+  Build a tool that rewrites blunt emails. System prompt: an experienced customer-success specialist; rule: return ONLY the rewritten email, keeping the original meaning.
+  Test with contrasting drafts like `"Refund not possible. Ticket closed."` and `"I can't finish the report today. I'll do it whenever I have time."`.
+  Then delete the system prompt and rerun — observe concretely what it was doing for you.
 
 * [ ] **Local Code Reviewer**
-  Build a script that reads a Python file (path from `input()`).
-  Send the file contents to the LLM with a prompt asking for the top 3 concrete improvements, referencing specific function names or line numbers.
-  Print the review.
-  Try it on your M10 or M12 script —evaluate whether the suggestions are useful.
+  Read any of your earlier `.py` files (path from `input()`), send the code to the LLM, and ask for the top 3 concrete improvements referencing specific function names or line numbers.
+  Use `stream=True` so the review types out live.
+  Judge the output critically: which suggestions are genuinely useful, and which are confident nonsense?
 
 * [ ] **Daily News Digest with Sentiment**
-  Combine M11 + M12 + M15 + M16.
-  Every morning on a schedule, fetch the top 5 headlines from `https://hn.algolia.com/api/v1/search?tags=front_page` (Hacker News, no key needed).
-  For each headline, ask the local LLM to classify sentiment (`positive`, `negative`, `neutral`) and summarize in one sentence.
-  Store results in a SQLite table `headlines(id, fetched_on, title, sentiment, summary)`.
+  Combine M11 + M12 + M16.
+  Fetch the top 5 headlines from `https://hn.algolia.com/api/v1/search?tags=front_page` (Hacker News, no key needed).
+  For each, have the LLM return JSON: a sentiment (`positive`/`negative`/`neutral`) and a one-sentence summary.
+  Store everything in a SQLite table `headlines(id, fetched_on, title, sentiment, summary)`.
   Print: `"Today's mood: 3 positive, 1 neutral, 1 negative."`
+  Bonus: after collecting a few days, chart the sentiment mix over time with M15's pandas.

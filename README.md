@@ -5,7 +5,7 @@
 This course takes you from knowing nothing about code (**Zero**) to building your first Python application (**One**).
 You will learn how to use AI to generate rapid prototypes, then refine those outputs into reliable code by understanding the syntax and logic behind them.
 
-**Total estimated time: ~28 hours across 16 modules.**
+**Total estimated time: ~25 hours across 16 modules.**
 
 ---
 
@@ -90,7 +90,7 @@ graph LR
     end
     subgraph "Applications (M14–M16)"
         M13 --> M14["M14\nGUI"]
-        M14 --> M15["M15\nScheduling"]
+        M14 --> M15["M15\nData Analysis"]
         M15 --> M16["M16\nLocal AI"]
     end
 ```
@@ -111,8 +111,8 @@ graph LR
 | M12 | **[Database](M12Database/README.md)** | SQLite · `sqlite3` · SQL CRUD · parameterized queries · `commit()` · `WHERE` / `ORDER BY` | ~2 hr |
 | M13 | **[Web API](M13FastAPI/README.md)** | FastAPI · Uvicorn · routes · path/query params · Pydantic · status codes · Swagger UI | ~2 hr |
 | M14 | **[GUI Development](M14PySide/README.md)** | PySide6 · widgets · layouts · signals & slots · `QMessageBox` | ~2 hr |
-| M15 | **[Scheduling](M15Schedule/README.md)** | `time.sleep()` · `schedule` library · long-running scripts · graceful shutdown | ~1.5 hr |
-| M16 | **[Local AI (Ollama)](M16Ollama/README.md)** | LLMs locally · Ollama API · prompt engineering · streaming · defensive calls | ~1.5 hr |
+| M15 | **[Data Analysis & Visualization](M15DataAnalysis/README.md)** | `pandas` · DataFrame · filtering · `numpy` vectorization · `groupby()` · `matplotlib` charts | ~2 hr |
+| M16 | **[Local AI (Ollama)](M16Ollama/README.md)** | local LLMs · `ollama` library · messages & roles · prompt engineering · JSON output · streaming | ~2 hr |
 
 ---
 
@@ -153,9 +153,10 @@ Every module contains the same five sections, so you always know where to look:
 | `beautifulsoup4` | M11 | HTML parsing / web scraping |
 | `fastapi`, `uvicorn` | M13 | Building REST APIs |
 | `PySide6` | M14 | Desktop GUI applications |
-| `schedule` | M15 | Human-readable task scheduling |
-| `ollama` / local API | M16 | Running LLMs locally via Ollama |
-| `pyautogui` | M17 | Mouse and keyboard automation |
+| `pandas` | M15 | DataFrames — filtering, grouping, analysis |
+| `numpy` | M15 | Vectorized math engine under pandas (installed with it) |
+| `matplotlib` | M15 | Charts and visualization |
+| `ollama` | M16 | Python client for locally running LLMs |
 
 ### Practice APIs & Datasets
 
@@ -164,8 +165,9 @@ Every module contains the same five sections, so you always know where to look:
 | [JSONPlaceholder](https://jsonplaceholder.typicode.com/) | M11 | Fake REST API — free CRUD practice |
 | [Frankfurter](https://www.frankfurter.app/) | M11 | Live currency exchange rates, no key needed |
 | [Books to Scrape](https://books.toscrape.com/) | M11 | Safe HTML scraping practice target |
-| [Taiwan Open Data](https://data.gov.tw/) | M11 | Real government datasets |
-| [Kaggle Datasets](https://www.kaggle.com/datasets) | M10, M12 | Community CSV / JSON datasets |
+| [Taiwan Open Data](https://data.gov.tw/) | M11, M15 | Real government datasets |
+| [Kaggle Datasets](https://www.kaggle.com/datasets) | M10, M12, M15 | Community CSV / JSON datasets |
+| [Video Game Sales](https://www.kaggle.com/datasets/gregorut/videogamesales) | M15 | 16,598 games with regional sales figures |
 
 ---
 
